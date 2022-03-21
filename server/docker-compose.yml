@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  workshop:
+    image: nginx:stable
+    ports:
+      - 8080:80
+    volumes:
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/conf.d/nginx.conf
+      - type: bind
+        source: ./sources
+        target: /var/www
+
+networks:
+  default:
+    external:
+      name: bridge-default
