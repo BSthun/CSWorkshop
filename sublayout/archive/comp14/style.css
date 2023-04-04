@@ -1,0 +1,67 @@
+* {
+  user-select: none;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+.header {
+  width: 5%;
+}
+.right,
+.buttontw {
+  width: 95%;
+  margin-left: 30px;
+}
+img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.all {
+  display: flex;
+  align-items: flex-start;
+}
+.name {
+  display: flex;
+  grid-gap: 5px;
+}
+.username,
+.num {
+  color: #677682;
+}
+.veri {
+  width: 20px;
+  height: 20px;
+}
+.hastag {
+  color: #1c9bef;
+}
+.text {
+  margin: 10px 0px;
+}
+.buttontw1,
+.buttontw2,
+.buttontw3 {
+  width: 20px;
+  height: 20px;
+  margin: 0px;
+}
+.num {
+  display: flex;
+  align-items: center;
+}
+.button {
+  display: flex;
+  /* gap: 100px; */
+}
+
+.fixbutton1,
+.fixbutton2,
+.fixbutton3 {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}

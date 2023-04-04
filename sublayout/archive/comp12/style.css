@@ -1,0 +1,33 @@
+/* .title{display: flex;
+    justify-content: center;
+
+} */
+body {
+    font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.block {
+    /* width: 6px; */
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(150, 150, 150);
+    border-width: 1px;
+    background-size: cover;
+    box-sizing: content-box;
+}
+.main-content {
+    padding: 10px
+}
+
+
+.img {
+    height: 650px;
+    background-image: url(./comp/dolly\ _edited.jpg);
+    background-size: cover;
+    border-radius: 10px 10px 0px 0px;
+}
+.comp {
+    display: flex; 
+    justify-content: space-between; 
+    width: calc(100% - 20px); 
+    padding: 10px;
+}

@@ -1,0 +1,38 @@
+#pooh{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    float: left;
+}
+.post{
+    display: flex;
+    align-items: center;
+}
+.search{
+    width: 100%;
+    align-content: center;
+}
+input{
+    width: calc(97% - 5px);
+    height: 30px;
+    margin-left: 5px;
+    border-radius: 25px;
+    background-color: rgba(179, 177, 177, 0.3);
+    text-align: center;
+}
+#pic{
+    width: 20px;
+    margin-right: 20px;
+}
+.box{
+    display: flex;
+    margin: 10px;
+    align-items: center;
+}
+a{
+    text-decoration: none;
+}
+.funct{
+    display: flex;
+    justify-content: space-around;
+}

@@ -1,0 +1,31 @@
+/* body {
+    font-family: inherit;
+}
+.top-component {
+    margin: 0;
+    margin-left: 2px;
+    display: inline-flex;
+    justify-content: flex-start;
+    
+}
+
+#name {
+    margin: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-left: 15px;
+    margin-right: 8px;
+}
+#tagname {
+    margin-left: 8px;
+}
+#time {
+    margin: 0;
+    align-items: flex-start;
+} */
+.top {
+    justify-content: flex-start;
+}
+.content {
+    justify-content: flex-start;
+}

@@ -1,0 +1,32 @@
+a{
+    font-size: small;
+    color: black;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+
+}
+.row{
+    margin-bottom: 5px;
+}
+
+p{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 0rem;
+}   
+.button{
+    border: none;
+}
+.button:hover{
+    background-color: darkzblue;
+}
+#more{
+    font-size: 30px;
+}
+#hashtag{
+    font-weight: bold;
+    font-size: 20px;
+}
+h2{
+    margin-top: 20px;
+}

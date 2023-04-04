@@ -1,0 +1,14 @@
+.title{display: flex;
+    justify-content: center;
+
+}
+
+.block {
+    width: 650px;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: rgb(150, 150, 150);
+    border-width: 1px;
+
+    box-sizing: content-box;
+}

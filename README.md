@@ -1,2 +1,3 @@
-# CSC105-WorkshopSession
-Instructions, resources, and tools using for workshop in CSC105 Mentoring Session
+# CS Workshop
+
+Resources and source code of tools used for hosting workshop in CS KMUTT classes.

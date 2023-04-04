@@ -1,0 +1,35 @@
+body{
+   background-color: rgb(39, 38, 38); 
+}
+.text{
+    color: white;
+    font-size: 20px;
+}
+.profile {
+    width: 36px;
+    height: auto;
+}
+.text:hover{
+    background-color: rgb(75, 74, 74);
+    border-radius: 5px;
+}
+div{
+    padding-right: 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.t{
+    font-size: 15px;
+    color: rgb(67, 180, 255);
+}
+p{
+    margin: 0px;
+}
+.m{
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+
+
