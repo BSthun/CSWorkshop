@@ -1,0 +1,7 @@
+/config.yaml
+/clients.yaml
+/local
+/web/sql
+
+.idea
+.vscode
