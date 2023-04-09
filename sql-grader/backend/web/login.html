@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Login - Diffuse</title>
+</head>
+<body>
+	<button onclick="login()">Login</button>
+	<p id="token"></p>
+	<script type="module">
+		import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js'
+		import { GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js'
+		import { getAuth } from 'https://www.gstatic.com/firebasejs/9.19.1/firebase-auth.js'
+		
+		const firebaseConfig = {
+			apiKey: "AIzaSyCgckarBKGfE6VZkJNh0VNfiZLtAaHLrg4",
+			authDomain: "anione-diffuse.firebaseapp.com",
+			projectId: "anione-diffuse",
+			storageBucket: "anione-diffuse.appspot.com",
+			messagingSenderId: "801938163703",
+			appId: "1:801938163703:web:8ef5aede0cd07ff7d010f2",
+			measurementId: "G-9NSVJZZ9JM"
+		};
+		
+		const firebaseApp = initializeApp(firebaseConfig)
+		const firebaseAuth = getAuth(firebaseApp)
+		
+		window.login = () => {
+			const provider = new GoogleAuthProvider()
+			signInWithPopup(firebaseAuth, provider)
+					.then((result) => {
+						result.user.getIdToken().then((token) => {
+							console.log(token)
+							document.getElementById('token').innerHTML = token
+						})
+					})
+					.catch((error) => {
+						alert(error.message)
+					})
+		}
+	</script>
+</body>
+</html>
