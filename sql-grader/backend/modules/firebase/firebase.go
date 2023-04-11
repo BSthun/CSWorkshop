@@ -5,12 +5,11 @@ import (
 	"log"
 
 	"firebase.google.com/go/v4"
+	"firebase.google.com/go/v4/auth"
 	"google.golang.org/api/option"
-
-	"backend/modules"
 )
 
-func Init(b *modules.Base) {
+func Init() (*firebase.App, *auth.Client) {
 	opt := option.WithCredentialsFile("firebase-adminsdk.json")
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
@@ -22,6 +21,5 @@ func Init(b *modules.Base) {
 		log.Fatalf("error getting Auth client: %v\n", err)
 	}
 
-	b.FirebaseApp = app
-	b.FirebaseAuth = authClient
+	return app, authClient
 }

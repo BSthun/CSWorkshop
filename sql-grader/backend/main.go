@@ -1,17 +1,18 @@
 package main
 
 import (
+	"github.com/sirupsen/logrus"
+
 	"backend/modules"
-	"backend/modules/config"
-	"backend/modules/db"
-	"backend/modules/fiber"
-	"backend/modules/firebase"
 )
 
 func main() {
-	base := modules.NewBase()
-	base.Conf = iconfig.Init()
-	ifirebase.Init(base)
-	idb.Init(base)
-	fiber.Init(base)
+	// * Initialize modules
+	Init()
+
+	// * Run the server
+	err := modules.Fiber.Listen(modules.Conf.Address)
+	if err != nil {
+		logrus.Fatal(err.Error())
+	}
 }

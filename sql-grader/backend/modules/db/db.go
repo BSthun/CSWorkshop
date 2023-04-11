@@ -1,6 +1,7 @@
 package idb
 
 import (
+	"database/sql"
 	"log"
 	"os"
 	"time"
@@ -14,7 +15,7 @@ import (
 	"backend/types/model"
 )
 
-func Init(b *modules.Base) {
+func Init() *gorm.DB {
 	// Initialize GORM instance using previously opened SQL connection
 	gormLogLevel := []logger.LogLevel{
 		logger.Silent,
@@ -30,34 +31,44 @@ func Init(b *modules.Base) {
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
 			SlowThreshold:             100 * time.Millisecond,
-			LogLevel:                  gormLogLevel[b.Conf.LogLevel],
+			LogLevel:                  gormLogLevel[modules.Conf.LogLevel],
 			IgnoreRecordNotFoundError: true,
 			Colorful:                  true,
 		},
 	)
 
+	// Oprn MySQL connection
+	conn, err := sql.Open("mysql", modules.Conf.CoreMySqlDsn)
+	if err != nil {
+		logrus.WithField("e", err).Fatal("UNABLE TO OPEN MYSQL DATABASE")
+	}
+
+	// Configure connection pool
+	conn.SetMaxIdleConns(10)
+	conn.SetMaxOpenConns(100)
+	conn.SetConnMaxLifetime(time.Hour)
+
 	// Open SQL connection
 	dialector := mysql.New(
 		mysql.Config{
-			DSN:               b.Conf.CoreMySqlDsn,
-			DefaultStringSize: 255,
+			Conn: conn,
 		},
 	)
-
-	if db, err := gorm.Open(dialector, &gorm.Config{
+	db, err := gorm.Open(dialector, &gorm.Config{
 		Logger: gormLogger,
-	}); err != nil {
-		logrus.WithField("e", err).Fatal("UNABLE TO LOAD GORM MYSQL DATABASE")
-	} else {
-		b.DB = db
+	})
+	if err != nil {
+		logrus.WithField("e", err).Fatal("UNABLE TO OPEN GORM MYSQL DATABASE")
 	}
 
 	// Initialize model migrations
-	if err := b.DB.AutoMigrate(
+	if err := db.AutoMigrate(
 		new(model.User),
 	); err != nil {
 		logrus.WithField("e", err).Fatal("UNABLE TO MIGRATE GORM MODEL")
 	}
 
 	logrus.Info("INITIALIZED MYSQL CONNECTION")
+
+	return db
 }

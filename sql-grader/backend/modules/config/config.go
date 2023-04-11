@@ -2,6 +2,7 @@ package iconfig
 
 import "C"
 import (
+	"flag"
 	"os"
 
 	"github.com/davecgh/go-spew/spew"
@@ -15,8 +16,14 @@ func Init() *Config {
 	// Initialize blank configuration struct
 	conf := new(Config)
 
+	// Check testing config
+	var file = "config.yaml"
+	if flag.Lookup("test.v") != nil {
+		file = "config.test.yaml"
+	}
+
 	// Load configurations to struct
-	yml, err := os.ReadFile("config.yaml")
+	yml, err := os.ReadFile(file)
 	if err != nil {
 		logrus.Fatal("UNABLE TO READ YAML CONFIGURATION FILE")
 	}
@@ -33,6 +40,5 @@ func Init() *Config {
 	logrus.SetLevel(logrus.Level(conf.LogLevel))
 	spew.Config = spew.ConfigState{Indent: "  "}
 
-	// Return configuration struct
 	return conf
 }

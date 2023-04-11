@@ -7,13 +7,13 @@ import (
 	"backend/modules"
 )
 
-func Cors(b *modules.Base) fiber.Handler {
+func Cors() fiber.Handler {
 	// origins is the value of allowed CORS addresses, separated by comma (,).
 	// Example: "https://www.google.com, https://www.bsthun.com, http://localhost:8080"
 	origins := ""
-	for i, s := range b.Conf.Cors {
+	for i, s := range modules.Conf.Cors {
 		origins += s
-		if i < len(b.Conf.Cors)-1 {
+		if i < len(modules.Conf.Cors)-1 {
 			origins += ", "
 		}
 	}

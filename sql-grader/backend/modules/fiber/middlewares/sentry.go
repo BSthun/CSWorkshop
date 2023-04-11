@@ -16,7 +16,7 @@ import (
 	"backend/utils/network"
 )
 
-func SentryRecover(b *modules.Base, hub *sentry.Hub, c *fiber.Ctx, e *error) {
+func SentryRecover(hub *sentry.Hub, c *fiber.Ctx, e *error) {
 	if err := recover(); err != nil {
 		eventID := hub.RecoverWithContext(
 			context.WithValue(context.Background(), sentry.RequestContextKey, c),
@@ -25,14 +25,14 @@ func SentryRecover(b *modules.Base, hub *sentry.Hub, c *fiber.Ctx, e *error) {
 		if eventID != nil {
 			hub.Flush(2 * time.Second)
 		}
-		if b.Conf.Environment == 1 {
+		if modules.Conf.Environment == 1 {
 			panic(err)
 		}
 		*e = fmt.Errorf("%v", err)
 	}
 }
 
-func Sentry(b *modules.Base) fiber.Handler {
+func Sentry() fiber.Handler {
 	return func(c *fiber.Ctx) (e error) {
 		hub := sentry.CurrentHub().Clone()
 		scope := hub.Scope()
@@ -63,7 +63,7 @@ func Sentry(b *modules.Base) fiber.Handler {
 		sentryCtx = context.WithValue(sentryCtx, "span", span)
 		c.Locals("sentry", sentryCtx)
 
-		defer SentryRecover(b, hub, c, &e)
+		defer SentryRecover(hub, c, &e)
 		return c.Next()
 	}
 }

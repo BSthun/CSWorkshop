@@ -3,15 +3,23 @@ package modules
 import (
 	"firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
+	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 
 	"backend/modules/config"
+	"backend/modules/hub"
 )
 
-var B *Base
+var Conf *iconfig.Config
+var Hub *ihub.Hub
+var DB *gorm.DB
+var FirebaseApp *firebase.App
+var FirebaseAuth *auth.Client
+var Fiber *fiber.App
 
 type Base struct {
 	Conf         *iconfig.Config
+	Hub          *ihub.Hub
 	DB           *gorm.DB
 	FirebaseApp  *firebase.App
 	FirebaseAuth *auth.Client
@@ -19,13 +27,11 @@ type Base struct {
 
 func NewBase() *Base {
 	base := &Base{
-		Conf:         nil,
-		DB:           nil,
-		FirebaseApp:  nil,
-		FirebaseAuth: nil,
+		Conf:         Conf,
+		DB:           DB,
+		FirebaseApp:  FirebaseApp,
+		FirebaseAuth: FirebaseAuth,
 	}
-
-	B = base
 
 	return base
 }

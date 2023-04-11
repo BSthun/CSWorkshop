@@ -1,18 +1,15 @@
-package fiber
+package ifiber
 
 import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sirupsen/logrus"
 
 	"backend/endpoints"
-	"backend/modules"
-
 	"backend/modules/fiber/middlewares"
 )
 
-func Init(b *modules.Base) {
+func Init() *fiber.App {
 	// Initialize fiber instance
 	app := fiber.New(fiber.Config{
 		ErrorHandler:  ErrorHandler,
@@ -23,9 +20,9 @@ func Init(b *modules.Base) {
 	})
 
 	// Init middlewares
-	app.Use(middlewares.Limiter(b))
-	app.Use(middlewares.Cors(b))
-	app.Use(middlewares.Sentry(b))
+	app.Use(middlewares.Limiter())
+	app.Use(middlewares.Cors())
+	app.Use(middlewares.Sentry())
 
 	// Init API endpoints
 	apiGroup := app.Group("api/")
@@ -37,9 +34,5 @@ func Init(b *modules.Base) {
 	// Init not found handler
 	app.Use(NotFoundHandler)
 
-	// Startup
-	err := app.Listen(b.Conf.Address)
-	if err != nil {
-		logrus.Fatal(err.Error())
-	}
+	return app
 }
