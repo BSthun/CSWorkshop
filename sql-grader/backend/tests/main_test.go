@@ -33,5 +33,5 @@ func TestAccount(t *testing.T) {
 }
 
 func TestProfile(t *testing.T) {
-	profile.GetState(t)
+	profile.TestGetState(t)
 }

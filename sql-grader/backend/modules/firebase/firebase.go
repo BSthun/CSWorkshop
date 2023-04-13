@@ -12,7 +12,7 @@ import (
 )
 
 func Init() (*firebase.App, *auth.Client) {
-	opt := option.WithCredentialsFile(text.RelativePath("/firebase-adminsdk.json"))
+	opt := option.WithCredentialsFile(text.RelativePath("firebase-adminsdk.json"))
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		log.Fatalf("error initializing app: %v\n", err)
