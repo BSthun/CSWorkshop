@@ -1,7 +1,7 @@
-package main
+package tests
 
 import (
-	"github.com/sirupsen/logrus"
+	"testing"
 
 	"backend/modules"
 	"backend/modules/config"
@@ -9,19 +9,29 @@ import (
 	"backend/modules/fiber"
 	"backend/modules/firebase"
 	"backend/modules/hub"
+	"backend/tests/modules/account"
+	"backend/tests/modules/profile"
 )
 
-func main() {
+func TestMain(m *testing.M) {
 	// * Initialize modules
+	Init()
+	m.Run()
+}
+
+func Init() {
 	modules.Conf = iconfig.Init()
 	modules.Hub = ihub.Init(modules.Conf)
 	modules.FirebaseApp, modules.FirebaseAuth = ifirebase.Init()
-	modules.DB = idbInit.Init()
+	modules.DB = idbInit.InitTest()
 	modules.Fiber = ifiber.Init()
+}
 
-	// * Run the server
-	err := modules.Fiber.Listen(modules.Conf.Address)
-	if err != nil {
-		logrus.Fatal(err.Error())
-	}
+func TestAccount(t *testing.T) {
+	account.TestCallback(t)
+	account.TestInvalidCallback(t)
+}
+
+func TestProfile(t *testing.T) {
+	profile.GetState(t)
 }

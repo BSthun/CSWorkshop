@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
 	Id          *uint64    `gorm:"primaryKey"`
@@ -11,3 +13,11 @@ type User struct {
 	CreatedAt   *time.Time `gorm:"not null"` // Embedded field
 	UpdatedAt   *time.Time `gorm:"not null"` // Embedded field
 }
+
+const UserFieldId = "id"
+const UserFieldFirebaseUid = "firebase_uid"
+const UserFieldEmail = "email"
+const UserFieldName = "name"
+const UserFieldAvatar = "avatar"
+const UserFieldCreatedAt = "created_at"
+const UserFieldUpdatedAt = "updated_at"

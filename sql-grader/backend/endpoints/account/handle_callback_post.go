@@ -5,10 +5,9 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
 
+	"backend/functions/account"
 	"backend/modules"
-	"backend/types/common"
 	"backend/types/model"
 	"backend/types/payload"
 	"backend/types/response"
@@ -16,7 +15,7 @@ import (
 
 func CallbackPostHandler(c *fiber.Ctx) error {
 	// * Parse body
-	var body *payload.AuthenCallbackBody
+	var body *payload.AuthCallbackBody
 	if err := c.BodyParser(&body); err != nil {
 		return response.Error(c, false, "Unable to parse body", err)
 	}
@@ -33,9 +32,8 @@ func CallbackPostHandler(c *fiber.Ctx) error {
 		return response.Error(c, false, "Unable to get profile", err)
 	}
 
-	// * Apply user record
-	var user *model.User
-	if result := modules.DB.FirstOrCreate(&user, &model.User{
+	// * Construct user record
+	user := &model.User{
 		Id:          nil,
 		FirebaseUid: &token.UID,
 		Email:       &profile.Email,
@@ -43,31 +41,22 @@ func CallbackPostHandler(c *fiber.Ctx) error {
 		Avatar:      &profile.PhotoURL,
 		CreatedAt:   nil,
 		UpdatedAt:   nil,
-	}); result.Error != nil {
-		return response.Error(c, true, "Unable to apply user record", result.Error)
 	}
 
-	// Create JWT claims
-	claims := &common.UserClaims{
-		UserId: user.Id,
-		Name:   user.Name,
-	}
-
-	// Sign JWT token
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedJwtToken, err := jwtToken.SignedString([]byte(modules.Conf.JwtSecret))
+	// * Affirm user record
+	userToken, err := account.AffirmUser(user)
 	if err != nil {
-		return response.Error(c, true, "Unable to sign JWT token", err)
+		return response.Error(c, true, "Unable to affirm user", err)
 	}
 
 	// Set cookie
 	c.Cookie(&fiber.Cookie{
 		Name:    "user",
-		Value:   signedJwtToken,
+		Value:   *userToken,
 		Expires: time.Now().Add(time.Hour * 24 * 7),
 	})
 
-	return c.JSON(response.Success(c, map[string]interface{}{
-		"token": signedJwtToken,
+	return c.JSON(response.Success(c, &payload.AuthCallbackResponse{
+		Token: userToken,
 	}))
 }

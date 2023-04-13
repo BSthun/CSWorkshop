@@ -6,6 +6,7 @@ import (
 
 	"backend/functions/profile"
 	"backend/types/common"
+	"backend/types/payload"
 	"backend/types/response"
 )
 
@@ -19,7 +20,7 @@ func StateGetHandler(c *fiber.Ctx) error {
 		return response.Error(c, true, "Unable to get profile", err)
 	}
 
-	return c.JSON(response.Success(c, map[string]any{
-		"profile": profile.MapProfile(user),
+	return c.JSON(response.Success(c, &payload.ProfileStateGetResponse{
+		Profile: profile.MapProfile(user),
 	}))
 }

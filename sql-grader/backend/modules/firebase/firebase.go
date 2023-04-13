@@ -7,10 +7,12 @@ import (
 	"firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
 	"google.golang.org/api/option"
+
+	"backend/utils/text"
 )
 
 func Init() (*firebase.App, *auth.Client) {
-	opt := option.WithCredentialsFile("firebase-adminsdk.json")
+	opt := option.WithCredentialsFile(text.RelativePath("/firebase-adminsdk.json"))
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		log.Fatalf("error initializing app: %v\n", err)

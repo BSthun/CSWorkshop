@@ -6,3 +6,7 @@ type UserProfile struct {
 	Name   *string `json:"name"`
 	Avatar *string `json:"avatar"`
 }
+
+type ProfileStateGetResponse struct {
+	Profile *UserProfile `json:"profile"`
+}

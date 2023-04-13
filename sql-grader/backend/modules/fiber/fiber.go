@@ -7,6 +7,7 @@ import (
 
 	"backend/endpoints"
 	"backend/modules/fiber/middlewares"
+	"backend/utils/text"
 )
 
 func Init() *fiber.App {
@@ -29,7 +30,7 @@ func Init() *fiber.App {
 	endpoints.Init(apiGroup)
 
 	// Init static files
-	app.Static("/", "./web/")
+	app.Static("/", text.RelativePath("web"))
 
 	// Init not found handler
 	app.Use(NotFoundHandler)

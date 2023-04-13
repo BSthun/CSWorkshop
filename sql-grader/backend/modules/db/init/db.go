@@ -1,7 +1,6 @@
-package idb
+package idbInit
 
 import (
-	"database/sql"
 	"log"
 	"os"
 	"time"
@@ -37,18 +36,8 @@ func Init() *gorm.DB {
 		},
 	)
 
-	// Oprn MySQL connection
-	conn, err := sql.Open("mysql", modules.Conf.CoreMySqlDsn)
-	if err != nil {
-		logrus.WithField("e", err).Fatal("UNABLE TO OPEN MYSQL DATABASE")
-	}
-
-	// Configure connection pool
-	conn.SetMaxIdleConns(10)
-	conn.SetMaxOpenConns(100)
-	conn.SetConnMaxLifetime(time.Hour)
-
 	// Open SQL connection
+	conn := Connect()
 	dialector := mysql.New(
 		mysql.Config{
 			Conn: conn,
@@ -71,4 +60,9 @@ func Init() *gorm.DB {
 	logrus.Info("INITIALIZED MYSQL CONNECTION")
 
 	return db
+}
+
+func InitTest() *gorm.DB {
+	Clear()
+	return Init()
 }

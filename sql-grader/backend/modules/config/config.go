@@ -19,7 +19,7 @@ func Init() *Config {
 	// Check testing config
 	var file = "config.yaml"
 	if flag.Lookup("test.v") != nil {
-		file = "config.test.yaml"
+		file = text.RelativePath("config.test.yaml")
 	}
 
 	// Load configurations to struct

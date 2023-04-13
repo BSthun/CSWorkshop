@@ -7,6 +7,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/getsentry/sentry-go v0.20.0
 	github.com/go-playground/validator/v10 v10.12.0
+	github.com/go-rod/rod v0.112.8
 	github.com/gofiber/fiber/v2 v2.43.0
 	github.com/gofiber/jwt/v3 v3.3.7
 	github.com/golang-jwt/jwt/v4 v4.5.0
@@ -53,6 +54,9 @@ require (
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
+	github.com/ysmood/goob v0.4.0 // indirect
+	github.com/ysmood/gson v0.7.3 // indirect
+	github.com/ysmood/leakless v0.8.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
