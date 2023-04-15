@@ -39,6 +39,7 @@ func CallbackPostHandler(c *fiber.Ctx) error {
 		Email:       &profile.Email,
 		Name:        &profile.DisplayName,
 		Avatar:      &profile.PhotoURL,
+		Credential:  nil,
 		CreatedAt:   nil,
 		UpdatedAt:   nil,
 	}

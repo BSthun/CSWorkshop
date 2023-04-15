@@ -8,10 +8,10 @@ import (
 	"backend/types/response"
 )
 
-func RequestCallbackPost(idToken string) (*http.Response, *payload.AuthCallbackResponse, *response.ErrorResponse) {
+func RequestCallbackPost(idToken *string) (*http.Response, *payload.AuthCallbackResponse, *response.ErrorResponse) {
 	// * Construct body
-	body := helpers.ReadBody(map[string]interface{}{
-		"idToken": idToken,
+	body := helpers.ReadBody(&payload.AuthCallbackBody{
+		IdToken: idToken,
 	})
 
 	// * Construct request

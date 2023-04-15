@@ -14,13 +14,14 @@ import (
 	"backend/tests/endpoints/account"
 	"backend/tests/helpers"
 	"backend/types/payload"
+	"backend/utils/value"
 )
 
 func TestCallback(t *testing.T) {
 	for _, user := range helpers.D.Users {
 		t.Run("callback with valid token", func(t *testing.T) {
 			token := GetFirebaseIdToken(*user.Uid)
-			res1, body, errBody := account.RequestCallbackPost(token)
+			res1, body, errBody := account.RequestCallbackPost(&token)
 			if errBody != nil {
 				t.Error(errBody)
 				return
@@ -34,7 +35,7 @@ func TestCallback(t *testing.T) {
 
 func TestInvalidCallback(t *testing.T) {
 	t.Run("callback with invalid token", func(t *testing.T) {
-		res1, _, _ := account.RequestCallbackPost("invalid_token")
+		res1, _, _ := account.RequestCallbackPost(value.Ptr("invalid_token"))
 		assert.Equal(t, 400, res1.StatusCode)
 	})
 }

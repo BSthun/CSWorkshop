@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	accountEndpoint "backend/endpoints/account"
+	labEndpoint "backend/endpoints/lab"
 	profileEndpoint "backend/endpoints/profile"
 	"backend/modules/fiber/middlewares"
 )
@@ -16,4 +17,11 @@ func Init(router fiber.Router) {
 	// * Profile
 	profile := router.Group("profile/", middlewares.Jwt())
 	profile.Get("state", profileEndpoint.StateGetHandler)
+	profile.Get("enrollments", profileEndpoint.EnrollmentsGetHandler)
+	profile.Get("labs", profileEndpoint.LabsGetHandler)
+	profile.Post("enroll", profileEndpoint.EnrollLabPostHandler)
+
+	// * Lab
+	lab := router.Group("lab/")
+	lab.Get("info", labEndpoint.InfoGetHandler)
 }

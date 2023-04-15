@@ -53,6 +53,10 @@ func Init() *gorm.DB {
 	// Initialize model migrations
 	if err := db.AutoMigrate(
 		new(model.User),
+		new(model.Lab),
+		new(model.Task),
+		new(model.Enrollment),
+		new(model.Submission),
 	); err != nil {
 		logrus.WithField("e", err).Fatal("UNABLE TO MIGRATE GORM MODEL")
 	}
