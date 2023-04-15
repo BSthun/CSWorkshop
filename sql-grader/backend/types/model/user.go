@@ -17,10 +17,11 @@ type User struct {
 	UpdatedAt   *time.Time        `gorm:"not null"` // Embedded field
 }
 
-const UserFieldId = "id"
-const UserFieldFirebaseUid = "firebase_uid"
-const UserFieldEmail = "email"
-const UserFieldName = "name"
-const UserFieldAvatar = "avatar"
-const UserFieldCreatedAt = "created_at"
-const UserFieldUpdatedAt = "updated_at"
+const (
+	UserFieldId          = "id"
+	UserFieldFirebaseUid = "firebase_uid"
+	UserFieldEmail       = "email"
+	UserFieldName        = "name"
+	UserFieldAvatar      = "avatar"
+	UserFieldCredential  = "credential"
+)

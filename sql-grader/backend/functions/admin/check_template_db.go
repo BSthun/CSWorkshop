@@ -3,27 +3,19 @@ package admin
 import (
 	"fmt"
 
-	"github.com/davecgh/go-spew/spew"
-
 	"backend/modules"
 )
 
 func CheckTemplateDb(templateDb string) error {
 	// * Validate template db is exist
-	rows, err := modules.SqlDB.Query(fmt.Sprintf("SHOW DATABASES LIKE '%s'", templateDb))
-	if err != nil {
-		spew.Dump(err)
-		return err
+	var dbs []*string
+	if result := modules.DB.Raw(fmt.Sprintf("SHOW DATABASES LIKE '%s'", templateDb)).Scan(&dbs); result.Error != nil {
+		return result.Error
 	}
 
-	for rows.Next() {
-		var dbName string
-		if err := rows.Scan(&dbName); err != nil {
-			return err
-		}
-		if dbName == templateDb {
-			return nil
-		}
+	if len(dbs) == 0 {
+		return fmt.Errorf("template database is not exist")
 	}
-	return fmt.Errorf("template db not found")
+
+	return nil
 }

@@ -15,7 +15,7 @@ func StateGetHandler(c *fiber.Ctx) error {
 	u := c.Locals("u").(*jwt.Token).Claims.(*common.UserClaims)
 
 	// * Fetch user information
-	user, err := profile.GetProfile(u.UserId)
+	user, err := profile.GetUser(u.UserId)
 	if err != nil {
 		return response.Error(c, true, "Unable to get profile", err)
 	}

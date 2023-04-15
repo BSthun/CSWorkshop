@@ -16,7 +16,7 @@ func Random(characters string, number int) *string {
 	return &str
 }
 
-var StringSet = struct {
+var RandomSet = struct {
 	Num           string
 	MixedAlphaNum string
 	UpperAlpha    string

@@ -1,5 +1,14 @@
 package profile
 
-func ActEnrollLab(userId *uint64, labId *uint64, dump []byte) error {
+import "backend/types/model"
+
+func ActEnrollLab(user *model.User, lab *model.Lab, dump *string) error {
+	// * Create a new enrollment
+	enrollment, err := NewEnrollment(user, lab)
+	if err != nil {
+		return err
+	}
+
+	_ = enrollment
 	return nil
 }

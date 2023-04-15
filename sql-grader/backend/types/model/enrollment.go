@@ -12,3 +12,10 @@ type Enrollment struct {
 	CreatedAt *time.Time `gorm:"not null"` // Embedded field
 	UpdatedAt *time.Time `gorm:"not null"` // Embedded field
 }
+
+const (
+	EnrollmentFieldId     = "id"
+	EnrollmentFieldUserId = "user_id"
+	EnrollmentFieldLabId  = "lab_id"
+	EnrollmentFieldDb     = "db"
+)
