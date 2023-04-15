@@ -62,5 +62,6 @@ func GetFirebaseIdToken(uid string) string {
 	}()
 	var tokenRes *payload.FirebaseIdTokenResponse
 	_ = json.NewDecoder(res.Body).Decode(&tokenRes)
+
 	return *tokenRes.IdToken
 }

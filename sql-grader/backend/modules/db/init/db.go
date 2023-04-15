@@ -1,6 +1,7 @@
 package idbInit
 
 import (
+	"database/sql"
 	"log"
 	"os"
 	"time"
@@ -14,7 +15,7 @@ import (
 	"backend/types/model"
 )
 
-func Init() *gorm.DB {
+func Init() (*sql.DB, *gorm.DB) {
 	// Initialize GORM instance using previously opened SQL connection
 	gormLogLevel := []logger.LogLevel{
 		logger.Silent,
@@ -63,10 +64,10 @@ func Init() *gorm.DB {
 
 	logrus.Info("INITIALIZED MYSQL CONNECTION")
 
-	return db
+	return conn, db
 }
 
-func InitTest() *gorm.DB {
+func InitTest() (*sql.DB, *gorm.DB) {
 	Clear()
 	return Init()
 }

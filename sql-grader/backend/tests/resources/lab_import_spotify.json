@@ -1,12 +1,12 @@
 {
-	"code": "SPOTTEST",
+	"code": "SPOTTEST01",
 	"name": "Spotify Test",
 	"description": "A test for Spotify schema",
 	"templateDb": "lab_spotify_test",
 	"tasks": [
 		{
 			"code": "001",
-			"name": "Most played top 5 #1",
+			"title": "Most played top 5 #1",
 			"description": "Find top 5 track most played count by minutes listened.",
 			"query": "SELECT name, album, count FROM lv1_tracks ORDER BY count DESC LIMIT 5",
 			"tags": {
@@ -17,7 +17,7 @@
 		},
 		{
 			"code": "002",
-			"name": "Most played top 5 #2",
+			"title": "Most played top 5 #2",
 			"description": "Find top 5 track most played count by minutes listened. But change the column name output to 'minutes_listened'.",
 			"query": "SELECT name, album, count AS minutes_listened FROM lv1_tracks ORDER BY count DESC LIMIT 5",
 			"tags": {
