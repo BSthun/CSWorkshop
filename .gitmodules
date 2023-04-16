@@ -1,0 +1,3 @@
+[submodule "spotify-sql-mock"]
+	path = spotify-sql-mock
+	url = https://github.com/Mixko50/spotify-playlist-mock-data
