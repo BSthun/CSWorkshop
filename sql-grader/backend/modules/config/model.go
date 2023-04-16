@@ -8,8 +8,8 @@ type Config struct {
 	BaseUrl string   `yaml:"base_url" validate:"url"`
 	Cors    []string `yaml:"cors" validate:"required"`
 
-	CoreMySqlDsn   string `yaml:"core_mysql_dsn" validate:"required"`
-	BranchMySqlDsn string `yaml:"branch_mysql_dsn" validate:"required"`
+	MysqlDsn string `yaml:"mysql_dsn" validate:"required"`
+	MysqlDb  string `yaml:"mysql_db" validate:"required"`
 
 	SentryDsn              string  `yaml:"sentry_dsn" validate:"url"`
 	SentryTracesSampleRate float64 `yaml:"sentry_traces_sample_rate" validate:"required"`

@@ -2,7 +2,7 @@
 	"code": "SPOTTEST01",
 	"name": "Spotify Test",
 	"description": "A test for Spotify schema",
-	"templateDb": "lab_spotify_test",
+	"templateDb": "template_spotify1",
 	"tasks": [
 		{
 			"code": "001",

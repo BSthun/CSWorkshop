@@ -2,6 +2,7 @@ package idbInit
 
 import (
 	"database/sql"
+	"strings"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -11,7 +12,8 @@ import (
 
 func Connect() *sql.DB {
 	// Open MySQL connection
-	conn, err := sql.Open("mysql", modules.Conf.CoreMySqlDsn)
+	dsn := strings.Replace(modules.Conf.MysqlDsn, "{{DB_NAME}}", modules.Conf.MysqlDb, 1)
+	conn, err := sql.Open("mysql", dsn)
 	if err != nil {
 		logrus.WithField("e", err).Fatal("UNABLE TO OPEN MYSQL DATABASE")
 	}

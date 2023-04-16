@@ -1,6 +1,8 @@
-package profile
+package enroll
 
-import "backend/types/model"
+import (
+	"backend/types/model"
+)
 
 func ActEnrollLab(user *model.User, lab *model.Lab, dump *string) error {
 	// * Create a new enrollment
@@ -10,5 +12,6 @@ func ActEnrollLab(user *model.User, lab *model.Lab, dump *string) error {
 	}
 
 	_ = enrollment
+
 	return nil
 }

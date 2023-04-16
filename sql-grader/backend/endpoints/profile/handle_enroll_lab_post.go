@@ -4,20 +4,27 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 
+	"backend/functions/enroll"
 	"backend/functions/profile"
 	"backend/types/common"
 	"backend/types/payload"
 	"backend/types/response"
+	"backend/utils/text"
 )
 
 func EnrollLabPostHandler(c *fiber.Ctx) error {
 	// * Parse user
 	u := c.Locals("u").(*jwt.Token).Claims.(*common.UserClaims)
 
-	// * Parse request body
+	// * Parse body
 	var body *payload.ProfileEnrollmentRequest
 	if err := c.BodyParser(&body); err != nil {
-		return response.Error(c, false, "Unable to parse request body", err)
+		return response.Error(c, false, "Unable to parse body", err)
+	}
+
+	// * Validate body
+	if err := text.Validator.Struct(body); err != nil {
+		return response.Error(c, false, "Unable to validate body", err)
 	}
 
 	// * Get user record
@@ -32,7 +39,7 @@ func EnrollLabPostHandler(c *fiber.Ctx) error {
 		return response.Error(c, false, "Unable to get lab", err)
 	}
 
-	if err := profile.ActEnrollLab(user, lab, body.Dump); err != nil {
+	if err := enroll.ActEnrollLab(user, lab, body.Dump); err != nil {
 		return response.Error(c, false, "Unable to enroll lab", err)
 	}
 
