@@ -7,7 +7,7 @@ import (
 	adminEndpoint "backend/endpoints/admin"
 	labEndpoint "backend/endpoints/lab"
 	profileEndpoint "backend/endpoints/profile"
-	"backend/modules/fiber/middlewares"
+	"backend/modules/fiber/middleware"
 )
 
 func Init(router fiber.Router) {
@@ -16,7 +16,7 @@ func Init(router fiber.Router) {
 	account.Post("callback", accountEndpoint.CallbackPostHandler)
 
 	// * Profile
-	profile := router.Group("profile/", middlewares.Jwt())
+	profile := router.Group("profile/", middleware.Jwt())
 	profile.Get("state", profileEndpoint.StateGetHandler)
 	profile.Get("enrollments", profileEndpoint.EnrollmentsGetHandler)
 	profile.Get("labs", profileEndpoint.LabsGetHandler)
@@ -27,6 +27,6 @@ func Init(router fiber.Router) {
 	lab.Get("info", labEndpoint.InfoGetHandler)
 
 	// * Admin
-	admin := router.Group("admin/", middlewares.Jwt())
+	admin := router.Group("admin/", middleware.Jwt())
 	admin.Post("import/lab", adminEndpoint.ImportLabPostHandler)
 }

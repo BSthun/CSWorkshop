@@ -6,7 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	"backend/endpoints"
-	"backend/modules/fiber/middlewares"
+	"backend/modules/fiber/middleware"
+	"backend/modules/fiber/websocket"
 	"backend/utils/text"
 )
 
@@ -21,13 +22,17 @@ func Init() *fiber.App {
 	})
 
 	// Init middlewares
-	app.Use(middlewares.Limiter())
-	app.Use(middlewares.Cors())
-	app.Use(middlewares.Sentry())
+	app.Use(middleware.Limiter())
+	app.Use(middleware.Cors())
+	app.Use(middleware.Sentry())
 
 	// Init API endpoints
 	apiGroup := app.Group("api/")
 	endpoints.Init(apiGroup)
+
+	// Init WebSocket endpoints
+	websocketGroup := app.Group("ws/")
+	websocket.Register(websocketGroup)
 
 	// Init static files
 	app.Static("/", text.RelativePath("web"))
