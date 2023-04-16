@@ -14,6 +14,7 @@ import (
 
 type Hub struct {
 	Sessions map[uint64]*Session
+	Mocks    map[uint64]*Mock
 }
 
 type Session struct {
@@ -37,9 +38,26 @@ func (r *Session) Emit(payload *extern.OutboundMessage) {
 	r.ConnMutex.Unlock()
 }
 
+type Mock struct {
+	Lines     []string        `json:"lines"`
+	Token     *string         `json:"token"`
+	Conn      *websocket.Conn `json:"conn"`
+	ConnMutex *sync.Mutex     `json:"conn_mutex"`
+}
+
+func (r *Mock) Append(line string) {
+	r.Lines = append(r.Lines, line)
+	if r.Conn != nil {
+		r.ConnMutex.Lock()
+		_ = r.Conn.WriteMessage(websocket.TextMessage, []byte(line))
+		r.ConnMutex.Unlock()
+	}
+}
+
 func Init(conf *iconfig.Config) *Hub {
 	hub := &Hub{
 		Sessions: make(map[uint64]*Session),
+		Mocks:    make(map[uint64]*Mock),
 	}
 
 	return hub

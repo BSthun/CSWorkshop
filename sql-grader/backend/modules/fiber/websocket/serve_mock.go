@@ -11,7 +11,7 @@ import (
 	"backend/utils/value"
 )
 
-func Serve(conn *websocket.Conn) {
+func ServeMock(conn *websocket.Conn) {
 	// * Parse query parameters
 	eid, err := strconv.ParseUint(conn.Query("eid"), 10, 64)
 	if err != nil {
@@ -24,7 +24,7 @@ func Serve(conn *websocket.Conn) {
 	token := conn.Query("token")
 
 	// * Fetch enrollment session
-	session, ok := modules.Hub.Sessions[eid]
+	mock, ok := modules.Hub.Mocks[eid]
 	if !ok {
 		_ = conn.WriteJSON(&extern.OutboundMessage{
 			Event:   extern.ErrorEvent,
@@ -32,7 +32,7 @@ func Serve(conn *websocket.Conn) {
 		})
 		return
 	}
-	if *session.Token != token {
+	if *mock.Token != token {
 		_ = conn.WriteJSON(&extern.OutboundMessage{
 			Event:   extern.ErrorEvent,
 			Payload: "Invalid token",
@@ -40,15 +40,14 @@ func Serve(conn *websocket.Conn) {
 		return
 	}
 
-	// * Check if connection already exists
-	if session.Conn != nil {
-		HandleConnectionSwitch(session, conn)
+	if mock.Conn != nil {
+		HandleMockConnectionSwitch(mock)
 	}
 
 	// * Assign connection
-	session.ConnMutex.Lock()
-	session.Conn = conn
-	session.ConnMutex.Unlock()
+	mock.ConnMutex.Lock()
+	mock.Conn = conn
+	mock.ConnMutex.Unlock()
 
 	for {
 		t, p, err := conn.ReadMessage()
@@ -59,10 +58,7 @@ func Serve(conn *websocket.Conn) {
 			break
 		}
 
-		session.Emit(&extern.OutboundMessage{
-			Event:   extern.EchoEvent,
-			Payload: p,
-		})
+		_ = mock.Conn.WriteMessage(t, p)
 	}
 
 	// * Close connection
@@ -71,13 +67,10 @@ func Serve(conn *websocket.Conn) {
 	}
 
 	// * Reset player connection
-	session.Conn = nil
+	mock.Conn = nil
 
 	// * Unlock in case of connection switch
-	if value.MutexLocked(session.ConnMutex) {
-		session.ConnMutex.Unlock()
-	} else {
-		// * Session completely closed
-		delete(modules.Hub.Sessions, eid)
+	if value.MutexLocked(mock.ConnMutex) {
+		mock.ConnMutex.Unlock()
 	}
 }

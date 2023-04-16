@@ -10,6 +10,7 @@ import (
 	"backend/types/embed"
 	"backend/types/model"
 	"backend/utils/text"
+	"backend/utils/value"
 )
 
 func NewEnrollment(user *model.User, lab *model.Lab) (*model.Enrollment, error) {
@@ -32,7 +33,8 @@ func NewEnrollment(user *model.User, lab *model.Lab) (*model.Enrollment, error) 
 		User:      nil,
 		LabId:     lab.Id,
 		Lab:       nil,
-		Db:        name,
+		DbName:    name,
+		DbValid:   value.Ptr(false),
 		CreatedAt: nil,
 		UpdatedAt: nil,
 	}

@@ -8,7 +8,8 @@ type Enrollment struct {
 	User      *User      `gorm:"foreignKey:UserId"`
 	LabId     *uint64    `gorm:"not null"`
 	Lab       *Lab       `gorm:"foreignKey:LabId"`
-	Db        *string    `gorm:"type:VARCHAR(255); not null"`
+	DbName    *string    `gorm:"type:VARCHAR(255); not null"`
+	DbValid   *bool      `gorm:"not null"`
 	CreatedAt *time.Time `gorm:"not null"` // Embedded field
 	UpdatedAt *time.Time `gorm:"not null"` // Embedded field
 }

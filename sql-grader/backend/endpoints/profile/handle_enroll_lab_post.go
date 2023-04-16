@@ -39,9 +39,10 @@ func EnrollLabPostHandler(c *fiber.Ctx) error {
 		return response.Error(c, false, "Unable to get lab", err)
 	}
 
-	if err := enroll.ActEnrollLab(user, lab, body.Dump); err != nil {
+	_, err = enroll.ActEnrollLab(user, lab)
+	if err != nil {
 		return response.Error(c, false, "Unable to enroll lab", err)
 	}
 
-	return c.JSON(response.Success(c, "Successfully enrolled the lab"))
+	return c.JSON(response.Success(c, "Successfully enrolled lab"))
 }

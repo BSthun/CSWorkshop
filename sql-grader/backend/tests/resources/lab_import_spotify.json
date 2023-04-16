@@ -3,6 +3,7 @@
 	"name": "Spotify Test",
 	"description": "A test for Spotify schema",
 	"templateDb": "template_spotify1",
+	"generator": "local/spotify01/main",
 	"tasks": [
 		{
 			"code": "001",

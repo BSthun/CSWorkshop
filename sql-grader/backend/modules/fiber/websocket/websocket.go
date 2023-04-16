@@ -25,6 +25,10 @@ func Register(router fiber.Router) {
 		// log.Println(conn.Cookies("session")) // ""
 
 		// websocket.Conn bindings https://pkg.go.dev/github.com/fasthttp/websocket?tab=doc#pkg-index
-		Serve(conn)
+		ServeLab(conn)
+	}))
+
+	router.Get("/mock", websocket.New(func(conn *websocket.Conn) {
+		ServeMock(conn)
 	}))
 }

@@ -15,4 +15,7 @@ type Config struct {
 	SentryTracesSampleRate float64 `yaml:"sentry_traces_sample_rate" validate:"required"`
 
 	JwtSecret string `yaml:"jwt_secret" validate:"required"`
+
+	InfoDbHost string `yaml:"info_db_host" validate:"required"`
+	InfoDbPort string `yaml:"info_db_port" validate:"required"`
 }

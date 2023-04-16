@@ -7,6 +7,7 @@ type AdminLabImport struct {
 	Name        *string            `json:"name" validate:"required"`
 	Description *string            `json:"description" validate:"required"`
 	TemplateDb  *string            `json:"templateDb" validate:"required"`
+	Generator   *string            `json:"generator" validate:"required"`
 	Tasks       []*AdminTaskImport `json:"tasks" validate:"required"`
 }
 

@@ -8,7 +8,7 @@ import (
 	"backend/types/extern"
 )
 
-func HandleConnectionSwitch(state *ihub.Session, conn *websocket.Conn) {
+func HandleConnectionSwitch(state *ihub.Session) {
 	// * Connection switch
 	logrus.Warn("CONNECTION SWITCH")
 	state.Emit(&extern.OutboundMessage{
@@ -17,10 +17,20 @@ func HandleConnectionSwitch(state *ihub.Session, conn *websocket.Conn) {
 	})
 
 	state.ConnMutex.Lock()
-	if err := conn.Conn.WriteMessage(websocket.CloseMessage, []byte{}); err != nil {
+	if err := state.Conn.WriteMessage(websocket.CloseMessage, []byte{}); err != nil {
 		logrus.Warn("UNHANDLED CONNECTION CLOSE MESSAGE: " + err.Error())
 	}
-	if err := conn.Conn.Close(); err != nil {
+	if err := state.Conn.Close(); err != nil {
+		logrus.Warn("UNHANDLED CONNECTION CLOSE: " + err.Error())
+	}
+}
+
+func HandleMockConnectionSwitch(mock *ihub.Mock) {
+	mock.ConnMutex.Lock()
+	if err := mock.Conn.WriteMessage(websocket.CloseMessage, []byte{}); err != nil {
+		logrus.Warn("UNHANDLED CONNECTION CLOSE MESSAGE: " + err.Error())
+	}
+	if err := mock.Conn.Close(); err != nil {
 		logrus.Warn("UNHANDLED CONNECTION CLOSE: " + err.Error())
 	}
 }

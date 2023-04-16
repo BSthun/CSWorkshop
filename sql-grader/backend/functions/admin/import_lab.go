@@ -27,6 +27,7 @@ func ImportLab(imp *payload.AdminLabImport) error {
 		Name:        imp.Name,
 		Description: imp.Description,
 		TemplateDb:  imp.TemplateDb,
+		Generator:   imp.Generator,
 		CreatedAt:   nil,
 		UpdatedAt:   nil,
 	}

@@ -23,8 +23,9 @@ func Init(router fiber.Router) {
 	profile.Post("enroll", profileEndpoint.EnrollLabPostHandler)
 
 	// * Lab
-	lab := router.Group("lab/")
-	lab.Get("info", labEndpoint.InfoGetHandler)
+	lab := router.Group("lab/", middleware.Jwt())
+	lab.Get("enroll/info", labEndpoint.EnrollGetHandler)
+	lab.Get("enroll/mock", labEndpoint.EnrollMockGetHandler)
 
 	// * Admin
 	admin := router.Group("admin/", middleware.Jwt())
