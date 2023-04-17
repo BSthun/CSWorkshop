@@ -32,6 +32,7 @@ func EnrollMockGetHandler(c *fiber.Ctx) error {
 		return response.Error(c, false, "Unable to get enrollment info", err)
 	}
 
+	// * Mock data
 	token, err := enroll.ActMockData(enrollment)
 	if err != nil {
 		return response.Error(c, false, "Unable to activate mock data", err)

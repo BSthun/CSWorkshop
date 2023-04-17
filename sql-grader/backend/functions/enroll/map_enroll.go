@@ -2,21 +2,29 @@ package enroll
 
 import (
 	"backend/modules"
+	ihub "backend/modules/hub"
 	"backend/types/model"
 	"backend/types/payload"
 	"backend/types/response"
 	"backend/utils/value"
 )
 
-func MapEnrollment(enrollment *model.Enrollment) *payload.EnrollInfo {
-	return &payload.EnrollInfo{
+func MapEnrollment(enrollment *model.Enrollment) *payload.EnrollmentInfo {
+	return &payload.EnrollmentInfo{
 		EnrollmentId: enrollment.Id,
+		EnrolledAt:   enrollment.CreatedAt,
+		LabName:      enrollment.Lab.Name,
 		DbName:       enrollment.DbName,
 		DbValid:      enrollment.DbValid,
+		DbHost:       nil,
+		DbPort:       nil,
+		DbUsername:   nil,
+		DbPassword:   nil,
+		Tasks:        nil,
 	}
 }
 
-func MapEnrollmentTask(enrollment *model.Enrollment, tasks []*model.Task) *payload.EnrollInfo {
+func MapEnrollmentTask(enrollment *model.Enrollment, tasks []*model.Task, session *ihub.Session) *payload.EnrollmentInfo {
 	mappedEnrollment := MapEnrollment(enrollment)
 
 	if enrollment.User != nil {
@@ -32,6 +40,10 @@ func MapEnrollmentTask(enrollment *model.Enrollment, tasks []*model.Task) *paylo
 			Title: task.Title,
 		}, nil
 	})
+
+	if session != nil {
+		mappedEnrollment.Token = session.Token
+	}
 
 	return mappedEnrollment
 }

@@ -27,16 +27,22 @@ func EnrollGetHandler(c *fiber.Ctx) error {
 	}
 
 	// * Get enrollment info
-	info, err := enroll.GetEnrollment(query.EnrollmentId, u.UserId)
+	enrollment, err := enroll.GetEnrollment(query.EnrollmentId, u.UserId)
 	if err != nil {
 		return response.Error(c, false, "Unable to get enrollment info", err)
 	}
 
 	// * Get tasks info
-	tasks, err := enroll.QueryTasks(info.LabId)
+	tasks, err := enroll.QueryTasks(enrollment.LabId)
 	if err != nil {
 		return response.Error(c, false, "Unable to get tasks info", err)
 	}
 
-	return c.JSON(response.Success(c, enroll.MapEnrollmentTask(info, tasks)))
+	// * Get enrollment session
+	session, err := enroll.ActLoadEnrollmentSession(enrollment)
+	if err != nil {
+		return response.Error(c, false, "Unable to get enrollment session", err)
+	}
+
+	return c.JSON(response.Success(c, enroll.MapEnrollmentTask(enrollment, tasks, session)))
 }

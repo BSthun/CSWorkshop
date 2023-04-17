@@ -3,16 +3,16 @@ package payload
 import "backend/types/embed"
 
 type AdminLabImport struct {
-	Code        *string            `json:"code" validate:"alphanum,uppercase"`
-	Name        *string            `json:"name" validate:"required"`
-	Description *string            `json:"description" validate:"required"`
-	TemplateDb  *string            `json:"templateDb" validate:"required"`
-	Generator   *string            `json:"generator" validate:"required"`
-	Tasks       []*AdminTaskImport `json:"tasks" validate:"required"`
+	Code        *string            `yaml:"code" validate:"alphanum,lowercase"`
+	Name        *string            `yaml:"name" validate:"required"`
+	Description *string            `yaml:"description" validate:"required"`
+	TemplateDb  *string            `yaml:"templateDb" validate:"required"`
+	Generator   *string            `yaml:"generator" validate:"required"`
+	Tasks       []*AdminTaskImport `yaml:"tasks" validate:"required"`
 }
 
 type AdminTaskImport struct {
-	Code        *string         `json:"code" validate:"alphanum,uppercase"`
+	Code        *string         `json:"code" validate:"alphanum,lowercase"`
 	Title       *string         `json:"title" validate:"required"`
 	Description *string         `json:"description" validate:"required"`
 	Tags        *embed.TaskTags `json:"tags" validate:"required"`

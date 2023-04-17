@@ -18,12 +18,12 @@ func EnrollmentsGetHandler(c *fiber.Ctx) error {
 	u := c.Locals("u").(*jwt.Token).Claims.(*common.UserClaims)
 
 	// * Get enrollments
-	enrollments, err := profile.GetEnrollments(u.UserId)
+	enrollments, err := profile.GetEnrollments(u.UserId, false, true)
 	if err != nil {
 		return response.Error(c, false, "Unable to get enrollments", err)
 	}
 
-	mappedEnrollments, _ := value.Iterate(enrollments, func(enrollment *model.Enrollment) (*payload.EnrollInfo, *response.ErrorInstance) {
+	mappedEnrollments, _ := value.Iterate(enrollments, func(enrollment *model.Enrollment) (*payload.EnrollmentInfo, *response.ErrorInstance) {
 		return enroll.MapEnrollment(enrollment), nil
 	})
 

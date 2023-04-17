@@ -1,11 +1,11 @@
 package admin
 
 import (
-	"encoding/json"
 	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/yaml.v3"
 
 	"backend/tests/endpoints/admin"
 	"backend/types/payload"
@@ -17,12 +17,12 @@ func ImportLab(t *testing.T) {
 		// * Read json from file /test.json
 		var imp *payload.AdminLabImport
 
-		bytes, err := os.ReadFile(text.RelativePath("tests/resources/lab_import_spotify.json"))
+		bytes, err := os.ReadFile(text.RelativePath("tests/resources/lab_import_spotify.yaml"))
 		if err != nil {
 			t.Error(err)
 		}
 
-		if err := json.Unmarshal(bytes, &imp); err != nil {
+		if err := yaml.Unmarshal(bytes, &imp); err != nil {
 			t.Error(err)
 		}
 

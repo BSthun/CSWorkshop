@@ -13,8 +13,9 @@ import (
 )
 
 type Hub struct {
-	Sessions map[uint64]*Session
-	Mocks    map[uint64]*Mock
+	Sessions         map[uint64]*Session
+	SessionDbNameMap map[string]*Session
+	Mocks            map[uint64]*Mock
 }
 
 type Session struct {
@@ -56,8 +57,9 @@ func (r *Mock) Append(line string) {
 
 func Init(conf *iconfig.Config) *Hub {
 	hub := &Hub{
-		Sessions: make(map[uint64]*Session),
-		Mocks:    make(map[uint64]*Mock),
+		Sessions:         make(map[uint64]*Session),
+		SessionDbNameMap: make(map[string]*Session),
+		Mocks:            make(map[uint64]*Mock),
 	}
 
 	return hub
