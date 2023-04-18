@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react'
 import { BasedResponse } from '../types/APIs/basedResponse'
 import { ProfileAPI } from '../types/APIs/Profile/profile'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
 	const [profile, setProfile] = useState<ProfileAPI>()
+	const navigate = useNavigate()
 
 	const fetchState = async () => {
 		const profileData = await axios.get<BasedResponse<ProfileAPI>>(
@@ -41,7 +43,15 @@ const Navbar = () => {
 					px: 4,
 				}}
 			>
-				<Typography fontSize={24}>SQL Playground</Typography>
+				<Typography
+					fontSize={24}
+					sx={{
+						cursor: 'pointer',
+					}}
+					onClick={() => navigate('/enrollment')}
+				>
+					SQL Playground
+				</Typography>
 				<Box sx={{ display: 'flex', alignItems: 'center' }}>
 					<Avatar
 						src={

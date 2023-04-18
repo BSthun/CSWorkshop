@@ -10,6 +10,12 @@ import {
 	Dialog,
 	Divider,
 	IconButton,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
 	TextField,
 	Typography,
 } from '@mui/material'
@@ -25,8 +31,23 @@ interface DbInfo {
 	value: string
 }
 
+const taskTags = [
+	{
+		name: 'Level',
+		value: 'Lv1',
+	},
+	{
+		name: 'Difficulty',
+		value: 'Easy',
+	},
+	{
+		name: 'Tag 3',
+		value: 'Hello',
+	},
+]
+
 const Lab = () => {
-	const [isTask, setIsTask] = React.useState(true)
+	const [isTask, setIsTask] = React.useState(false)
 	const [selectedTask, setSelectedTask] = React.useState(0)
 	const [isLoading, setIsLoading] = React.useState(false)
 	const [isDialogOpen, setIsDialogOpen] = React.useState(false)
@@ -37,6 +58,10 @@ const Lab = () => {
 		React.useState<EnrollmentInfoAPI>()
 	const [dbInfo, setDbInfo] = React.useState<DbInfo[]>([])
 	const params = useParams()
+	const [error, setError] = React.useState(
+		"[42S02][1146] (conn=107) Table 'mysql.db2' doesn't exist"
+	)
+	const [queryResult, setQueryResult] = React.useState('')
 
 	const fetchLabInfo = async () => {
 		try {
@@ -67,9 +92,10 @@ const Lab = () => {
 				},
 			])
 		} catch {
-			alert('An error occured')
+			// alert('An error occured')
 		}
 	}
+	const [query, setQuery] = React.useState('error')
 
 	const handleCloseDialog = () => {
 		setIsDialogOpen(false)
@@ -78,6 +104,42 @@ const Lab = () => {
 	React.useEffect(() => {
 		fetchLabInfo()
 	}, [])
+
+	const result = {
+		expected_header: [
+			'ID',
+			'Name',
+			'Age',
+			'Test',
+			'Test',
+			'Test',
+			'Test',
+			'Test',
+			'Test',
+			'Test',
+			'Test',
+			'Test',
+			'Test',
+		],
+		expected_rows: [
+			['1', 'John', '20'],
+			['2', 'Mary', '21'],
+			['3', 'Peter', '22'],
+			['3', 'Peter', '22'],
+			['3', 'Peter', '22'],
+			['3', 'Peter', '22'],
+			['3', 'Peter', '22'],
+			['3', 'Peter', '22'],
+			['3', 'Peter', '22'],
+			['3', 'Peter', '22'],
+		],
+		actual_header: ['ID', 'Name', 'Sth'],
+		actual_rows: [
+			['1', 'John', '20'],
+			['2', 'Maryaa', '21'],
+			['3', 'Peter', '22'],
+		],
+	}
 
 	return (
 		<Box
@@ -256,7 +318,200 @@ const Lab = () => {
 						</Box>
 					</Box>
 				) : (
-					<Box></Box>
+					<Box
+						sx={{
+							height: 'calc(100vh - 64px)',
+							overflowY: 'scroll',
+						}}
+					>
+						<Box p={4}>
+							<Typography fontSize={24} fontWeight={500} mb={1.5}>
+								Show first 10 rows of data from table
+								'l1_tracks'
+							</Typography>
+							<Typography fontSize={18} mb={1.5}>
+								Show first 10 rows and all columns from table
+								'l1_tracks' without any condition and let MySQL
+								use default sorting for the result.
+							</Typography>
+							<Box mb={4}>
+								{taskTags.map((item, index) => (
+									<Box display="flex" key={index}>
+										<Typography mr={1.5}>
+											{item.name}
+										</Typography>
+										<Typography fontWeight={700}>
+											{item.value}
+										</Typography>
+									</Box>
+								))}
+							</Box>
+							<TextField
+								variant="outlined"
+								fullWidth
+								multiline
+								rows={4}
+								value={query}
+								sx={{
+									'.MuiOutlinedInput-root': {
+										borderRadius: 3,
+										'& fieldset': {
+											borderWidth: 3,
+											borderColor:
+												queryResult == 'success'
+													? '#4ABC4F'
+													: queryResult == 'error'
+													? '#BC4A4A'
+													: '#a9a9a9',
+										},
+										'&:hover fieldset': {
+											borderWidth: 3,
+											borderColor:
+												queryResult == 'success'
+													? '#4ABC4F'
+													: queryResult == 'error'
+													? '#BC4A4A'
+													: '#a9a9a9',
+										},
+									},
+									'.Mui-focused fieldset': {
+										borderColor:
+											queryResult == 'success'
+												? '#4ABC4F'
+												: queryResult == 'error'
+												? '#BC4A4A'
+												: '#a9a9a9',
+									},
+									mb: 3,
+								}}
+								onChange={(e) => {
+									setQuery(e.target.value)
+								}}
+							/>
+							<Box
+								sx={{
+									backgroundColor: 'rgba(255, 118, 118, 0.2)',
+									borderRadius: 3,
+									p: 3,
+									mb: 3,
+								}}
+							>
+								<Typography fontFamily={'monospace'}>
+									{error} {error}
+								</Typography>
+							</Box>
+							<Box
+								sx={{
+									display: 'flex',
+								}}
+							>
+								<Box
+									sx={{
+										flex: 1,
+									}}
+								>
+									<Typography mb={3}>
+										Expected result
+									</Typography>
+									<TableContainer
+										sx={{
+											maxWidth: 400,
+										}}
+									>
+										<Table>
+											<TableHead>
+												<TableRow>
+													{result.expected_header.map(
+														(item, index) => (
+															<TableCell
+																key={index}
+															>
+																{item}
+															</TableCell>
+														)
+													)}
+												</TableRow>
+											</TableHead>
+											<TableBody>
+												{result.expected_rows.map(
+													(item, index) => (
+														<TableRow key={index}>
+															{item.map(
+																(
+																	item,
+																	index
+																) => (
+																	<TableCell
+																		key={
+																			index
+																		}
+																	>
+																		{item}
+																	</TableCell>
+																)
+															)}
+														</TableRow>
+													)
+												)}
+											</TableBody>
+										</Table>
+									</TableContainer>
+								</Box>
+								<Box
+									sx={{
+										flex: 1,
+									}}
+								>
+									<Typography mb={3}>
+										Actual result
+									</Typography>
+									<TableContainer
+										sx={{
+											maxWidth: 400,
+										}}
+									>
+										<Table>
+											<TableHead>
+												<TableRow>
+													{result.actual_header.map(
+														(item, index) => (
+															<TableCell
+																key={index}
+															>
+																{item}
+															</TableCell>
+														)
+													)}
+												</TableRow>
+											</TableHead>
+											<TableBody>
+												{result.actual_rows.map(
+													(item, index) => (
+														<TableRow key={index}>
+															{item.map(
+																(
+																	item,
+																	index
+																) => (
+																	<TableCell
+																		key={
+																			index
+																		}
+																	>
+																		{item}
+																	</TableCell>
+																)
+															)}
+														</TableRow>
+													)
+												)}
+											</TableBody>
+										</Table>
+									</TableContainer>
+								</Box>
+							</Box>
+						</Box>
+					</Box>
 				)}
 			</Box>
 			<Dialog open={isDialogOpen} onClose={handleCloseDialog}>

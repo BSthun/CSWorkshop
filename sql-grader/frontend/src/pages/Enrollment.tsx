@@ -1,5 +1,5 @@
 import { Add } from '@mui/icons-material'
-import { Box, Button, SwipeableDrawer, Typography } from '@mui/material'
+import { Box, Button, Grid, SwipeableDrawer, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import EnrollmentDrawer from '../components/EnrollmentDrawer'
 import EnrollmentBox from '../components/EnrollmentBox'
@@ -7,8 +7,10 @@ import { EnrollStateAPI } from '../types/APIs/Profile/enroll_state'
 import axios from 'axios'
 import { EnrollmentsAPI } from '../types/APIs/Profile/enrollment'
 import { BasedResponse } from '../types/APIs/basedResponse'
+import { useNavigate } from 'react-router-dom'
 
 const Enrollment = () => {
+	const navigate = useNavigate()
 	const [_, setEnrollState] = useState<EnrollStateAPI>()
 	const [enrollments, setEnrollments] = useState<EnrollmentsAPI[]>()
 	const [openMenu, setOpenMenu] = React.useState(false)
@@ -47,6 +49,10 @@ const Enrollment = () => {
 		}
 	}
 
+	const navigateToLab = (enrollmentId: number) => {
+		navigate(`/lab/${enrollmentId}`)
+	}
+
 	useEffect(() => {
 		getEnrollments()
 	}, [])
@@ -81,17 +87,26 @@ const Enrollment = () => {
 					Enroll
 				</Button>
 			</Box>
-			<Box>
+			<Grid container rowSpacing={4} columnSpacing={2}>
 				{enrollments?.map((item, index) => (
-					<EnrollmentBox
-						dbName={item.dbName}
-						dbValid={item.dbValid}
-						labName={item.labName}
-						enrollAt={item.enrolledAt}
-						key={index}
-					/>
+					<Grid item md={4} sm={12}>
+						<Box
+							sx={{ cursor: 'pointer' }}
+							onClick={() => {
+								navigateToLab(item.enrollmentId)
+							}}
+						>
+							<EnrollmentBox
+								dbName={item.dbName}
+								dbValid={item.dbValid}
+								labName={item.labName}
+								enrollAt={item.enrolledAt}
+								key={index}
+							/>
+						</Box>
+					</Grid>
 				))}
-			</Box>
+			</Grid>
 			<SwipeableDrawer
 				anchor="right"
 				open={openMenu}

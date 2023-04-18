@@ -10,17 +10,12 @@ type EnrollmentProp = {
 }
 
 const EnrollmentBox: React.FC<EnrollmentProp> = (props) => {
-	// const dateFormat = (date: Date): string => {
-	// 	return date.toLocaleDateString('th-TH')
-	// console.log(props.enrollAt)
-
-	// }
 	return (
 		<Box
 			sx={{
 				width: '300px',
 				height: '180px',
-				boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
+				boxShadow: '0px 2px 12px rgba(0, 0, 0, 0.25)',
 				borderRadius: '12px',
 				padding: '20px',
 				backgroundColor: 'white',
