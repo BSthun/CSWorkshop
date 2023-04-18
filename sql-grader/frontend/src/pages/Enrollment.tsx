@@ -1,26 +1,56 @@
 import { Add } from '@mui/icons-material'
 import { Box, Button, SwipeableDrawer, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EnrollmentDrawer from '../components/EnrollmentDrawer'
 import EnrollmentBox from '../components/EnrollmentBox'
 import { EnrollStateAPI } from '../types/APIs/Profile/enroll_state'
 import axios from 'axios'
+import { EnrollmentsAPI } from '../types/APIs/Profile/enrollment'
+import { BasedResponse } from '../types/APIs/basedResponse'
 
 const Enrollment = () => {
 	const [_, setEnrollState] = useState<EnrollStateAPI>()
+	const [enrollments, setEnrollments] = useState<EnrollmentsAPI[]>()
+	const [openMenu, setOpenMenu] = React.useState(false)
 
 	const enrollSubmit = async () => {
-		const response = await axios.post<EnrollStateAPI>(
-			'/api/profile/enroll',
-			{
-				lab_id: 1,
-				source: 'blank',
+		try {
+			const response = await axios.post<EnrollStateAPI>(
+				'/api/profile/enroll',
+				{
+					lab_id: 1,
+					source: 'blank',
+				}
+			)
+			setEnrollState(response.data)
+
+			if (response.data.success) {
+				await getEnrollments()
+			} else {
+				alert(response.data.message)
 			}
-		)
-		setEnrollState(response.data)
+			setOpenMenu(false)
+		} catch {
+			alert('An error occured')
+			setOpenMenu(false)
+		}
 	}
 
-	const [openMenu, setOpenMenu] = React.useState(false)
+	const getEnrollments = async () => {
+		try {
+			const response = await axios.get<BasedResponse<EnrollmentsAPI[]>>(
+				'/api/profile/enrollments'
+			)
+			setEnrollments(response.data.data)
+		} catch {
+			alert('An error occured')
+		}
+	}
+
+	useEffect(() => {
+		getEnrollments()
+	}, [])
+
 	return (
 		<Box p="80px">
 			<Box
@@ -52,12 +82,15 @@ const Enrollment = () => {
 				</Button>
 			</Box>
 			<Box>
-				<EnrollmentBox
-					dbName="lab_spotify01_11cnel"
-					dbValid={true}
-					labName="Spotiy Test"
-					enrollAt={new Date()}
-				/>
+				{enrollments?.map((item, index) => (
+					<EnrollmentBox
+						dbName={item.dbName}
+						dbValid={item.dbValid}
+						labName={item.labName}
+						enrollAt={item.enrolledAt}
+						key={index}
+					/>
+				))}
 			</Box>
 			<SwipeableDrawer
 				anchor="right"

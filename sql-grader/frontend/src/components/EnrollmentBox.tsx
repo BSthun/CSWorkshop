@@ -1,5 +1,6 @@
 import { AccessTime, Storage } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
+import { format } from 'date-fns'
 
 type EnrollmentProp = {
 	labName: string
@@ -9,16 +10,11 @@ type EnrollmentProp = {
 }
 
 const EnrollmentBox: React.FC<EnrollmentProp> = (props) => {
-	const dateFormat = (date: Date): string => {
-		var options = {
-			weekday: 'long',
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric',
-		}
+	// const dateFormat = (date: Date): string => {
+	// 	return date.toLocaleDateString('th-TH')
+	// console.log(props.enrollAt)
 
-		return date.toLocaleDateString('th-TH')
-	}
+	// }
 	return (
 		<Box
 			sx={{
@@ -81,9 +77,7 @@ const EnrollmentBox: React.FC<EnrollmentProp> = (props) => {
 					}}
 				/>
 				<Typography fontSize={18} color={'rgba(145, 145, 145, 1)'}>
-					{dateFormat(props.enrollAt) +
-						' ' +
-						props.enrollAt.toLocaleTimeString()}
+					{format(new Date(props.enrollAt), 'MMMM dd yyyy, HH:mm a')}
 				</Typography>
 			</Box>
 		</Box>
