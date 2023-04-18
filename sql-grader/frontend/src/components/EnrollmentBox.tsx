@@ -27,9 +27,7 @@ const EnrollmentBox: React.FC<EnrollmentProp> = (props) => {
 				boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px;',
 				borderRadius: '12px',
 				padding: '20px',
-				'& > *': {
-					marginY: '10px',
-				},
+				backgroundColor: 'white',
 			}}
 		>
 			<Box
@@ -50,13 +48,14 @@ const EnrollmentBox: React.FC<EnrollmentProp> = (props) => {
 					}}
 				/>
 			</Box>
-			<Box>
+			<Box mb={1.5}>
 				<Typography fontSize={22}>{props.labName}</Typography>
 			</Box>
 			<Box
 				sx={{
 					display: 'flex',
 					alignItems: 'center',
+					mb: 1,
 				}}
 			>
 				<Storage
