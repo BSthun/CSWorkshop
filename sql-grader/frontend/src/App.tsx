@@ -1,10 +1,7 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Home from './pages/Home'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
-import { purple } from '@mui/material/colors'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 function App() {
 	const theme = createTheme({
@@ -23,10 +20,17 @@ function App() {
 		},
 	})
 
+	const router = createBrowserRouter([
+		{
+			path: '/',
+			element: <Home />,
+		},
+	])
+
 	return (
 		<div className="App">
 			<ThemeProvider theme={theme}>
-				<Home />
+				<RouterProvider router={router} />
 			</ThemeProvider>
 		</div>
 	)

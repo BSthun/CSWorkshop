@@ -1,4 +1,4 @@
-import { Delete, Google } from '@mui/icons-material'
+import { Google } from '@mui/icons-material'
 import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
 
@@ -34,7 +34,6 @@ const Home = () => {
 					alignItems: 'center',
 				}}
 			>
-				{/* <Box> */}
 				<Typography fontSize={36}>SQL Workshop</Typography>
 				<Typography>CSC105 Mentor Session, Backend</Typography>
 				<Box
@@ -48,7 +47,6 @@ const Home = () => {
 				</Box>
 
 				<Typography>Developed by JIW, Thun, Mixko</Typography>
-				{/* </Box> */}
 			</Box>
 		</Box>
 	)
