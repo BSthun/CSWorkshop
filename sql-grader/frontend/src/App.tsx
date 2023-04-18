@@ -4,6 +4,7 @@ import Enrollment from './pages/Enrollment'
 import Home from './pages/Home'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import Lab from './pages/Lab'
 
 function App() {
 	const theme = createTheme({
@@ -33,6 +34,14 @@ function App() {
 			element: (
 				<MainLayout>
 					<Enrollment />
+				</MainLayout>
+			),
+		},
+		{
+			path: '/lab/:enrollmentId',
+			element: (
+				<MainLayout>
+					<Lab />
 				</MainLayout>
 			),
 		},

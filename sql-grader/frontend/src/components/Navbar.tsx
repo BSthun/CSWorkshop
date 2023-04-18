@@ -20,15 +20,25 @@ const Navbar = () => {
 	}, [])
 
 	return (
-		<Box sx={{ width: '100vw', backgroundColor: 'white' }}>
+		<Box
+			sx={{
+				display: 'flex',
+				width: '100vw',
+				height: '64px',
+				backgroundColor: 'white',
+				boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
+				zIndex: 1000,
+				position: 'fixed',
+				top: 0,
+			}}
+		>
 			<Box
 				sx={{
+					width: '100%',
 					display: 'flex',
 					justifyContent: 'space-between',
 					alignItems: 'center',
 					px: 4,
-					py: 1.25,
-					boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12);',
 				}}
 			>
 				<Typography fontSize={24}>SQL Playground</Typography>

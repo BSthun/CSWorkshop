@@ -96,7 +96,7 @@ const Home = () => {
 					</Button>
 				</Box>
 
-				<Typography>Developed by JIW, Thun, Mixko</Typography>
+				<Typography>Developed by Thun, Mixko, Jiw</Typography>
 			</Box>
 		</Box>
 	)

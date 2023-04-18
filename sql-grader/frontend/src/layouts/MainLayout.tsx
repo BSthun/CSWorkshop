@@ -6,7 +6,9 @@ const MainLayout: React.FC<any> = ({ children }) => {
 	return (
 		<>
 			<Navbar />
-			<Box>{children}</Box>
+			<Box width="100vw" height="calc(100vh - 64px)" marginTop={8}>
+				{children}
+			</Box>
 		</>
 	)
 }
