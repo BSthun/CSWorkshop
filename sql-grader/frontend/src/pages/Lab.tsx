@@ -15,54 +15,17 @@ import {
 } from '@mui/material'
 import React from 'react'
 import TaskItemList from '../components/TaskItemList'
+import axios from 'axios'
+import { BasedResponse } from '../types/APIs/basedResponse'
+import { EnrollmentInfoAPI } from '../types/APIs/Lab/enrollment_info'
+import { useParams } from 'react-router-dom'
+
+interface DbInfo {
+	label: string
+	value: string
+}
 
 const Lab = () => {
-	const [dbInfo, setDbInfo] = React.useState([
-		{
-			label: 'Database Name',
-			value: 'spotify',
-		},
-		{
-			label: 'Database Host',
-			value: 'spotify',
-		},
-		{
-			label: 'Database Port',
-			value: 'spotify',
-		},
-		{
-			label: 'Database Username',
-			value: 'spotify',
-		},
-		{
-			label: 'Database Password',
-			value: 'spotify',
-		},
-	])
-
-	const [task, setTask] = React.useState([
-		{
-			name: "Show all data from table 'l1_tracks all data all data all data all data all data all data all data all data '",
-			finished: true,
-		},
-		{
-			name: "Show all data from table 'l1_tracks'",
-			finished: false,
-		},
-		{
-			name: "Show all data from table 'l1_tracks'",
-			finished: true,
-		},
-		{
-			name: "Show all data from table 'l1_tracks'",
-			finished: true,
-		},
-		{
-			name: "Show all data from table 'l1_tracks'",
-			finished: false,
-		},
-	])
-
 	const [isTask, setIsTask] = React.useState(true)
 	const [selectedTask, setSelectedTask] = React.useState(0)
 	const [isLoading, setIsLoading] = React.useState(false)
@@ -70,10 +33,51 @@ const Lab = () => {
 	const [log, setLog] = React.useState(
 		"Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br /> Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
 	)
+	const [enrollmentInfo, setEnrollmentInfo] =
+		React.useState<EnrollmentInfoAPI>()
+	const [dbInfo, setDbInfo] = React.useState<DbInfo[]>([])
+	const params = useParams()
+
+	const fetchLabInfo = async () => {
+		try {
+			const infoData = await axios.get<BasedResponse<EnrollmentInfoAPI>>(
+				`/api/lab/enroll/info?enrollmentId=${params.enrollmentId}`
+			)
+			setEnrollmentInfo(infoData.data.data)
+			setDbInfo([
+				{
+					label: 'Database Name',
+					value: infoData.data.data.dbName ?? 'error',
+				},
+				{
+					label: 'Database Host',
+					value: infoData.data.data.dbHost ?? 'error',
+				},
+				{
+					label: 'Database Port',
+					value: infoData.data.data.dbPort ?? 'error',
+				},
+				{
+					label: 'Database Username',
+					value: infoData.data.data.dbUsername ?? 'error',
+				},
+				{
+					label: 'Database Password',
+					value: infoData.data.data.dbPassword ?? 'error',
+				},
+			])
+		} catch {
+			alert('An error occured')
+		}
+	}
 
 	const handleCloseDialog = () => {
 		setIsDialogOpen(false)
 	}
+
+	React.useEffect(() => {
+		fetchLabInfo()
+	}, [])
 
 	return (
 		<Box
@@ -122,7 +126,7 @@ const Lab = () => {
 								label={item.label}
 								fullWidth
 								value={item.value}
-								onChange={(e) => {}}
+								onChange={() => {}}
 								sx={{
 									my: 1,
 								}}
@@ -131,13 +135,14 @@ const Lab = () => {
 					</Box>
 				) : (
 					<>
-						{[...task, ...task, ...task].map((item, index) => (
+						{enrollmentInfo?.tasks.map((item, index) => (
 							<Box key={index}>
 								{index === 0 && <Divider />}
 								<Box
 									sx={{
 										px: 4,
 										py: 2.2,
+										cursor: 'pointer',
 										backgroundColor:
 											selectedTask === index
 												? '#F5F5F5'
@@ -148,8 +153,8 @@ const Lab = () => {
 									}}
 								>
 									<TaskItemList
-										name={item.name}
-										finished={item.finished}
+										name={item.title}
+										finished={true}
 										index={index}
 										selectedIndex={selectedTask}
 									/>
