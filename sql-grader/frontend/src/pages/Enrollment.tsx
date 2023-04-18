@@ -1,10 +1,25 @@
 import { Add } from '@mui/icons-material'
 import { Box, Button, SwipeableDrawer, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import EnrollmentDrawer from '../components/EnrollmentDrawer'
 import EnrollmentBox from '../components/EnrollmentBox'
+import { EnrollStateAPI } from '../types/APIs/Profile/enroll_state'
+import axios from 'axios'
 
 const Enrollment = () => {
+	const [_, setEnrollState] = useState<EnrollStateAPI>()
+
+	const enrollSubmit = async () => {
+		const response = await axios.post<EnrollStateAPI>(
+			'/api/profile/enroll',
+			{
+				lab_id: 1,
+				source: 'blank',
+			}
+		)
+		setEnrollState(response.data)
+	}
+
 	const [openMenu, setOpenMenu] = React.useState(false)
 	return (
 		<Box p="80px">
@@ -50,7 +65,7 @@ const Enrollment = () => {
 				onClose={() => setOpenMenu(false)}
 				onOpen={() => setOpenMenu(true)}
 			>
-				<EnrollmentDrawer />
+				<EnrollmentDrawer enrollSubmit={enrollSubmit} />
 			</SwipeableDrawer>
 		</Box>
 	)

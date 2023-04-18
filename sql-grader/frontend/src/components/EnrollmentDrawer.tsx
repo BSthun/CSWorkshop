@@ -2,7 +2,13 @@ import { Box, Typography } from '@mui/material'
 import React from 'react'
 import EnrollmentItem from './EnrollmentItem'
 
-const EnrollmentDrawer = () => {
+interface EnrollmentDrawerProps {
+	enrollSubmit: () => void
+}
+
+const EnrollmentDrawer: React.FC<EnrollmentDrawerProps> = ({
+	enrollSubmit,
+}) => {
 	return (
 		<Box
 			sx={{
@@ -16,7 +22,7 @@ const EnrollmentDrawer = () => {
 			<Typography fontSize={24} px={2} mb={5}>
 				Available Labs
 			</Typography>
-			<EnrollmentItem />
+			<EnrollmentItem enrollSubmit={enrollSubmit} />
 		</Box>
 	)
 }

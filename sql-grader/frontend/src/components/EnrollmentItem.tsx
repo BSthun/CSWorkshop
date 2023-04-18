@@ -1,7 +1,11 @@
 import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
 
-const EnrollmentItem = () => {
+interface EnrollmentItemProps {
+	enrollSubmit: () => void
+}
+
+const EnrollmentItem: React.FC<EnrollmentItemProps> = ({ enrollSubmit }) => {
 	return (
 		<Box
 			sx={{
@@ -34,6 +38,7 @@ const EnrollmentItem = () => {
 					alignSelf: 'end',
 					borderRadius: 2,
 				}}
+				onClick={enrollSubmit}
 			>
 				Enroll
 			</Button>

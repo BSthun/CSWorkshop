@@ -1,7 +1,24 @@
 import { Avatar, Box, Typography } from '@mui/material'
-import React from 'react'
+import { useEffect, useState } from 'react'
+import { BasedResponse } from '../types/APIs/basedResponse'
+import { ProfileAPI } from '../types/APIs/Profile/profile'
+import axios from 'axios'
 
 const Navbar = () => {
+	const [profile, setProfile] = useState<ProfileAPI>()
+
+	const fetchState = async () => {
+		const profileData = await axios.get<BasedResponse<ProfileAPI>>(
+			'/api/profile/state'
+		)
+
+		setProfile(profileData.data.data)
+	}
+
+	useEffect(() => {
+		fetchState()
+	}, [])
+
 	return (
 		<Box sx={{ width: '100vw', backgroundColor: 'white' }}>
 			<Box
@@ -16,8 +33,15 @@ const Navbar = () => {
 			>
 				<Typography fontSize={24}>SQL Playground</Typography>
 				<Box sx={{ display: 'flex', alignItems: 'center' }}>
-					<Avatar></Avatar>
-					<Typography ml={2}>Apisit Maneerat</Typography>
+					<Avatar
+						src={
+							profile?.profile.avatar ??
+							'https://scontent-sin6-2.xx.fbcdn.net/v/t39.30808-6/338420253_938565190665732_4355582023886486471_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=nlKLB_SKi58AX9LKf5k&_nc_ht=scontent-sin6-2.xx&oh=00_AfAimXgNWQfEMMzfgmktsjMngdF8PEvQe6l6P04OOrCOug&oe=644490A1'
+						}
+					/>
+					<Typography ml={2}>
+						{profile?.profile.name ?? 'CSC105 Student'}
+					</Typography>
 				</Box>
 			</Box>
 		</Box>
