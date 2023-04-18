@@ -296,12 +296,7 @@ const Lab = () => {
 								}}
 							>
 								{isLoading ? (
-									<CircularProgress
-										color="info"
-										sx={{
-											mb: 3,
-										}}
-									/>
+									<CircularProgress color="info" />
 								) : (
 									<>
 										<Autorenew
