@@ -63,7 +63,7 @@ const Lab = () => {
 		},
 	])
 
-	const [isTask, setIsTask] = React.useState(trues)
+	const [isTask, setIsTask] = React.useState(true)
 	const [selectedTask, setSelectedTask] = React.useState(0)
 	const [isLoading, setIsLoading] = React.useState(false)
 	const [isDialogOpen, setIsDialogOpen] = React.useState(false)
