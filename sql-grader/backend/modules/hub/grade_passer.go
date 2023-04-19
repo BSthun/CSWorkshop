@@ -11,8 +11,7 @@ import (
 
 func GradePasser(session *Session, submission *model.Submission) {
 	// * Query task
-	var task *model.Task
-	if result := b.DB.First(&task, submission.TaskId); result.Error != nil {
+	if result := b.DB.First(&submission.Task, submission.TaskId); result.Error != nil {
 		logrus.Warn(result.Error)
 		return
 	}
@@ -45,7 +44,7 @@ func GradePasser(session *Session, submission *model.Submission) {
 	}
 
 	// * Query expected results
-	expectedRows, err := session.Db.Query(*task.Query)
+	expectedRows, err := session.Db.Query(*submission.Task.Query)
 	if err != nil {
 		logrus.Warn(err)
 		return
@@ -78,8 +77,11 @@ func GradePasser(session *Session, submission *model.Submission) {
 	// * Update submission
 	submission.Passed = value.Ptr(header && body)
 	if *submission.Passed {
-		if err := b.DB.Model(submission).Where("enrollment_id = ? AND task_id = ? AND event_time = ?", submission.EnrollmentId, submission.TaskId, submission.EventTime).Update("passed", true).Error; err != nil {
+		if err := b.DB.Model(submission).Where("enrollment_id = ? AND task_id = ? AND query = ?", submission.EnrollmentId, submission.TaskId, submission.Query).Update("passed", true).Error; err != nil {
 			logrus.Warn(err)
 		}
 	}
+
+	// * Notify user
+	GradePush(session, submission, actualColumnNames, actualResults, expectedColumnNames, expectedResults)
 }
