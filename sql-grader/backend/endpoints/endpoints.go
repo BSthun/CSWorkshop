@@ -24,7 +24,8 @@ func Init(router fiber.Router) {
 
 	// * Lab
 	lab := router.Group("lab/", middleware.Jwt())
-	lab.Get("enroll/info", labEndpoint.EnrollGetHandler)
+	lab.Get("enroll/info", labEndpoint.InfoGetHandler)
+	lab.Get("enroll/check", labEndpoint.EnrollCheckGetHandler)
 	lab.Get("enroll/mock", labEndpoint.EnrollMockGetHandler)
 	lab.Get("task/click", labEndpoint.TaskClickGetHandler)
 

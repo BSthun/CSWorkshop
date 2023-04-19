@@ -11,7 +11,7 @@ import (
 	"backend/utils/text"
 )
 
-func EnrollGetHandler(c *fiber.Ctx) error {
+func InfoGetHandler(c *fiber.Ctx) error {
 	// * Parse user
 	u := c.Locals("u").(*jwt.Token).Claims.(*common.UserClaims)
 
@@ -33,7 +33,7 @@ func EnrollGetHandler(c *fiber.Ctx) error {
 	}
 
 	// * Get tasks info
-	tasks, err := enroll.QueryTasks(enrollment.LabId)
+	tasks, err := enroll.QueryTasks(enrollment.Id)
 	if err != nil {
 		return response.Error(c, false, "Unable to get tasks info", err)
 	}

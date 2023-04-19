@@ -58,6 +58,10 @@ func GradeScheduleAction() {
 			return
 		}
 
+		if strings.Contains(userHost, "[root]") {
+			continue
+		}
+
 		if !strings.HasPrefix(db, "lab_") {
 			continue
 		}
@@ -101,7 +105,7 @@ func GradeScheduleAction() {
 
 	// * Clear sql general log
 	if _, err := b.SqlDB.Exec("TRUNCATE mysql.slow_log"); err != nil {
-		spew.Dump(err)
+		spew.Dump("TRUNCATE SLOW LOG", err)
 		return
 	}
 
@@ -109,7 +113,6 @@ func GradeScheduleAction() {
 
 	// * Grade debounce
 	for _, bn := range debounce {
-		spew.Dump(1111)
 		GradePasser(bn.Session, bn.Submission)
 	}
 }

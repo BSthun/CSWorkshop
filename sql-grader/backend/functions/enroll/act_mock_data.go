@@ -13,6 +13,7 @@ import (
 	"backend/modules/hub"
 	"backend/types/model"
 	"backend/utils/text"
+	"backend/utils/value"
 )
 
 func ActMockData(enrollment *model.Enrollment) (*string, error) {
@@ -22,8 +23,8 @@ func ActMockData(enrollment *model.Enrollment) (*string, error) {
 	}
 
 	// * Check generating
-	if _, ok := modules.Hub.Mocks[*enrollment.Id]; ok {
-		return nil, fmt.Errorf("already generating mock data")
+	if mock, ok := modules.Hub.Mocks[*enrollment.Id]; ok {
+		return mock.Token, nil
 	}
 
 	// * Generate mock data
@@ -54,7 +55,9 @@ func HelpGenerateMockData(enrollment *model.Enrollment, mock *ihub.Mock) error {
 		if mock.Conn != nil {
 			websocket.HandleMockConnectionSwitch(mock)
 		}
-		mock.ConnMutex.Unlock()
+		if value.MutexLocked(mock.ConnMutex) {
+			mock.ConnMutex.Unlock()
+		}
 		delete(modules.Hub.Mocks, *enrollment.Id)
 	}()
 

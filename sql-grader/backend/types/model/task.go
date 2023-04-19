@@ -19,3 +19,8 @@ type Task struct {
 	CreatedAt   *time.Time      `gorm:"not null"` // Embedded field
 	UpdatedAt   *time.Time      `gorm:"not null"` // Embedded field
 }
+
+type TaskPassed struct {
+	Task
+	Passed *bool
+}

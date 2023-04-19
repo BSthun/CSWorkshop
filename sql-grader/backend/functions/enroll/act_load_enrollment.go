@@ -2,7 +2,6 @@ package enroll
 
 import (
 	"database/sql"
-	"fmt"
 	"strings"
 	"sync"
 
@@ -20,7 +19,8 @@ func ActLoadEnrollmentSession(enrollment *model.Enrollment) (*ihub.Session, erro
 	if !ok {
 		// * Create new database connection
 		dsn := strings.Replace(modules.Conf.MysqlDsn, "{{DB_NAME}}", *enrollment.DbName, 1)
-		dsn = fmt.Sprintf("%s:%s@%s", *enrollment.User.Credential.Username, *enrollment.User.Credential.Password, strings.Split(dsn, "@")[1])
+		// [UNUSED] Switching to user
+		// dsn = fmt.Sprintf("%s:%s@%s", *enrollment.User.Credential.Username, *enrollment.User.Credential.Password, strings.Split(dsn, "@")[1])
 		db, err := sql.Open("mysql", dsn)
 		if err != nil {
 			logrus.WithField("e", err).Fatal("UNABLE TO OPEN MYSQL DATABASE")
