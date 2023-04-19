@@ -8,7 +8,7 @@ import (
 	"backend/modules/db/init"
 	"backend/modules/fiber"
 	"backend/modules/firebase"
-	"backend/modules/hub"
+	ihub "backend/modules/hub"
 	"backend/tests/modules/account"
 	"backend/tests/modules/admin"
 	"backend/tests/modules/profile"
@@ -22,9 +22,9 @@ func TestMain(m *testing.M) {
 
 func Init() {
 	modules.Conf = iconfig.Init()
-	modules.Hub = ihub.Init(modules.Conf)
 	modules.FirebaseApp, modules.FirebaseAuth = ifirebase.Init()
 	modules.SqlDB, modules.DB = idbInit.InitTest()
+	modules.Hub = ihub.Init(modules.SqlDB, modules.DB)
 	modules.Fiber = ifiber.Init()
 }
 

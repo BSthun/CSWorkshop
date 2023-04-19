@@ -22,7 +22,7 @@ func Init() *fiber.App {
 	})
 
 	// Init middlewares
-	app.Use(middleware.Limiter())
+	// app.Use(middleware.Limiter())
 	app.Use(middleware.Cors())
 	app.Use(middleware.Sentry())
 

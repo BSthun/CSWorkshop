@@ -14,7 +14,7 @@ type EnrollmentInfo struct {
 	DbValid      *bool       `json:"dbValid"`
 	DbHost       *string     `json:"dbHost,omitempty"`
 	DbPort       *string     `json:"dbPort,omitempty"`
-	DbUsername   *string     `json:"DbUsername,omitempty"`
+	DbUsername   *string     `json:"dbUsername,omitempty"`
 	DbPassword   *string     `json:"dbPassword,omitempty"`
 	Tasks        []*TaskList `json:"tasks,omitempty"`
 	Token        *string     `json:"token,omitempty"`

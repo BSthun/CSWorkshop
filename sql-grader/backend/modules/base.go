@@ -19,31 +19,3 @@ var DB *gorm.DB
 var FirebaseApp *firebase.App
 var FirebaseAuth *auth.Client
 var Fiber *fiber.App
-
-type Base struct {
-	Conf         *iconfig.Config
-	Hub          *ihub.Hub
-	DB           *gorm.DB
-	FirebaseApp  *firebase.App
-	FirebaseAuth *auth.Client
-}
-
-func NewBase() *Base {
-	base := &Base{
-		Conf:         Conf,
-		DB:           DB,
-		FirebaseApp:  FirebaseApp,
-		FirebaseAuth: FirebaseAuth,
-	}
-
-	return base
-}
-
-func (b *Base) Clone() *Base {
-	return &Base{
-		Conf:         b.Conf,
-		DB:           b.DB,
-		FirebaseApp:  b.FirebaseApp,
-		FirebaseAuth: b.FirebaseAuth,
-	}
-}

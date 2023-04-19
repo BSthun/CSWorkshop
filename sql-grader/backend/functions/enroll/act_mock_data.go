@@ -51,7 +51,6 @@ func HelpGenerateMockData(enrollment *model.Enrollment, mock *ihub.Mock) error {
 
 	defer func() {
 		mock.Append("SUCCESS")
-		mock.ConnMutex.Lock()
 		if mock.Conn != nil {
 			websocket.HandleMockConnectionSwitch(mock)
 		}

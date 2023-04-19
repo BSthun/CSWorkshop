@@ -6,3 +6,8 @@ type Lab struct {
 	Name        *string `json:"name"`
 	Description *string `json:"description"`
 }
+
+type TaskClickQuery struct {
+	EnrollmentId *uint64 `query:"enrollmentId" validate:"required"`
+	TaskId       *uint64 `query:"taskId" validate:"required"`
+}

@@ -1,16 +1,19 @@
 package ihub
 
 import (
+	"database/sql"
 	"fmt"
 	"sync"
 
 	"github.com/gofiber/websocket/v2"
 	"github.com/sirupsen/logrus"
+	"gorm.io/gorm"
 
-	"backend/modules/config"
-	"backend/types/embed"
 	"backend/types/extern"
 )
+
+var b *extern.Base
+var h *Hub
 
 type Hub struct {
 	Sessions         map[uint64]*Session
@@ -19,12 +22,15 @@ type Hub struct {
 }
 
 type Session struct {
-	Id         *uint64           `json:"id"`
-	Credential *embed.Credential `json:"credential"`
-	DbName     *string           `json:"db_name"`
-	Token      *string           `json:"token"`
-	Conn       *websocket.Conn   `json:"conn"`
-	ConnMutex  *sync.Mutex       `json:"conn_mutex"`
+	Id          *uint64         `json:"id"`
+	LabId       *uint64         `json:"labId"`
+	UserId      *uint64         `json:"userId"`
+	Db          *sql.DB         `json:"db"`
+	DbName      *string         `json:"dbName"`
+	Token       *string         `json:"token"`
+	CurrentTask *uint64         `json:"currentTask"`
+	Conn        *websocket.Conn `json:"conn"`
+	ConnMutex   *sync.Mutex     `json:"connMutex"`
 }
 
 func (r *Session) Emit(payload *extern.OutboundMessage) {
@@ -55,12 +61,24 @@ func (r *Mock) Append(line string) {
 	}
 }
 
-func Init(conf *iconfig.Config) *Hub {
-	hub := &Hub{
+func Init(sqlDB *sql.DB, DB *gorm.DB) *Hub {
+	h = &Hub{
 		Sessions:         make(map[uint64]*Session),
 		SessionDbNameMap: make(map[string]*Session),
 		Mocks:            make(map[uint64]*Mock),
 	}
 
-	return hub
+	b = &extern.Base{
+		SqlDB:        sqlDB,
+		DB:           DB,
+		FirebaseApp:  nil,
+		FirebaseAuth: nil,
+		Fiber:        nil,
+	}
+
+	defer func() {
+		GradeSchedule()
+	}()
+
+	return h
 }

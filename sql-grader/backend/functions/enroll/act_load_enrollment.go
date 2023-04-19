@@ -1,6 +1,13 @@
 package enroll
 
 import (
+	"database/sql"
+	"fmt"
+	"strings"
+	"sync"
+
+	"github.com/sirupsen/logrus"
+
 	"backend/modules"
 	ihub "backend/modules/hub"
 	"backend/types/model"
@@ -11,14 +18,26 @@ func ActLoadEnrollmentSession(enrollment *model.Enrollment) (*ihub.Session, erro
 	// * Check current enrollment session
 	session, ok := modules.Hub.Sessions[*enrollment.Id]
 	if !ok {
+		// * Create new database connection
+		dsn := strings.Replace(modules.Conf.MysqlDsn, "{{DB_NAME}}", *enrollment.DbName, 1)
+		dsn = fmt.Sprintf("%s:%s@%s", *enrollment.User.Credential.Username, *enrollment.User.Credential.Password, strings.Split(dsn, "@")[1])
+		db, err := sql.Open("mysql", dsn)
+		if err != nil {
+			logrus.WithField("e", err).Fatal("UNABLE TO OPEN MYSQL DATABASE")
+			return nil, err
+		}
+
 		// * Create new session
 		session = &ihub.Session{
-			Id:         enrollment.Id,
-			Credential: enrollment.User.Credential,
-			DbName:     enrollment.DbName,
-			Token:      text.Random(text.RandomSet.UpperAlphaNum, 16),
-			Conn:       nil,
-			ConnMutex:  nil,
+			Id:          enrollment.Id,
+			LabId:       enrollment.Lab.Id,
+			UserId:      enrollment.User.Id,
+			Db:          db,
+			DbName:      enrollment.DbName,
+			Token:       text.Random(text.RandomSet.UpperAlphaNum, 16),
+			CurrentTask: nil,
+			Conn:        nil,
+			ConnMutex:   new(sync.Mutex),
 		}
 		modules.Hub.Sessions[*enrollment.Id] = session
 		modules.Hub.SessionDbNameMap[*enrollment.DbName] = session

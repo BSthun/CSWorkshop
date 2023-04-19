@@ -14,9 +14,9 @@ import (
 func main() {
 	// * Initialize modules
 	modules.Conf = iconfig.Init()
-	modules.Hub = ihub.Init(modules.Conf)
 	modules.FirebaseApp, modules.FirebaseAuth = ifirebase.Init()
 	modules.SqlDB, modules.DB = idbInit.Init()
+	modules.Hub = ihub.Init(modules.SqlDB, modules.DB)
 	modules.Fiber = ifiber.Init()
 
 	// * Run the server
