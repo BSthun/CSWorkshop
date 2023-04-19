@@ -1,4 +1,4 @@
-export interface BasedResponse<T> {
-    success: boolean
-    data: T
+export interface BasedResponse<TData> {
+	success: boolean
+	data: TData
 }

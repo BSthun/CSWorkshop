@@ -1,6 +1,6 @@
 export interface EnrollStateAPI {
-    success: boolean
-    code: string
-    message: string
-    error: string
+	success: boolean
+	code: string
+	message: string
+	error: string
 }

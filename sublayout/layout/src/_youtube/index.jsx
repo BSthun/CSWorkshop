@@ -25,13 +25,11 @@ const Youtube = () => {
         <Container maxWidth="lg">
           <Grid container>
             {arr.map((el, index) => (
-              <Grid item sm={4}>
+              <Grid item sm={4} key={el}>
                 <iframe
                   src="https://csc105-workshop.bsthun.com/components/comp20"
                   height="300px"
                   width="100%"
-                  frameBorder="0"
-                  key={index}
                 />
               </Grid>
             ))}

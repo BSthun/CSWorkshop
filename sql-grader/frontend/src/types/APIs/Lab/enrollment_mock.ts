@@ -1,3 +1,3 @@
 export interface EnrollmentMockAPI {
-    token: string
+	token: string
 }

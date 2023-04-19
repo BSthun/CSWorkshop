@@ -1,10 +1,10 @@
 export interface LabAPI {
-    labs: LabDetailAPI[]
+	labs: LabDetailAPI[]
 }
 
 interface LabDetailAPI {
-    id: number
-    code: string
-    name: string
-    description: string
+	id: number
+	code: string
+	name: string
+	description: string
 }
