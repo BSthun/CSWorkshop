@@ -15,4 +15,5 @@ export interface EnrollmentInfoAPI {
 interface EnrollmentInfoTask {
 	id: number
 	title: string
+	passed: boolean
 }

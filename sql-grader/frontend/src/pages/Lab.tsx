@@ -26,6 +26,7 @@ import { BasedResponse } from '../types/APIs/basedResponse'
 import { EnrollmentInfoAPI } from '../types/APIs/Lab/enrollment_info'
 import { useParams } from 'react-router-dom'
 import MockComponent from '../components/MockComponent'
+import {toast} from "react-toastify";
 
 interface DbInfo {
 	label: string
@@ -94,6 +95,17 @@ const Lab = () => {
 			// alert('An error occured')
 		}
 	}
+
+	const clickTask = async (taskId: number) => {
+		try {
+			await axios.get(
+				`/api/lab/task/click?enrollmentId=${params.enrollmentId}&taskId=${taskId}`
+			)
+		} catch {
+			toast.error("Get task error")
+		}
+	}
+
 	const [query, setQuery] = React.useState('error')
 
 	React.useEffect(() => {
@@ -205,13 +217,14 @@ const Lab = () => {
 												? '#F5F5F5'
 												: 'white',
 									}}
-									onClick={() => {
+									onClick={async () => {
 										setSelectedTask(index)
+										await clickTask(item.id)
 									}}
 								>
 									<TaskItemList
 										name={item.title}
-										finished={true}
+										finished={item.passed}
 										index={index}
 										selectedIndex={selectedTask}
 									/>
