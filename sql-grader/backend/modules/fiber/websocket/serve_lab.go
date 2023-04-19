@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"backend/modules"
+	ihub "backend/modules/hub"
 	"backend/types/extern"
 	"backend/utils/value"
 )
@@ -49,6 +50,9 @@ func ServeLab(conn *websocket.Conn) {
 	session.ConnMutex.Lock()
 	session.Conn = conn
 	session.ConnMutex.Unlock()
+
+	// * Send initial message
+	ihub.InitialState(session)
 
 	for {
 		t, p, err := conn.ReadMessage()

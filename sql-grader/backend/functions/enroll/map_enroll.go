@@ -24,7 +24,7 @@ func MapEnrollment(enrollment *model.Enrollment) *payload.EnrollmentInfo {
 	}
 }
 
-func MapEnrollmentTask(enrollment *model.Enrollment, tasks []*model.Task, session *ihub.Session) *payload.EnrollmentInfo {
+func MapEnrollmentTask(enrollment *model.Enrollment, tasks []*model.TaskPassed, session *ihub.Session) *payload.EnrollmentInfo {
 	mappedEnrollment := MapEnrollment(enrollment)
 
 	if enrollment.User != nil {
@@ -34,10 +34,11 @@ func MapEnrollmentTask(enrollment *model.Enrollment, tasks []*model.Task, sessio
 		mappedEnrollment.DbPassword = enrollment.User.Credential.Password
 	}
 
-	mappedEnrollment.Tasks, _ = value.Iterate(tasks, func(task *model.Task) (*payload.TaskList, *response.ErrorInstance) {
+	mappedEnrollment.Tasks, _ = value.Iterate(tasks, func(task *model.TaskPassed) (*payload.TaskList, *response.ErrorInstance) {
 		return &payload.TaskList{
-			Id:    task.Id,
-			Title: task.Title,
+			Id:     task.Task.Id,
+			Title:  task.Task.Title,
+			Passed: task.Passed,
 		}, nil
 	})
 

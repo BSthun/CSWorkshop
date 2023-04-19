@@ -23,8 +23,8 @@ func GradeSubmit(session *Session, startTime time.Time, sqlText string) *model.S
 		UpdatedAt:    nil,
 	}
 
-	if err := b.DB.Create(submission); err != nil {
-		logrus.Warn(err)
+	if result := b.DB.Create(submission); result.Error != nil {
+		logrus.Warn("CREATE SUBMISSION", result.Error)
 	}
 
 	return submission
