@@ -11,7 +11,7 @@ const Navbar = () => {
 
 	const fetchState = async () => {
 		const profileData = await axios.get<BasedResponse<ProfileAPI>>(
-			'/api/profile/state'
+			'/sqlworkshop/api/profile/state'
 		)
 
 		setProfile(profileData.data.data)
@@ -48,7 +48,7 @@ const Navbar = () => {
 					sx={{
 						cursor: 'pointer',
 					}}
-					onClick={() => navigate('/enrollment')}
+					onClick={() => navigate('/sqlworkshop/enrollment')}
 				>
 					SQL Playground
 				</Typography>

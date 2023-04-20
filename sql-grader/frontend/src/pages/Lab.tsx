@@ -8,8 +8,11 @@ import {
 	Button,
 	CircularProgress,
 	Dialog,
+	DialogContent,
+	DialogTitle,
 	Divider,
 	IconButton,
+	Stack,
 	Table,
 	TableBody,
 	TableCell,
@@ -19,14 +22,15 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import TaskItemList from '../components/TaskItemList'
 import axios from 'axios'
 import { BasedResponse } from '../types/APIs/basedResponse'
 import { EnrollmentInfoAPI } from '../types/APIs/Lab/enrollment_info'
+import { LabState, WebsocketMessage } from '../types/APIs/Lab/lab_state'
 import { useParams } from 'react-router-dom'
 import MockComponent from '../components/MockComponent'
-import {toast} from "react-toastify";
+import { toast } from 'react-toastify'
 
 interface DbInfo {
 	label: string
@@ -53,20 +57,18 @@ const Lab = () => {
 	const [isTask, setIsTask] = React.useState(false)
 	const [selectedTask, setSelectedTask] = React.useState(0)
 	const [isLoading, setIsLoading] = React.useState(false)
-
+	const [labState, setLabState] = React.useState<LabState | null>(null)
 	const [enrollmentInfo, setEnrollmentInfo] =
 		React.useState<EnrollmentInfoAPI>()
 	const [dbInfo, setDbInfo] = React.useState<DbInfo[]>([])
 	const params = useParams()
-	const [error, setError] = React.useState(
-		"[42S02][1146] (conn=107) Table 'mysql.db2' doesn't exist"
-	)
-	const [queryResult, setQueryResult] = React.useState('')
+	const [hint, setHint] = useState<string | null>(null)
+	const websocketRef = useRef<WebSocket>()
 
 	const fetchLabInfo = async () => {
 		try {
 			const infoData = await axios.get<BasedResponse<EnrollmentInfoAPI>>(
-				`/api/lab/enroll/info?enrollmentId=${params.enrollmentId}`
+				`/sqlworkshop/api/lab/enroll/info?enrollmentId=${params.enrollmentId}`
 			)
 			setEnrollmentInfo(infoData.data.data)
 			setDbInfo([
@@ -91,62 +93,60 @@ const Lab = () => {
 					value: infoData.data.data.dbPassword ?? 'error',
 				},
 			])
+			initializeWebsocket(
+				infoData.data.data.enrollmentId,
+				infoData.data.data.token
+			)
 		} catch {
-			// alert('An error occured')
+			toast.error(e.response?.data?.message ?? 'Fetch lab info error')
 		}
 	}
 
 	const clickTask = async (taskId: number) => {
 		try {
 			await axios.get(
-				`/api/lab/task/click?enrollmentId=${params.enrollmentId}&taskId=${taskId}`
+				`/sqlworkshop/api/lab/task/click?enrollmentId=${params.enrollmentId}&taskId=${taskId}`
 			)
-		} catch {
-			toast.error("Get task error")
+		} catch (e) {
+			toast.error(e.response?.data?.message ?? 'Click task error')
 		}
 	}
 
-	const [query, setQuery] = React.useState('error')
+	const initializeWebsocket = (enrollmentId: number, token: string) => {
+		if (websocketRef.current) {
+			websocketRef.current?.close()
+		}
+		websocketRef.current = new WebSocket(
+			`${
+				import.meta.env.VITE_BACKEND_WEBSOCKET_URL
+			}/ws/lab?eid=${enrollmentId}&token=${token}`
+		)
+		websocketRef.current.onopen = (e) => {
+			console.log('open')
+		}
+		websocketRef.current.onmessage = (e: MessageEvent) => {
+			const data = JSON.parse(e.data) as WebsocketMessage<LabState>
+			setLabState(data.payload)
+		}
+	}
 
+	const showHint = () => {
+		axios
+			.get(
+				`/sqlworkshop/api/lab/hint/text?enrollmentId=${
+					params.enrollmentId
+				}&taskId=${selectedTask + 1}`
+			)
+			.then((res) => {
+				setHint(res.data.data.hint_text)
+			})
+			.catch((e) => {
+				toast.error(e.response?.data?.message ?? 'Click task error')
+			})
+	}
 	React.useEffect(() => {
 		fetchLabInfo()
 	}, [])
-
-	const result = {
-		expected_header: [
-			'ID',
-			'Name',
-			'Age',
-			'Test',
-			'Test',
-			'Test',
-			'Test',
-			'Test',
-			'Test',
-			'Test',
-			'Test',
-			'Test',
-			'Test',
-		],
-		expected_rows: [
-			['1', 'John', '20'],
-			['2', 'Mary', '21'],
-			['3', 'Peter', '22'],
-			['3', 'Peter', '22'],
-			['3', 'Peter', '22'],
-			['3', 'Peter', '22'],
-			['3', 'Peter', '22'],
-			['3', 'Peter', '22'],
-			['3', 'Peter', '22'],
-			['3', 'Peter', '22'],
-		],
-		actual_header: ['ID', 'Name', 'Sth'],
-		actual_rows: [
-			['1', 'John', '20'],
-			['2', 'Maryaa', '21'],
-			['3', 'Peter', '22'],
-		],
-	}
 
 	return (
 		<Box
@@ -157,7 +157,7 @@ const Lab = () => {
 		>
 			<Box
 				sx={{
-					flex: 0.8,
+					width: 400,
 					backgroundColor: 'white',
 					boxShadow: '0px 0px 12px rgba(0, 0, 0, 0.25)',
 					py: 4,
@@ -237,10 +237,18 @@ const Lab = () => {
 			</Box>
 			<Box
 				sx={{
-					flex: 2,
+					width: 'calc(100% - 400px)',
 				}}
 			>
-				{!isTask ? (
+				{labState == null ? (
+					<Stack
+						alignItems="center"
+						justifyContent="center"
+						height="100%"
+					>
+						<CircularProgress />
+					</Stack>
+				) : !labState.dbValid ? (
 					<Box
 						sx={{
 							display: 'flex',
@@ -295,6 +303,14 @@ const Lab = () => {
 							<Typography pt={1}>Recheck data</Typography>
 						</Box>
 					</Box>
+				) : !labState.taskTitle ? (
+					<Stack
+						height="100%"
+						alignItems="center"
+						justifyContent="center"
+					>
+						Select a task to get started
+					</Stack>
 				) : (
 					<Box
 						sx={{
@@ -304,194 +320,251 @@ const Lab = () => {
 					>
 						<Box p={4}>
 							<Typography fontSize={24} fontWeight={500} mb={1.5}>
-								Show first 10 rows of data from table
-								'l1_tracks'
+								{labState.taskTitle}
 							</Typography>
 							<Typography fontSize={18} mb={1.5}>
-								Show first 10 rows and all columns from table
-								'l1_tracks' without any condition and let MySQL
-								use default sorting for the result.
+								{labState.taskDescription}
 							</Typography>
-							<Box mb={4}>
-								{taskTags.map((item, index) => (
-									<Box display="flex" key={index}>
-										<Typography mr={1.5}>
-											{item.name}
-										</Typography>
-										<Typography fontWeight={700}>
-											{item.value}
-										</Typography>
-									</Box>
-								))}
-							</Box>
+							<Stack direction="row" mb={4}>
+								<Box flex={1}>
+									{labState.taskTags.map((item, index) => (
+										<Box display="flex" key={index}>
+											<Typography
+												fontFamily="monospace"
+												mr={1.5}
+												textTransform="uppercase"
+											>
+												{item.key}
+											</Typography>
+											<Typography
+												fontFamily="monospace"
+												fontWeight={700}
+												textTransform="uppercase"
+											>
+												{item.value}
+											</Typography>
+										</Box>
+									))}
+								</Box>
+								<Button
+									variant="outlined"
+									sx={{ alignSelf: 'flex-end' }}
+									onClick={() => {
+										showHint()
+									}}
+								>
+									Show hint
+								</Button>
+							</Stack>
 							<TextField
 								variant="outlined"
 								fullWidth
 								multiline
 								rows={4}
-								value={query}
+								value={labState.query || ''}
+								onFocus={(e) => {
+									e.preventDefault()
+								}}
 								sx={{
 									'.MuiOutlinedInput-root': {
 										borderRadius: 3,
 										'& fieldset': {
 											borderWidth: 3,
-											borderColor:
-												queryResult == 'success'
-													? '#4ABC4F'
-													: queryResult == 'error'
-													? '#BC4A4A'
-													: '#a9a9a9',
+											borderColor: labState.queryPassed
+												? '#4ABC4F'
+												: '#BC4A4A',
 										},
 										'&:hover fieldset': {
 											borderWidth: 3,
-											borderColor:
-												queryResult == 'success'
-													? '#4ABC4F'
-													: queryResult == 'error'
-													? '#BC4A4A'
-													: '#a9a9a9',
+											borderColor: labState.queryPassed
+												? '#4ABC4F'
+												: '#BC4A4A',
 										},
 									},
 									'.Mui-focused fieldset': {
-										borderColor:
-											queryResult == 'success'
-												? '#4ABC4F'
-												: queryResult == 'error'
-												? '#BC4A4A'
-												: '#a9a9a9',
+										borderColor: labState.queryPassed
+											? '#4ABC4F'
+											: '#BC4A4A',
 									},
 									mb: 3,
 								}}
-								onChange={(e) => {
-									setQuery(e.target.value)
-								}}
 							/>
-							<Box
-								sx={{
-									backgroundColor: 'rgba(255, 118, 118, 0.2)',
-									borderRadius: 3,
-									p: 3,
-									mb: 3,
-								}}
-							>
-								<Typography fontFamily={'monospace'}>
-									{error} {error}
-								</Typography>
-							</Box>
-							<Box
-								sx={{
-									display: 'flex',
-								}}
-							>
+							{labState?.queryPassed && (
 								<Box
 									sx={{
-										flex: 1,
+										backgroundColor: '#4ABC4F20',
+										borderRadius: 3,
+										p: 3,
+										mb: 3,
 									}}
 								>
-									<Typography mb={3}>
-										Expected result
-									</Typography>
-									<TableContainer
+									<Typography
+										fontFamily={'monospace'}
 										sx={{
-											maxWidth: 400,
+											color: '#3AAC3F',
 										}}
 									>
-										<Table>
-											<TableHead>
-												<TableRow>
-													{result.expected_header.map(
-														(item, index) => (
-															<TableCell
-																key={index}
-															>
-																{item}
-															</TableCell>
-														)
-													)}
-												</TableRow>
-											</TableHead>
-											<TableBody>
-												{result.expected_rows.map(
-													(item, index) => (
-														<TableRow key={index}>
-															{item.map(
-																(
-																	item,
-																	index
-																) => (
-																	<TableCell
-																		key={
-																			index
-																		}
-																	>
-																		{item}
-																	</TableCell>
-																)
-															)}
-														</TableRow>
-													)
-												)}
-											</TableBody>
-										</Table>
-									</TableContainer>
+										Passed
+									</Typography>
 								</Box>
+							)}
+							{labState?.queryError && (
 								<Box
 									sx={{
-										flex: 1,
+										backgroundColor:
+											'rgba(255, 118, 118, 0.2)',
+										borderRadius: 3,
+										p: 3,
+										mb: 3,
 									}}
 								>
-									<Typography mb={3}>
-										Actual result
+									<Typography fontFamily={'monospace'}>
+										{labState?.queryError}
 									</Typography>
-									<TableContainer
+								</Box>
+							)}
+							{labState?.result && (
+								<Box
+									sx={{
+										display: 'flex',
+									}}
+								>
+									<Box
 										sx={{
-											maxWidth: 400,
+											width: '50%',
 										}}
 									>
-										<Table>
-											<TableHead>
-												<TableRow>
-													{result.actual_header.map(
+										<Typography mb={3}>
+											Expected result
+										</Typography>
+										<TableContainer
+											sx={{
+												width: 'calc(100% - 16px)',
+												border: '1px solid #eaeaea',
+												borderRadius: 4,
+											}}
+										>
+											<Table sx={{}}>
+												<TableHead>
+													<TableRow>
+														{labState?.result.expectedHeader.map(
+															(item, index) => (
+																<TableCell
+																	key={index}
+																>
+																	{item}
+																</TableCell>
+															)
+														)}
+													</TableRow>
+												</TableHead>
+												<TableBody>
+													{labState?.result.expectedRows.map(
 														(item, index) => (
-															<TableCell
+															<TableRow
 																key={index}
 															>
-																{item}
-															</TableCell>
+																{item.map(
+																	(
+																		item,
+																		index
+																	) => (
+																		<TableCell
+																			key={
+																				index
+																			}
+																		>
+																			{
+																				item
+																			}
+																		</TableCell>
+																	)
+																)}
+															</TableRow>
 														)
 													)}
-												</TableRow>
-											</TableHead>
-											<TableBody>
-												{result.actual_rows.map(
-													(item, index) => (
-														<TableRow key={index}>
-															{item.map(
-																(
-																	item,
-																	index
-																) => (
-																	<TableCell
-																		key={
-																			index
-																		}
-																	>
-																		{item}
-																	</TableCell>
-																)
-															)}
-														</TableRow>
-													)
-												)}
-											</TableBody>
-										</Table>
-									</TableContainer>
+												</TableBody>
+											</Table>
+										</TableContainer>
+									</Box>
+									<Box
+										sx={{
+											width: '50%',
+										}}
+									>
+										<Typography mb={3}>
+											Actual result
+										</Typography>
+										<TableContainer
+											sx={{
+												width: 'calc(100% - 16px)',
+												border: '1px solid #eaeaea',
+												borderRadius: 4,
+											}}
+										>
+											<Table>
+												<TableHead>
+													<TableRow>
+														{labState?.result.actualHeader.map(
+															(item, index) => (
+																<TableCell
+																	key={index}
+																>
+																	{item}
+																</TableCell>
+															)
+														)}
+													</TableRow>
+												</TableHead>
+												<TableBody>
+													{labState?.result.actualRows.map(
+														(item, index) => (
+															<TableRow
+																key={index}
+															>
+																{item.map(
+																	(
+																		item,
+																		index
+																	) => (
+																		<TableCell
+																			key={
+																				index
+																			}
+																			sx={{
+																				minWidth: 100,
+																			}}
+																		>
+																			{
+																				item
+																			}
+																		</TableCell>
+																	)
+																)}
+															</TableRow>
+														)
+													)}
+												</TableBody>
+											</Table>
+										</TableContainer>
+									</Box>
 								</Box>
-							</Box>
+							)}
 						</Box>
 					</Box>
 				)}
 			</Box>
+			<Dialog onClose={() => setHint(null)} open={Boolean(hint)}>
+				<DialogTitle>Hint</DialogTitle>
+				<DialogContent>
+					<Typography
+						component="p"
+						dangerouslySetInnerHTML={{
+							__html: hint?.replace('\n', '<br>')!,
+						}}
+					/>
+				</DialogContent>
+			</Dialog>
 		</Box>
 	)
 }

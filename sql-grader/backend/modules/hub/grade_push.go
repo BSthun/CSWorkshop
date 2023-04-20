@@ -23,6 +23,7 @@ func GradePush(session *Session, submission *model.Submission, actualColumnNames
 	session.Emit(&extern.OutboundMessage{
 		Event: extern.LabStateEvent,
 		Payload: &payload.LabState{
+			DbValid:         session.DbValid,
 			TaskTitle:       submission.Task.Title,
 			TaskDescription: submission.Task.Description,
 			TaskTags:        tags,

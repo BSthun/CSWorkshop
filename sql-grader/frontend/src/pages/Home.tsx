@@ -16,14 +16,14 @@ const Home = () => {
 		// Get IdToken for verification with backend.
 		result.user.getIdToken().then((token: any) => {
 			axios
-				.post('/api/account/callback', {
+				.post('/sqlworkshop/api/account/callback', {
 					idToken: token,
 				})
 				.then((response) => {
 					if (response.data.success) {
 						// Set token from backend to cookie
 						// document.cookie = 'token=' + response.data.data.token
-						navigate('/enrollment')
+						navigate('/sqlworkshop/enrollment')
 					} else {
 						alert(response.data.message)
 					}

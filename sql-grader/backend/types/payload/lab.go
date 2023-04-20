@@ -13,6 +13,7 @@ type TaskClickQuery struct {
 }
 
 type LabState struct {
+	DbValid         *bool            `json:"dbValid"`
 	TaskTitle       *string          `json:"taskTitle"`
 	TaskDescription *string          `json:"taskDescription"`
 	TaskTags        []map[string]any `json:"taskTags"`

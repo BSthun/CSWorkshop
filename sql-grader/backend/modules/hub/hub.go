@@ -27,6 +27,7 @@ type Session struct {
 	UserId      *uint64         `json:"userId"`
 	Db          *sql.DB         `json:"db"`
 	DbName      *string         `json:"dbName"`
+	DbValid     *bool           `json:"dbValid"`
 	Token       *string         `json:"token"`
 	CurrentTask *uint64         `json:"currentTask"`
 	Conn        *websocket.Conn `json:"conn"`

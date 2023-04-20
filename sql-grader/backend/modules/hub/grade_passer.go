@@ -30,12 +30,12 @@ func GradePasser(session *Session, submission *model.Submission) {
 	}
 
 	actualResults := make([][]string, 0)
-	actualPointers := make([]any, len(actualColumnNames))
-	actualContainer := make([]string, len(actualColumnNames))
-	for i, _ := range actualPointers {
-		actualPointers[i] = &actualContainer[i]
-	}
 	for actualRows.Next() {
+		actualPointers := make([]any, len(actualColumnNames))
+		actualContainer := make([]string, len(actualColumnNames))
+		for i, _ := range actualPointers {
+			actualPointers[i] = &actualContainer[i]
+		}
 		if err := actualRows.Scan(actualPointers...); err != nil {
 			logrus.Warn(err)
 			return
@@ -57,12 +57,12 @@ func GradePasser(session *Session, submission *model.Submission) {
 	}
 
 	expectedResults := make([][]string, 0)
-	expectedPointers := make([]any, len(expectedColumnNames))
-	expectedContainer := make([]string, len(expectedColumnNames))
-	for i, _ := range expectedPointers {
-		expectedPointers[i] = &expectedContainer[i]
-	}
 	for expectedRows.Next() {
+		expectedPointers := make([]any, len(expectedColumnNames))
+		expectedContainer := make([]string, len(expectedColumnNames))
+		for i, _ := range expectedPointers {
+			expectedPointers[i] = &expectedContainer[i]
+		}
 		if err := expectedRows.Scan(expectedPointers...); err != nil {
 			logrus.Warn(err)
 			return

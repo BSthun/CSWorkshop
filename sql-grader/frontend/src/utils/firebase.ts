@@ -13,7 +13,3 @@ const firebaseConfig = {
 export const firebaseApp = initializeApp(firebaseConfig)
 
 export const firebaseAuth = getAuth(firebaseApp)
-
-connectAuthEmulator(firebaseAuth, import.meta.env.VITE_BACKEND_AUTH_URL, {
-	disableWarnings: true,
-})

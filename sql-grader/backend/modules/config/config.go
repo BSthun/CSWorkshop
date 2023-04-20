@@ -1,6 +1,5 @@
 package iconfig
 
-import "C"
 import (
 	"flag"
 	"os"

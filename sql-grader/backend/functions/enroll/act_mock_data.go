@@ -81,6 +81,9 @@ func HelpGenerateMockData(enrollment *model.Enrollment, mock *ihub.Mock) error {
 	}
 
 	// * Update database status
+	if session, ok := modules.Hub.Sessions[*enrollment.Id]; ok {
+		session.DbValid = value.Ptr(true)
+	}
 	if result := modules.DB.Model(enrollment).Update("db_valid", true); result.Error != nil {
 		return result.Error
 	}

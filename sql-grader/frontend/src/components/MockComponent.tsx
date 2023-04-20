@@ -23,70 +23,56 @@ function MockComponent() {
 	const termRef = useRef<Terminal>()
 	const initiateTerminal = useCallback(() => {
 		setTimeout(() => {
-			if (termRef.current) termRef.current.reset()
+			if (termRef.current) {
+				termRef.current.open(document.getElementById('xterm')!)
+				return
+			}
 
 			termRef.current = new Terminal({
 				rows: 20,
+				disableStdin: true,
 			})
 			termRef.current.options = {
 				convertEol: true,
 				fontFamily: `Inconsolata`,
 				fontSize: 18,
-
-				// fontWeight: 900,
-				// back: "#030508",
 				rendererType: 'canvas',
 				cursorBlink: true,
 			}
+			termRef.current.open(document.getElementById('xterm')!)
 
-			if (termRef.current) {
-				//Styling
-				termRef.current.write('\x1b[31mWelcome to Arttify!\x1b[m\r\n')
+			// Make the terminal's size and geometry fit the size of #terminal-container
+			termRef.current.loadAddon(fitAddon)
+			fitAddon.fit()
 
-				// Load Fit Addon
-				termRef.current.loadAddon(fitAddon)
+			// term.onKey(key => {
+			//     const char = key.domEvent.key;
+			//     if (char === "Enter") {
+			//         prompt();
 
-				// Open the terminal in #terminal-container
-				termRef.current.open(document.getElementById('xterm')!)
+			//     } else if (char === "Backspace") {
+			//         term.write("\b \b");
+			//     } else {
+			//         term.write(char);
+			//     }
+			// });
 
-				//Write text inside the terminal
-				// term.write(c.magenta("I am ") + c.blue("Blue") + c.red(" and i like it"));
-
-				// Make the terminal's size and geometry fit the size of #terminal-container
-				fitAddon.fit()
-
-				// term.onKey(key => {
-				//     const char = key.domEvent.key;
-				//     if (char === "Enter") {
-				//         prompt();
-
-				//     } else if (char === "Backspace") {
-				//         term.write("\b \b");
-				//     } else {
-				//         term.write(char);
-				//     }
-				// });
-
-				prompt()
-			}
+			prompt()
 		}, 250)
 
 		return () => {
-			// term.destroy();
-			// document.getElementById('terminal')!.remove();
+			termRef.current?.dispose()
+			termRef.current?.clear()
 		}
 	}, [])
 
 	const params = useParams()
 	const [isLoading, setLoading] = useState(false)
 	const [isDialogOpen, setIsDialogOpen] = React.useState(false)
-	const [log, setLog] = React.useState(
-		"Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br /> Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"
-	)
 	const websocketRef = useRef<WebSocket>()
 	const handleCloseDialog = () => {
 		setIsDialogOpen(false)
-		router(0)
+		// router(0)
 	}
 
 	const initializeWebsocket = useCallback(
@@ -95,7 +81,9 @@ function MockComponent() {
 				websocketRef.current?.close()
 			}
 			websocketRef.current = new WebSocket(
-				`ws://10.4.31.80:3000/ws/mock?eid=${enrollmentId}&token=${token}`
+				`${
+					import.meta.env.VITE_BACKEND_WEBSOCKET_URL
+				}/ws/mock?eid=${enrollmentId}&token=${token}`
 			)
 			websocketRef.current.onopen = (e) => {
 				setIsDialogOpen(true)
@@ -103,7 +91,7 @@ function MockComponent() {
 			}
 			websocketRef.current.onmessage = (e) => {
 				if (termRef.current) {
-					termRef.current.writeln(e.data)
+					termRef.current.writeln('\r' + e.data)
 				}
 			}
 		},
@@ -113,18 +101,21 @@ function MockComponent() {
 	const onMockDataClicked = useCallback(async () => {
 		setLoading(true)
 		axios
-			.get<BasedResponse<{ token: string }>>(`/api/lab/enroll/mock`, {
-				params: {
-					enrollmentId: params.enrollmentId,
-				},
-			})
+			.get<BasedResponse<{ token: string }>>(
+				`/sqlworkshop/api/lab/enroll/mock`,
+				{
+					params: {
+						enrollmentId: params.enrollmentId,
+					},
+				}
+			)
 			.then(({ data }) => {
 				const token = data?.data?.token
 				toast.success('Success')
 				initializeWebsocket(token, String(params.enrollmentId))
 			})
-			.catch(({ data }) => {
-				toast.error(data?.message)
+			.catch(({ response }) => {
+				toast.error(response?.data.message)
 			})
 			.finally(() => {
 				setLoading(false)
@@ -133,7 +124,7 @@ function MockComponent() {
 
 	const prompt = () => {
 		var shellprompt = '$ '
-		termRef.current?.write('\r' + shellprompt)
+		termRef.current?.write('\n' + shellprompt)
 	}
 
 	// useEffect(() => {
@@ -142,8 +133,6 @@ function MockComponent() {
 	//         payload: null
 	//     });
 	// }, [sendJsonMessage]);
-
-	console.log('rerendered!')
 
 	return (
 		<>
@@ -186,7 +175,7 @@ function MockComponent() {
 				</Box>
 				<Typography>Mock Data</Typography>
 			</Box>
-			<Dialog open={isDialogOpen} onClose={handleCloseDialog} keepMounted>
+			<Dialog open={isDialogOpen} onClose={handleCloseDialog}>
 				<Box sx={style}>
 					<Typography mb={2}>Generating mock data...</Typography>
 					<div
@@ -198,34 +187,6 @@ function MockComponent() {
 							overflow: 'hidden',
 						}}
 					/>
-					<Resizable
-						// width={350}
-						// height={350}
-						style={{
-							width: '100%',
-							height: '450px',
-						}}
-					>
-						<ResizeObserver
-							onResize={(rect) => {
-								fitAddon.fit()
-								console.log(
-									'Resized. New bounds:',
-									rect.width,
-									'x',
-									rect.height
-								)
-							}}
-							onPosition={(rect) => {
-								console.log(
-									'Moved. New position:',
-									rect.left,
-									'x',
-									rect.top
-								)
-							}}
-						/>
-					</Resizable>
 					<Button
 						variant="outlined"
 						sx={{

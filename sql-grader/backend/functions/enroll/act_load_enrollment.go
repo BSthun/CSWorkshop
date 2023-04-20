@@ -34,6 +34,7 @@ func ActLoadEnrollmentSession(enrollment *model.Enrollment) (*ihub.Session, erro
 			UserId:      enrollment.User.Id,
 			Db:          db,
 			DbName:      enrollment.DbName,
+			DbValid:     enrollment.DbValid,
 			Token:       text.Random(text.RandomSet.UpperAlphaNum, 16),
 			CurrentTask: nil,
 			Conn:        nil,

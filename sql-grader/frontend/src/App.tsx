@@ -8,6 +8,7 @@ import Lab from './pages/Lab'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './xterm.scss'
+
 function App() {
 	const theme = createTheme({
 		palette: {
@@ -28,11 +29,11 @@ function App() {
 
 	const router = createBrowserRouter([
 		{
-			path: '/',
+			path: '/sqlworkshop/',
 			element: <Home />,
 		},
 		{
-			path: '/enrollment',
+			path: '/sqlworkshop/enrollment',
 			element: (
 				<MainLayout>
 					<Enrollment />
@@ -40,7 +41,7 @@ function App() {
 			),
 		},
 		{
-			path: '/lab/:enrollmentId',
+			path: '/sqlworkshop/lab/:enrollmentId',
 			element: (
 				<MainLayout>
 					<Lab />

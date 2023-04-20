@@ -58,6 +58,7 @@ func Init() (*sql.DB, *gorm.DB) {
 		new(model.Task),
 		new(model.Enrollment),
 		new(model.Submission),
+		new(model.Log),
 	); err != nil {
 		logrus.WithField("e", err).Fatal("UNABLE TO MIGRATE GORM MODEL")
 	}

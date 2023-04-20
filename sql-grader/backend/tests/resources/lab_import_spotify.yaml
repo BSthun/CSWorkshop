@@ -6,10 +6,10 @@ templateDb: template_spotify1
 generator: local/spotify01/main
 tasks:
   - code: '001'
-    title: Show all data from table 'l1_tracks'
+    title: Show all data from table 'lv1_tracks'
     description: |
-      Show all rows and all columns from table 'l1_tracks' without any condition and let MySQL use default sorting for the result.
-    query: SELECT * FROM l1_tracks
+      Show all rows and all columns from table 'lv1_tracks' without any condition and let MySQL use default sorting for the result.
+    query: SELECT * FROM lv1_tracks
     tags:
       level: LV1
       difficulty: easy
@@ -17,10 +17,10 @@ tasks:
         - Suggested query: `mysql query all rows and columns of a table`
         - This will query all rows and all columns from a table.
   - code: '002'
-    title: Show first 10 rows of data from table 'l1_tracks'
+    title: Show first 10 rows of data from table 'lv1_tracks'
     description: |
-      Show first 10 rows and all columns from table 'l1_tracks' without any condition and let MySQL use default sorting for the result.
-    query: SELECT * FROM l1_tracks LIMIT 10
+      Show first 10 rows and all columns from table 'lv1_tracks' without any condition and let MySQL use default sorting for the result.
+    query: SELECT * FROM lv1_tracks LIMIT 10
     tags:
       level: LV1
       difficulty: easy
@@ -28,10 +28,10 @@ tasks:
         - Suggested query: `mysql query first n rows of a table`
         - This will query first 10 rows and all columns from a table.
   - code: '003'
-    title: Show only columns of 'name', 'album' and 'artist' of all data from table 'l1_tracks'
+    title: Show only columns of 'name', 'album' and 'artist' of all data from table 'lv1_tracks'
     description: |
-      Show all rows and only columns of 'name', 'album' and 'artist' from table 'l1_tracks' without any condition and let MySQL use default sorting for the result.
-    query: SELECT name, album, artist FROM l1_tracks
+      Show all rows and only columns of 'name', 'album' and 'artist' from table 'lv1_tracks' without any condition and let MySQL use default sorting for the result.
+    query: SELECT name, album, artist FROM lv1_tracks
     tags:
       level: LV1
       difficulty: easy
@@ -39,20 +39,20 @@ tasks:
         - Suggested query: `mysql query only specific columns of a table`
         - This will query all rows and specific columns from a table.
   - code: '004'
-    title: Show only columns of 'name', 'album' and 'artist' of first 10 rows from table 'l1_tracks'
+    title: Show only columns of 'name', 'album' and 'artist' of first 10 rows from table 'lv1_tracks'
     description: |
-      Show first 10 rows and only columns of 'name', 'album' and 'artist' from table 'l1_tracks' without any condition and let MySQL use default sorting for the result.
-    query: SELECT name, album, artist FROM l1_tracks LIMIT 10
+      Show first 10 rows and only columns of 'name', 'album' and 'artist' from table 'lv1_tracks' without any condition and let MySQL use default sorting for the result.
+    query: SELECT name, album, artist FROM lv1_tracks LIMIT 10
     tags:
       level: LV1
       difficulty: easy
     hint: |
         - This will query all rows and specific columns from a table.
   - code: '005'
-    title: Show all data from table 'l1_tracks' sorted by 'name' in ascending order
+    title: Show all data from table 'lv1_tracks' sorted by 'name' in ascending order
     description: |
-        Show all rows and all columns from table 'l1_tracks' without any condition and sort the result by 'name' in ascending order.
-    query: SELECT * FROM l1_tracks ORDER BY name ASC
+        Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in ascending order.
+    query: SELECT * FROM lv1_tracks ORDER BY name ASC
     tags:
       level: LV1
       difficulty: easy
@@ -60,10 +60,10 @@ tasks:
       - Suggested query: `mysql query all rows and columns of a table and sort by one column`
       - This will query all rows and all columns from a table and sort the result by 'name' in ascending order.
   - code: '006'
-    title: Show all data from table 'l1_tracks' sorted by 'name' in descending order
+    title: Show all data from table 'lv1_tracks' sorted by 'name' in descending order
     description: |
-        Show all rows and all columns from table 'l1_tracks' without any condition and sort the result by 'name' in descending order.
-    query: SELECT * FROM l1_tracks ORDER BY name DESC
+        Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in descending order.
+    query: SELECT * FROM lv1_tracks ORDER BY name DESC
     tags:
       level: LV1
       difficulty: easy
