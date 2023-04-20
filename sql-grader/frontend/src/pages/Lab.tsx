@@ -31,6 +31,7 @@ import { LabState, WebsocketMessage } from '../types/APIs/Lab/lab_state'
 import { useParams } from 'react-router-dom'
 import MockComponent from '../components/MockComponent'
 import { toast } from 'react-toastify'
+import { da } from 'date-fns/locale'
 
 interface DbInfo {
 	label: string
@@ -135,6 +136,7 @@ const Lab = () => {
 
 		websocketRef.current.onmessage = (e: MessageEvent) => {
 			const data = JSON.parse(e.data) as WebsocketMessage<LabState>
+			if (data.event != 'lab/state') return
 			setLabState(data.payload)
 		}
 		websocketRef.current.onclose = (e) => {
