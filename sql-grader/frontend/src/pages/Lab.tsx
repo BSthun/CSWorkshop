@@ -113,6 +113,7 @@ const Lab = () => {
 	}
 
 	const initializeWebsocket = (enrollmentId: number, token: string) => {
+		let timer: any
 		if (websocketRef.current) {
 			websocketRef.current?.close()
 		}
@@ -123,10 +124,21 @@ const Lab = () => {
 		)
 		websocketRef.current.onopen = (e) => {
 			console.log('open')
+			timer = setInterval(() => {
+				websocketRef.current?.send(
+					JSON.stringify({
+						type: 'ping',
+					})
+				)
+			}, 10 * 1000)
 		}
+
 		websocketRef.current.onmessage = (e: MessageEvent) => {
 			const data = JSON.parse(e.data) as WebsocketMessage<LabState>
 			setLabState(data.payload)
+		}
+		websocketRef.current.onclose = (e) => {
+			clearInterval(timer)
 		}
 	}
 
@@ -146,6 +158,7 @@ const Lab = () => {
 	}
 	React.useEffect(() => {
 		fetchLabInfo()
+		return websocketRef.current?.close()
 	}, [])
 
 	return (
