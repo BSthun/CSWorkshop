@@ -29,11 +29,11 @@ function App() {
 
 	const router = createBrowserRouter([
 		{
-			path: '/sqlworkshop/',
+			path: '/',
 			element: <Home />,
 		},
 		{
-			path: '/sqlworkshop/enrollment',
+			path: '/enrollment',
 			element: (
 				<MainLayout>
 					<Enrollment />
@@ -41,7 +41,7 @@ function App() {
 			),
 		},
 		{
-			path: '/sqlworkshop/lab/:enrollmentId',
+			path: '/lab/:enrollmentId',
 			element: (
 				<MainLayout>
 					<Lab />

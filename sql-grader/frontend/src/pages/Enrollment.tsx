@@ -18,7 +18,7 @@ const Enrollment = () => {
 	const enrollSubmit = async () => {
 		try {
 			const response = await axios.post<EnrollStateAPI>(
-				'/sqlworkshop/api/profile/enroll',
+				'/api/profile/enroll',
 				{
 					lab_id: 1,
 					source: 'blank',
@@ -41,7 +41,7 @@ const Enrollment = () => {
 	const getEnrollments = async () => {
 		try {
 			const response = await axios.get<BasedResponse<EnrollmentsAPI[]>>(
-				'/sqlworkshop/api/profile/enrollments'
+				'/api/profile/enrollments'
 			)
 			setEnrollments(response.data.data)
 		} catch {
@@ -50,7 +50,7 @@ const Enrollment = () => {
 	}
 
 	const navigateToLab = (enrollmentId: number) => {
-		navigate(`/sqlworkshop/lab/${enrollmentId}`)
+		navigate(`/lab/${enrollmentId}`)
 	}
 
 	useEffect(() => {

@@ -101,14 +101,11 @@ function MockComponent() {
 	const onMockDataClicked = useCallback(async () => {
 		setLoading(true)
 		axios
-			.get<BasedResponse<{ token: string }>>(
-				`/sqlworkshop/api/lab/enroll/mock`,
-				{
-					params: {
-						enrollmentId: params.enrollmentId,
-					},
-				}
-			)
+			.get<BasedResponse<{ token: string }>>(`/api/lab/enroll/mock`, {
+				params: {
+					enrollmentId: params.enrollmentId,
+				},
+			})
 			.then(({ data }) => {
 				const token = data?.data?.token
 				toast.success('Success')

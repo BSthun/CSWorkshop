@@ -68,7 +68,7 @@ const Lab = () => {
 	const fetchLabInfo = async () => {
 		try {
 			const infoData = await axios.get<BasedResponse<EnrollmentInfoAPI>>(
-				`/sqlworkshop/api/lab/enroll/info?enrollmentId=${params.enrollmentId}`
+				`/api/lab/enroll/info?enrollmentId=${params.enrollmentId}`
 			)
 			setEnrollmentInfo(infoData.data.data)
 			setDbInfo([
@@ -105,7 +105,7 @@ const Lab = () => {
 	const clickTask = async (taskId: number) => {
 		try {
 			await axios.get(
-				`/sqlworkshop/api/lab/task/click?enrollmentId=${params.enrollmentId}&taskId=${taskId}`
+				`/api/lab/task/click?enrollmentId=${params.enrollmentId}&taskId=${taskId}`
 			)
 		} catch (e) {
 			toast.error(e.response?.data?.message ?? 'Click task error')
@@ -133,7 +133,7 @@ const Lab = () => {
 	const showHint = () => {
 		axios
 			.get(
-				`/sqlworkshop/api/lab/hint/text?enrollmentId=${
+				`/api/lab/hint/text?enrollmentId=${
 					params.enrollmentId
 				}&taskId=${selectedTask + 1}`
 			)
