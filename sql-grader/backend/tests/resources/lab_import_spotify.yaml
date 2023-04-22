@@ -1,0 +1,194 @@
+---
+code: spotify01
+name: Spotify Test
+description: A test for Spotify schema
+templateDb: template_spotify1
+generator: local/spotify01/main
+tasks:
+  - code: '001'
+    title: Show all data from table 'lv1_tracks'
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' without any condition and let MySQL use default sorting for the result.
+    query: SELECT * FROM lv1_tracks
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table`
+        - This will query all rows and all columns from a table.
+  - code: '002'
+    title: Show first 10 rows of data from table 'lv1_tracks'
+    description: |
+      Show first 10 rows and all columns from table 'lv1_tracks' without any condition and let MySQL use default sorting for the result.
+    query: SELECT * FROM lv1_tracks LIMIT 10
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query first n rows of a table`
+        - This will query first 10 rows and all columns from a table.
+  - code: '003'
+    title: Show only columns of 'name', 'album' and 'artist' of all data from table 'lv1_tracks'
+    description: |
+      Show all rows and only columns of 'name', 'album' and 'artist' from table 'lv1_tracks' without any condition and let MySQL use default sorting for the result.
+    query: SELECT name, album, artist FROM lv1_tracks
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query only specific columns of a table`
+        - This will query all rows and specific columns from a table.
+  - code: '004'
+    title: Show only columns of 'name', 'album' and 'artist' of first 10 rows from table 'lv1_tracks'
+    description: |
+      Show first 10 rows and only columns of 'name', 'album' and 'artist' from table 'lv1_tracks' without any condition and let MySQL use default sorting for the result.
+    query: SELECT name, album, artist FROM lv1_tracks LIMIT 10
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - This will query all rows and specific columns from a table.
+  - code: '005'
+    title: Show all data from table 'lv1_tracks' sorted by 'name' in ascending order
+    description: |
+        Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in ascending order.
+    query: SELECT * FROM lv1_tracks ORDER BY name ASC
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+      - Suggested query: `mysql query all rows and columns of a table and sort by one column`
+      - This will query all rows and all columns from a table and sort the result by 'name' in ascending order.
+  - code: '006'
+    title: Show all data from table 'lv1_tracks' sorted by 'name' in descending order
+    description: |
+        Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in descending order.
+    query: SELECT * FROM lv1_tracks ORDER BY name DESC
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by one column`
+        - This will query all rows and all columns from a table and sort the result by 'name' in descending order.
+  - code: '007'
+    title: Show all data from table 'lv1_tracks' sorted by 'name' in ascending order
+    description: |
+        Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in ascending order.
+    query: SELECT * FROM lv1_tracks ORDER BY name ASC
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+        - This will query all rows and all columns from a table and sort the result by 'name' in ascending order.
+  - code: '008'
+    title: Show all data from table 'lv1_tracks' sorted by 'name' in descending order
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in descending order.
+    query: SELECT * FROM lv1_tracks ORDER BY name DESC
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+      - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+      - This will query all rows and all columns from a table and sort the result by 'name' in descending order.
+  - code: '009'
+    title: Show all data from table 'lv1_tracks' of first 10 rows that sorted by 'name' in descending order
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in descending order.
+    query: SELECT * FROM lv1_tracks ORDER BY name DESC LIMIT 10;
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+      - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+      - This will query all rows and all columns of first 10 rows from a table and sort the result by 'name' in descending order.
+  - code: '010'
+    title: Show all data from table 'lv1_tracks' that duration is greater than 200000
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in descending order.
+    query: SELECT * FROM lv1_tracks WHERE duration > 200000
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+      - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+      - This will query all rows and all columns that duration is greater than 200000.
+  - code: '011'
+    title: Show all data from table 'lv1_tracks' that duration is greater than 200000 and sort by 'name' in ascending order
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' without any condition and sort the result by 'name' in descending order.
+    query: SELECT * FROM lv1_tracks WHERE duration > 200000 ORDER BY name ASC
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+        - This will query all rows and all columns that duration is greater than 200000 and sort by 'name' in ascending order.
+  - code: '012'
+    title: Show all data from table 'lv1_tracks' that duration is greater than 200000 and duration is less than 300000.
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' that duration is greater than 200000 and duration is less than 300000.
+    query: SELECT * FROM lv1_tracks WHERE duration > 200000 AND duration < 300000
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+        - This will query all rows and all columns that duration is greater than 200000 and duration is less than 300000.
+  - code: '013'
+    title: Show all data from table 'lv1_tracks' that duration is greater than 200000 and duration is less than 300000 and sort by 'name' in ascending order.
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' that duration is greater than 200000 and duration is less than 300000 and sort by 'name' in ascending order.
+    query: SELECT * FROM lv1_tracks WHERE duration > 200000 AND duration < 300000 ORDER BY name ASC
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+        - This will query all rows and all columns that duration is greater than 200000 and duration is less than 300000 and sort by 'name' in ascending order.
+  - code: '014'
+    title: Show all data from table 'lv1_tracks' that duration is greater than 280000 and duration is less than 300000 and sort by 'name' in descending order.
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' that duration is greater than 280000 and duration is less than 300000 and sort by 'name' in descending order.
+    query: SELECT * FROM lv1_tracks WHERE duration > 280000 AND duration < 300000 ORDER BY name DESC
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+        - This will query all rows and all columns that duration is greater than 280000 and duration is less than 300000 and sort by 'name' in descending order.
+  - code: '015'
+    title: Show all data from table 'lv1_tracks' that duration is greater than 280000 and duration is less than 300000 and sort by 'name' in descending order and limit to 10 rows.
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' that duration is greater than 280000 and duration is less than 300000 and sort by 'name' in descending order and limit to 10 rows.
+    query: SELECT * FROM lv1_tracks WHERE duration > 280000 AND duration < 300000 ORDER BY name DESC LIMIT 10
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+        - This will query all rows and all columns that duration is greater than 280000 and duration is less than 300000 and sort by 'name' in descending order and limit to 10 rows.
+  - code: '016'
+    title: Show all data from table 'lv1_tracks' that duration is greater than 280000 and duration is less than 300000 and sort by 'name' in descending order and limit to 10 rows and offset to 5 rows.
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' that duration is greater than 280000 and duration is less than 300000 and release year is 2000
+    query: SELECT * FROM lv1_tracks WHERE duration > 280000 AND duration < 300000 AND year = 2000
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+        - This will query all rows and all columns that duration is greater than 280000 and duration is less than 300000 and release year is 2000.
+  - code: '017'
+    title: Show all data from table 'lv1_tracks' that popularity is greater than or equal 40 and explicit is 1.
+    description: |
+      Show all rows and all columns from table 'lv1_tracks' that popularity is greater than or equal 40 and explicit is 1
+    query: SELECT * FROM lv1_tracks WHERE popularity >= 40 AND explicit = 1
+    tags:
+      level: LV1
+      difficulty: easy
+    hint: |
+        - Suggested query: `mysql query all rows and columns of a table and sort by multiple columns`
+        - This will query all rows and all columns that popularity is greater than or equal 40 and explicit is 1.
+      

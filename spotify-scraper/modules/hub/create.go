@@ -30,7 +30,7 @@ func Create(user *model.User) (string, *gorm.DB) {
 	// Create database for user if not exists
 	dbName := strings.Replace(config.C.BranchMySqlDbName, "{{ID}}", fmt.Sprintf("%03d", *user.Id), 1)
 	dbDsn := strings.Replace(config.C.BranchMySqlDsn, "{{DB_NAME}}", dbName, 1)
-	if _, err := sqlDB.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", dbName)); err != nil {
+	if _, err := sqlDB.Exec(fmt.Sprintf(rol"CREATE DATABASE IF NOT EXISTS %s", dbName)); err != nil {
 		logrus.WithField("e", err).Error("UNABLE TO CREATE DATABASE FOR USER")
 		sentry.CaptureException(err)
 		return "", nil
