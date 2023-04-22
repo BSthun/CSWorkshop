@@ -10,6 +10,7 @@ import (
 	"backend/modules"
 	ihub "backend/modules/hub"
 	"backend/types/model"
+	"backend/types/payload"
 	"backend/utils/text"
 )
 
@@ -37,6 +38,7 @@ func ActLoadEnrollmentSession(enrollment *model.Enrollment) (*ihub.Session, erro
 			DbValid:     enrollment.DbValid,
 			Token:       text.Random(text.RandomSet.UpperAlphaNum, 16),
 			CurrentTask: nil,
+			TaskResults: make(map[uint64]*payload.LabStateResult),
 			Conn:        nil,
 			ConnMutex:   new(sync.Mutex),
 		}

@@ -10,6 +10,7 @@ import (
 	"gorm.io/gorm"
 
 	"backend/types/extern"
+	"backend/types/payload"
 )
 
 var b *extern.Base
@@ -22,16 +23,17 @@ type Hub struct {
 }
 
 type Session struct {
-	Id          *uint64         `json:"id"`
-	LabId       *uint64         `json:"labId"`
-	UserId      *uint64         `json:"userId"`
-	Db          *sql.DB         `json:"db"`
-	DbName      *string         `json:"dbName"`
-	DbValid     *bool           `json:"dbValid"`
-	Token       *string         `json:"token"`
-	CurrentTask *uint64         `json:"currentTask"`
-	Conn        *websocket.Conn `json:"conn"`
-	ConnMutex   *sync.Mutex     `json:"connMutex"`
+	Id          *uint64                            `json:"id"`
+	LabId       *uint64                            `json:"labId"`
+	UserId      *uint64                            `json:"userId"`
+	Db          *sql.DB                            `json:"db"`
+	DbName      *string                            `json:"dbName"`
+	DbValid     *bool                              `json:"dbValid"`
+	Token       *string                            `json:"token"`
+	CurrentTask *uint64                            `json:"currentTask"`
+	TaskResults map[uint64]*payload.LabStateResult `json:"taskResults"`
+	Conn        *websocket.Conn                    `json:"conn"`
+	ConnMutex   *sync.Mutex                        `json:"connMutex"`
 }
 
 func (r *Session) Emit(payload *extern.OutboundMessage) {

@@ -33,4 +33,5 @@ func Init(router fiber.Router) {
 	// * Admin
 	admin := router.Group("admin/", middleware.Jwt())
 	admin.Post("import/lab", adminEndpoint.ImportLabPostHandler)
+	admin.Get("command/perm", adminEndpoint.ApplyPermGetHandler)
 }
