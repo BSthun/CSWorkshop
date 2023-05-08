@@ -21,6 +21,7 @@ type LabState struct {
 	QueryPassed     *bool            `json:"queryPassed"`
 	QueryError      *string          `json:"queryError"`
 	Result          *LabStateResult  `json:"result"`
+	Tasks           []*TaskList      `json:"tasks"`
 }
 
 type LabStateResult struct {

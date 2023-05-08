@@ -76,6 +76,13 @@ func TaskClickGetHandler(c *fiber.Ctx) error {
 			"value": v,
 		})
 	}
+
+	// * Get cached result
+	var result *payload.LabStateResult
+	if e, ok := session.TaskResults[*task.Id]; ok {
+		result = e
+	}
+
 	if previousTask != *session.CurrentTask {
 		session.Emit(&extern.OutboundMessage{
 			Event: extern.LabStateEvent,
@@ -87,7 +94,8 @@ func TaskClickGetHandler(c *fiber.Ctx) error {
 				Query:           submission.Query,
 				QueryPassed:     submission.Passed,
 				QueryError:      nil,
-				Result:          nil,
+				Result:          result,
+				Tasks:           nil,
 			},
 		})
 	}

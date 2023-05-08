@@ -12,7 +12,7 @@ export interface EnrollmentInfoAPI {
 	token: string
 }
 
-interface EnrollmentInfoTask {
+export interface EnrollmentInfoTask {
 	id: number
 	title: string
 	passed: boolean

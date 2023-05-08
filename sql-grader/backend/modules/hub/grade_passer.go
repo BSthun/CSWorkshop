@@ -5,11 +5,12 @@ import (
 
 	"github.com/sirupsen/logrus"
 
+	"backend/types/extern"
 	"backend/types/model"
 	"backend/utils/value"
 )
 
-func GradePasser(session *Session, submission *model.Submission) {
+func GradePasser(session *extern.Session, submission *model.Submission) {
 	// * Query task
 	if result := b.DB.First(&submission.Task, submission.TaskId); result.Error != nil {
 		logrus.Warn(result.Error)

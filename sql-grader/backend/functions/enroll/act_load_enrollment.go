@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"backend/modules"
-	ihub "backend/modules/hub"
+	ihub "backend/types/extern"
 	"backend/types/model"
 	"backend/types/payload"
 	"backend/utils/text"

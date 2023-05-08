@@ -10,7 +10,7 @@ import (
 
 	"backend/modules"
 	"backend/modules/fiber/websocket"
-	"backend/modules/hub"
+	"backend/types/extern"
 	"backend/types/model"
 	"backend/utils/text"
 	"backend/utils/value"
@@ -29,7 +29,7 @@ func ActMockData(enrollment *model.Enrollment) (*string, error) {
 
 	// * Generate mock data
 	token := text.Random(text.RandomSet.MixedAlphaNum, 16)
-	mock := &ihub.Mock{
+	mock := &extern.Mock{
 		Lines:     make([]string, 0),
 		Token:     token,
 		Conn:      nil,
@@ -44,10 +44,15 @@ func ActMockData(enrollment *model.Enrollment) (*string, error) {
 	return token, nil
 }
 
-func HelpGenerateMockData(enrollment *model.Enrollment, mock *ihub.Mock) error {
+func HelpGenerateMockData(enrollment *model.Enrollment, mock *extern.Mock) error {
 	cmd := exec.Command(text.RelativePath(*enrollment.Lab.Generator))
 	env := "DATABASE_DSN=" + strings.Replace(modules.Conf.MysqlDsn, "{{DB_NAME}}", *enrollment.DbName, 1)
 	cmd.Env = append(cmd.Env, env)
+	cmd.Env = append(cmd.Env, fmt.Sprintf("DATABASE_HOST=%s", modules.Conf.InfoDbHost))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("DATABASE_PORT=%s", modules.Conf.InfoDbPort))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("DATABASE_USER=%s", *enrollment.User.Credential.Username))
+	cmd.Env = append(cmd.Env, fmt.Sprintf("DATABASE_PASS=%s", *enrollment.User.Credential.Password))
+
 	cmd.Dir = filepath.Dir(text.RelativePath(*enrollment.Lab.Generator))
 
 	defer func() {

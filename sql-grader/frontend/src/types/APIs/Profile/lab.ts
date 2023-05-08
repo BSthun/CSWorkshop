@@ -2,7 +2,7 @@ export interface LabAPI {
 	labs: LabDetailAPI[]
 }
 
-interface LabDetailAPI {
+export interface LabDetailAPI {
 	id: number
 	code: string
 	name: string

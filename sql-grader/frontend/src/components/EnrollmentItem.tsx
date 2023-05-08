@@ -1,11 +1,16 @@
 import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
+import { LabDetailAPI } from '../types/APIs/Profile/lab'
 
 interface EnrollmentItemProps {
-	enrollSubmit: () => void
+	lab: LabDetailAPI
+	enrollSubmit: (a0: number) => void
 }
 
-const EnrollmentItem: React.FC<EnrollmentItemProps> = ({ enrollSubmit }) => {
+const EnrollmentItem: React.FC<EnrollmentItemProps> = ({
+	lab,
+	enrollSubmit,
+}) => {
 	return (
 		<Box
 			sx={{
@@ -17,11 +22,11 @@ const EnrollmentItem: React.FC<EnrollmentItemProps> = ({ enrollSubmit }) => {
 				borderRadius: 2.5,
 			}}
 		>
-			<Typography fontSize={18}>SPOTIFY01</Typography>
+			<Typography fontSize={18}>{lab.code}</Typography>
 			<Typography fontSize={20} fontWeight={700}>
-				Spotify Test
+				{lab.name}
 			</Typography>
-			<Typography>A test for Spotify schema</Typography>
+			<Typography>{lab.description}</Typography>
 			<Button
 				variant="outlined"
 				sx={{
@@ -38,7 +43,7 @@ const EnrollmentItem: React.FC<EnrollmentItemProps> = ({ enrollSubmit }) => {
 					alignSelf: 'end',
 					borderRadius: 2,
 				}}
-				onClick={enrollSubmit}
+				onClick={() => enrollSubmit(lab.id)}
 			>
 				Enroll
 			</Button>

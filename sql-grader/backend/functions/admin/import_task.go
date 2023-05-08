@@ -32,13 +32,14 @@ func ImportTask(labId *uint64, imp *payload.AdminTaskImport) error {
 
 	// * Check task exist
 	var currentTask *model.Task
-	if result := modules.DB.Where("code = ?", task.Code).First(&currentTask); result.Error == nil {
+	if result := modules.DB.Where("lab_id = ? AND code = ?", labId, task.Code).First(&currentTask); result.Error == nil {
 		// # Case of task already exist
 		// * Update task
-		// task.Id = currentTask.Id
-		// if result := modules.DB.Save(task); result.Error != nil {
-		// 	return result.Error
-		// }
+		task.Id = currentTask.Id
+		task.CreatedAt = currentTask.CreatedAt
+		if result := modules.DB.Save(task); result.Error != nil {
+			return result.Error
+		}
 	} else if result.Error == gorm.ErrRecordNotFound {
 		// # Case of task not exist
 		// * Create task

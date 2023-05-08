@@ -1,3 +1,5 @@
+import { EnrollmentInfoTask } from './enrollment_info'
+
 export interface WebsocketMessage<T> {
 	event: string
 	payload: T
@@ -12,6 +14,7 @@ export interface LabState {
 	queryPassed: boolean
 	queryError: null
 	result: Result
+	tasks: EnrollmentInfoTask[]
 }
 
 export interface Result {

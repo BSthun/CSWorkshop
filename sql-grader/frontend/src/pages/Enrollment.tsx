@@ -15,12 +15,12 @@ const Enrollment = () => {
 	const [enrollments, setEnrollments] = useState<EnrollmentsAPI[]>()
 	const [openMenu, setOpenMenu] = React.useState(false)
 
-	const enrollSubmit = async () => {
+	const enrollSubmit = async (id: number) => {
 		try {
 			const response = await axios.post<EnrollStateAPI>(
 				'/api/profile/enroll',
 				{
-					lab_id: 1,
+					lab_id: id,
 					source: 'blank',
 				}
 			)
@@ -89,7 +89,7 @@ const Enrollment = () => {
 			</Box>
 			<Grid container rowSpacing={4} columnSpacing={2}>
 				{enrollments?.map((item, index) => (
-					<Grid item md={4} sm={12}>
+					<Grid item md={4} sm={12} key={item.enrollmentId}>
 						<Box
 							sx={{ cursor: 'pointer' }}
 							onClick={() => {

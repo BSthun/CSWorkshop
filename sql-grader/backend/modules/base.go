@@ -9,11 +9,11 @@ import (
 	"gorm.io/gorm"
 
 	"backend/modules/config"
-	"backend/modules/hub"
+	"backend/types/extern"
 )
 
 var Conf *iconfig.Config
-var Hub *ihub.Hub
+var Hub *extern.Hub
 var SqlDB *sql.DB
 var DB *gorm.DB
 var FirebaseApp *firebase.App

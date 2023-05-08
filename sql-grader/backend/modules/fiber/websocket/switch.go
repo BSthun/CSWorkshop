@@ -4,11 +4,10 @@ import (
 	"github.com/gofiber/websocket/v2"
 	"github.com/sirupsen/logrus"
 
-	ihub "backend/modules/hub"
 	"backend/types/extern"
 )
 
-func HandleConnectionSwitch(state *ihub.Session) {
+func HandleConnectionSwitch(state *extern.Session) {
 	// * Connection switch
 	logrus.Warn("CONNECTION SWITCH")
 	state.Emit(&extern.OutboundMessage{
@@ -25,7 +24,7 @@ func HandleConnectionSwitch(state *ihub.Session) {
 	}
 }
 
-func HandleMockConnectionSwitch(mock *ihub.Mock) {
+func HandleMockConnectionSwitch(mock *extern.Mock) {
 	mock.ConnMutex.Lock()
 	if err := mock.Conn.WriteMessage(websocket.CloseMessage, []byte{}); err != nil {
 		logrus.Warn("UNHANDLED CONNECTION CLOSE MESSAGE: " + err.Error())

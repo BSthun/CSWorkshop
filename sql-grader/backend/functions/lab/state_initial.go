@@ -1,18 +1,19 @@
-package ihub
+package lab
 
 import (
 	"github.com/sirupsen/logrus"
 
+	"backend/modules"
 	"backend/types/extern"
 	"backend/types/model"
 	"backend/types/payload"
 	"backend/utils/value"
 )
 
-func InitialState(session *Session) {
+func InitialState(session *extern.Session) {
 	// * Query enrollment
 	var enrollment *model.Enrollment
-	if result := b.DB.First(&enrollment, session.Id); result.Error != nil {
+	if result := modules.DB.First(&enrollment, session.Id); result.Error != nil {
 		logrus.Warn(result.Error)
 		return
 	}

@@ -10,6 +10,7 @@ import (
 	"github.com/go-co-op/gocron"
 	"github.com/sirupsen/logrus"
 
+	"backend/types/extern"
 	"backend/types/model"
 )
 
@@ -29,7 +30,7 @@ func GradeScheduleAction() {
 
 	// * Construct debounce
 	type bounce struct {
-		Session    *Session
+		Session    *extern.Session
 		Submission *model.Submission
 	}
 	debounce := make(map[uint64]*bounce)
@@ -67,6 +68,14 @@ func GradeScheduleAction() {
 		}
 
 		if strings.Contains(strings.ToLower(sqlText), "information_schema") {
+			continue
+		}
+
+		if strings.Contains(strings.ToLower(sqlText), "@@tx_isolation") {
+			continue
+		}
+
+		if strings.Contains(strings.ToLower(sqlText), "select database()") {
 			continue
 		}
 

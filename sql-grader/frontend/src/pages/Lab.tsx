@@ -58,7 +58,9 @@ const Lab = () => {
 	const [isTask, setIsTask] = React.useState(false)
 	const [selectedTask, setSelectedTask] = React.useState(0)
 	const [isLoading, setIsLoading] = React.useState(false)
-	const [labState, setLabState] = React.useState<LabState | null>(null)
+	const [labState, setLabState] = React.useState<LabState | null | number>(
+		null
+	)
 	const [enrollmentInfo, setEnrollmentInfo] =
 		React.useState<EnrollmentInfoAPI>()
 	const [dbInfo, setDbInfo] = React.useState<DbInfo[]>([])
@@ -134,22 +136,28 @@ const Lab = () => {
 			}, 10 * 1000)
 		}
 
+		websocketRef.current.onclose = (e) => {
+			clearInterval(timer)
+			setLabState(null)
+		}
+
 		websocketRef.current.onmessage = (e: MessageEvent) => {
 			const data = JSON.parse(e.data) as WebsocketMessage<LabState>
 			if (data.event != 'lab/state') return
 			setLabState(data.payload)
-		}
-		websocketRef.current.onclose = (e) => {
-			clearInterval(timer)
+			if (data.payload.tasks) {
+				setEnrollmentInfo((prev) => ({
+					...prev,
+					tasks: data.payload.tasks,
+				}))
+			}
 		}
 	}
 
 	const showHint = () => {
 		axios
 			.get(
-				`/api/lab/hint/text?enrollmentId=${
-					params.enrollmentId
-				}&taskId=${selectedTask + 1}`
+				`/api/lab/hint/text?enrollmentId=${params.enrollmentId}&taskId=${enrollmentInfo?.tasks[selectedTask].id}`
 			)
 			.then((res) => {
 				setHint(res.data.data.hint_text)
@@ -188,7 +196,9 @@ const Lab = () => {
 						px: 4,
 					}}
 				>
-					<Typography fontSize={24}>Spotify Test</Typography>
+					<Typography fontSize={24}>
+						{enrollmentInfo?.labName}
+					</Typography>
 					<IconButton
 						onClick={() => {
 							setIsTask(!isTask)

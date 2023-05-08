@@ -5,11 +5,12 @@ import (
 
 	"github.com/sirupsen/logrus"
 
+	"backend/types/extern"
 	"backend/types/model"
 	"backend/utils/value"
 )
 
-func GradeSubmit(session *Session, startTime time.Time, sqlText string) *model.Submission {
+func GradeSubmit(session *extern.Session, startTime time.Time, sqlText string) *model.Submission {
 	// * Construct submission
 	submission := &model.Submission{
 		EnrollmentId: session.Id,

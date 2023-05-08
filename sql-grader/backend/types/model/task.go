@@ -8,7 +8,7 @@ import (
 
 type Task struct {
 	Id          *uint64         `gorm:"primaryKey"`
-	Code        *string         `gorm:"TYPE:VARCHAR(255); index:idx_code,unique; not null"`
+	Code        *string         `gorm:"TYPE:VARCHAR(255); not null"`
 	LabId       *uint64         `gorm:"not null"`
 	Lab         *Lab            `gorm:"foreignKey:LabId"`
 	Title       *string         `gorm:"type:VARCHAR(255); not null"`

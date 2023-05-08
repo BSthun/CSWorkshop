@@ -6,8 +6,8 @@ import (
 	"github.com/gofiber/websocket/v2"
 	"github.com/sirupsen/logrus"
 
+	"backend/functions/lab"
 	"backend/modules"
-	ihub "backend/modules/hub"
 	"backend/types/extern"
 	"backend/utils/value"
 )
@@ -52,7 +52,7 @@ func ServeLab(conn *websocket.Conn) {
 	session.ConnMutex.Unlock()
 
 	// * Send initial message
-	ihub.InitialState(session)
+	lab.InitialState(session)
 
 	for {
 		t, p, err := conn.ReadMessage()
@@ -82,6 +82,6 @@ func ServeLab(conn *websocket.Conn) {
 		session.ConnMutex.Unlock()
 	} else {
 		// * Session completely closed
-		delete(modules.Hub.Sessions, eid)
+		// delete(modules.Hub.Sessions, eid)
 	}
 }

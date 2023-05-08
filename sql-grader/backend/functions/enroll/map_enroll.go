@@ -2,7 +2,7 @@ package enroll
 
 import (
 	"backend/modules"
-	ihub "backend/modules/hub"
+	ihub "backend/types/extern"
 	"backend/types/model"
 	"backend/types/payload"
 	"backend/types/response"
