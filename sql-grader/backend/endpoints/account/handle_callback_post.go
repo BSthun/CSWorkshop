@@ -2,6 +2,7 @@ package account
 
 import (
 	"context"
+	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -53,7 +54,7 @@ func CallbackPostHandler(c *fiber.Ctx) error {
 	// Set cookie
 	c.Cookie(&fiber.Cookie{
 		Name:    "user",
-		Value:   *userToken,
+		Value:   strconv.FormatUint(*user.Id, 10),
 		Expires: time.Now().Add(time.Hour * 24 * 7),
 	})
 

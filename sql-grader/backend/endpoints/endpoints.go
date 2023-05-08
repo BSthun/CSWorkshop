@@ -20,7 +20,6 @@ func Init(router fiber.Router) {
 	profile.Get("state", profileEndpoint.StateGetHandler)
 	profile.Get("enrollments", profileEndpoint.EnrollmentsGetHandler)
 	profile.Get("labs", profileEndpoint.LabsGetHandler)
-	profile.Post("enroll", profileEndpoint.EnrollLabPostHandler)
 
 	// * Lab
 	lab := router.Group("lab/", middleware.Jwt())

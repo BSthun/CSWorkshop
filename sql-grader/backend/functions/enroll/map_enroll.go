@@ -30,8 +30,8 @@ func MapEnrollmentTask(enrollment *model.Enrollment, tasks []*model.TaskPassed, 
 	if enrollment.User != nil {
 		mappedEnrollment.DbHost = &modules.Conf.InfoDbHost
 		mappedEnrollment.DbPort = &modules.Conf.InfoDbPort
-		mappedEnrollment.DbUsername = enrollment.User.Credential.Username
-		mappedEnrollment.DbPassword = enrollment.User.Credential.Password
+		mappedEnrollment.DbUsername = value.Ptr("PROTECTED")
+		mappedEnrollment.DbPassword = value.Ptr("PROTECTED")
 	}
 
 	mappedEnrollment.Tasks, _ = value.Iterate(tasks, func(task *model.TaskPassed) (*payload.TaskList, *response.ErrorInstance) {

@@ -27,7 +27,7 @@ func Init(sqlDB *sql.DB, DB *gorm.DB) *extern.Hub {
 	}
 
 	defer func() {
-		GradeSchedule()
+		// GradeSchedule()
 	}()
 
 	return h

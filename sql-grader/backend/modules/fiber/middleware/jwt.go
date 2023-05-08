@@ -1,24 +1,29 @@
 package middleware
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/jwt/v3"
+	"strconv"
 
-	"backend/modules"
+	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
+
 	"backend/types/common"
-	"backend/types/response"
 )
 
 func Jwt() fiber.Handler {
-	conf := jwtware.Config{
-		SigningKey:  []byte(modules.Conf.JwtSecret),
-		TokenLookup: "cookie:user",
-		ContextKey:  "u",
-		Claims:      &common.UserClaims{},
-		ErrorHandler: func(c *fiber.Ctx, err error) error {
-			return response.Error(c, false, "JWT validation failure", err)
-		},
+	return func(ctx *fiber.Ctx) error {
+		user := ctx.Cookies("user")
+		userId, err := strconv.ParseUint(user, 10, 64)
+		if err != nil {
+			return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"status":  false,
+				"message": "Unauthorized",
+			})
+		}
+		ctx.Locals("u", &jwt.Token{
+			Claims: &common.UserClaims{
+				UserId: &userId,
+			},
+		})
+		return ctx.Next()
 	}
-
-	return jwtware.New(conf)
 }
