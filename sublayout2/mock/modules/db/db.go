@@ -62,6 +62,7 @@ func Init() *gorm.DB {
 			new(model.PodcastEpisode),
 			new(model.PodcastShow),
 			new(model.PodcastShowCategory),
+			new(model.PodcastFollowing),
 			new(model.User),
 			new(model.Track),
 		); err != nil {
