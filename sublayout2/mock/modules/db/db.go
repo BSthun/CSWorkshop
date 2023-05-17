@@ -1,18 +1,18 @@
 package idb
 
 import (
-	"database/sql"
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
 	"mock/modules"
+	"mock/types/model"
 	"os"
 	"time"
 )
 
-func Init() (*sql.DB, *gorm.DB) {
+func Init() *gorm.DB {
 	// Initialize GORM instance using previously opened SQL connection
 	gormLogLevel := []logger.LogLevel{
 		logger.Silent,
@@ -49,11 +49,23 @@ func Init() (*sql.DB, *gorm.DB) {
 	}
 
 	// Initialize model migrations
-	if err := db.AutoMigrate(); err != nil {
-		logrus.WithField("e", err).Fatal("UNABLE TO MIGRATE GORM MODEL")
+	if modules.Conf.MysqlMigrate {
+		if err := db.AutoMigrate(
+			new(model.User),
+			new(model.Country),
+			new(model.Album),
+			new(model.Artist),
+			new(model.AlbumArtist),
+			new(model.Track),
+			new(model.PlaylistTrack),
+			new(model.Concert),
+			new(model.ConcertTicket),
+		); err != nil {
+			logrus.WithField("e", err).Fatal("UNABLE TO MIGRATE GORM MODEL")
+		}
 	}
 
 	logrus.Info("INITIALIZED MYSQL CONNECTION")
 
-	return conn, db
+	return db
 }

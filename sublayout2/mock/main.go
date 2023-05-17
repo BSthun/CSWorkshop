@@ -1,11 +1,14 @@
 package main
 
 import (
+	"mock/commands"
+	"mock/modules"
 	"mock/modules/config"
 	idb "mock/modules/db"
 )
 
 func main() {
-	iconfig.Init()
-	idb.Init()
+	modules.Conf = iconfig.Init()
+	modules.DB = idb.Init()
+	commands.Run()
 }
