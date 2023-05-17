@@ -24,7 +24,12 @@
           "height": 144
         }
       ],
-      "category": ["Science", "Technology", "Entertainment", "Design"],
+      "category": [
+        "Science",
+        "Technology",
+        "Entertainment",
+        "Design"
+      ],
       "keywords": "TED, TEDTalks, TED Talks, inspiration, creativity, tech demo, education",
       "explicit": "no",
       "rating": "nonadult",

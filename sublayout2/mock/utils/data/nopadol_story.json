@@ -8,7 +8,10 @@
       "generator": "https://podbean.com/?v=5.5",
       "language": "th",
       "copyright": "Copyright 2018 All rights reserved.",
-      "category": ["Business", "Managament"],
+      "category": [
+        "Business",
+        "Management"
+      ],
       "ttl": 1440,
       "type": "episodic",
       "subtitle": "A Life-Changing Story",
