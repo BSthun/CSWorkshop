@@ -42,5 +42,5 @@ func ReadPodcastData() {
 		CurrentData = append(CurrentData, result)
 	}
 
-	fmt.Println("Successfully Changed random data")
+	fmt.Println("Successfully read podcast data")
 }
