@@ -51,15 +51,19 @@ func Init() *gorm.DB {
 	// Initialize model migrations
 	if modules.Conf.MysqlMigrate {
 		if err := db.AutoMigrate(
-			new(model.User),
-			new(model.Country),
 			new(model.Album),
-			new(model.Artist),
 			new(model.AlbumArtist),
-			new(model.Track),
-			new(model.PlaylistTrack),
+			new(model.Artist),
 			new(model.Concert),
 			new(model.ConcertTicket),
+			new(model.Country),
+			new(model.PlaylistTrack),
+			new(model.PodcastCategory),
+			new(model.PodcastEpisode),
+			new(model.PodcastShow),
+			new(model.PodcastShowCategory),
+			new(model.User),
+			new(model.Track),
 		); err != nil {
 			logrus.WithField("e", err).Fatal("UNABLE TO MIGRATE GORM MODEL")
 		}
