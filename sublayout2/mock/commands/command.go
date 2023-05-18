@@ -3,7 +3,9 @@ package commands
 import (
 	"flag"
 	"fmt"
+	"mock/commands/country"
 	"mock/commands/podcast"
+	"mock/commands/track"
 	"os"
 )
 
@@ -19,6 +21,10 @@ func Run() {
 	switch args[1] {
 	case "podcast":
 		podcast.Run(*clean)
+	case "country":
+		country.Run(*clean)
+	case "track":
+		track.Run(*clean)
 	default:
 		fmt.Printf("Unknown subcommand\n")
 	}

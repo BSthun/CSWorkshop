@@ -6,4 +6,6 @@ type Config struct {
 
 	MysqlDsn     string `yaml:"mysql_dsn" validate:"required"`
 	MysqlMigrate bool   `yaml:"mysql_migrate" validate:"omitempty"`
+
+	SpotifyScraperDsn string `yaml:"spotify_scraper_dsn" validate:"required"`
 }

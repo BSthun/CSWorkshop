@@ -13,22 +13,11 @@ import (
 )
 
 func Init() *gorm.DB {
-	// Initialize GORM instance using previously opened SQL connection
-	gormLogLevel := []logger.LogLevel{
-		logger.Silent,
-		logger.Error,
-		logger.Error,
-		logger.Warn,
-		logger.Info,
-		logger.Info,
-		logger.Info,
-	}
-
 	gormLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
 			SlowThreshold:             100 * time.Millisecond,
-			LogLevel:                  gormLogLevel[modules.Conf.LogLevel],
+			LogLevel:                  logger.Info,
 			IgnoreRecordNotFoundError: true,
 			Colorful:                  true,
 		},

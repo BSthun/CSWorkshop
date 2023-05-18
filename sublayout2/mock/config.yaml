@@ -1,4 +1,5 @@
 environment: 1
 log_level: 6
 mysql_dsn: workshop1:csc1056789@tcp(server2.bsthun.com:6105)/workshop_spot1?charset=utf8mb4&parseTime=True&loc=Local
-mysql_migrate: false
+mysql_migrate: true
+spotify_scraper_dsn: root:root_apisitmaneerat@tcp(server2.bsthun.com:6103)/{{DB_NAME}}?charset=utf8mb4&parseTime=True&loc=Local
