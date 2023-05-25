@@ -7,13 +7,9 @@ import (
 
 func GetBackdrop() *payload.BackdropState {
 	return &payload.BackdropState{
-		Time: value.Ptr("01:45"),
-		Date: value.Ptr("Thu, May 25"),
-		Whether: &payload.BackdropWeather{
-			Icon:   value.Ptr("http://www.gstatic.com/images/icons/material/apps/weather/2x/clear_night_dark_color_96dp.png"),
-			Status: value.Ptr("Clear Night"),
-			Temp:   value.Ptr("24"),
-		},
+		Time:    value.Ptr("01:45"),
+		Date:    value.Ptr("Thu, May 25"),
+		Whether: GetWeather(),
 		CurrentEvent: &payload.BackdropEvent{
 			Title: value.Ptr("Morning Break"),
 			Time:  value.Ptr("10:00 AM - 10:30 AM"),

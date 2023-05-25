@@ -15,6 +15,7 @@ func Init() *fiber.App {
 	// Initialize fiber instance
 	app := fiber.New(fiber.Config{
 		ErrorHandler:  ErrorHandler,
+		AppName:       "CS Hackathon Panel",
 		Prefork:       false,
 		StrictRouting: true,
 		ReadTimeout:   5 * time.Second,

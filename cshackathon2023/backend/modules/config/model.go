@@ -17,4 +17,6 @@ type Config struct {
 
 	SpotifyAuthorization string `yaml:"spotify_authorization" validate:"required"`
 	SpotifyRefreshToken  string `yaml:"spotify_refresh_token" validate:"required"`
+
+	WeatherApiKey string `yaml:"weather_api_key" validate:"required"`
 }

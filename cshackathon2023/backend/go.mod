@@ -6,13 +6,14 @@ require (
 	firebase.google.com/go/v4 v4.11.0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/getsentry/sentry-go v0.21.0
-	github.com/go-co-op/gocron v1.27.1
+	github.com/go-co-op/gocron v1.28.0
 	github.com/go-playground/validator/v10 v10.14.0
 	github.com/gofiber/fiber/v2 v2.46.0
 	github.com/gofiber/jwt/v3 v3.3.10
 	github.com/gofiber/websocket/v2 v2.2.1
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/sirupsen/logrus v1.9.2
+	github.com/valyala/fasthttp v1.47.0
 	google.golang.org/api v0.124.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/mysql v1.5.1
@@ -55,7 +56,6 @@ require (
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.47.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect

@@ -23,7 +23,11 @@ type BackdropNowPlaying struct {
 }
 
 type BackdropWeather struct {
-	Icon   *string `json:"icon,omitempty"`
-	Status *string `json:"status,omitempty"`
-	Temp   *string `json:"temp,omitempty"`
+	Icon   *string  `json:"icon,omitempty"`
+	Status *string  `json:"status,omitempty"`
+	Temp   *float64 `json:"temp,omitempty"`
+	Aqi    *float64 `json:"aqi,omitempty"`
+	Uv     *float64 `json:"uv,omitempty"`
 }
+
+// KMUTT LAT, LONG - 13.652162312808013, 100.4963937840923
