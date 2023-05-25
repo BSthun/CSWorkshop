@@ -15,7 +15,7 @@ func Init() *Config {
 	conf := new(Config)
 
 	// Check testing config
-	var file = "config.yaml"
+	var file = "config.yml"
 
 	// Load configurations to struct
 	yml, err := os.ReadFile(file)

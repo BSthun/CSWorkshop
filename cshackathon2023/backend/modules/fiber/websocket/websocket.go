@@ -17,7 +17,7 @@ func Register(router fiber.Router) {
 		return fiber.ErrUpgradeRequired
 	})
 
-	router.Get("/update", websocket.New(func(conn *websocket.Conn) {
+	router.Get("/music", websocket.New(func(conn *websocket.Conn) {
 		// c.Locals are added to the *websocket.Conn
 		// log.Println(conn.Locals("allowed"))  // true
 		// log.Println(conn.Params("id"))       // 123
@@ -25,6 +25,17 @@ func Register(router fiber.Router) {
 		// log.Println(conn.Cookies("session")) // ""
 
 		// websocket.Conn bindings https://pkg.go.dev/github.com/fasthttp/websocket?tab=doc#pkg-index
-		ServeUpdate(conn)
+		ServeMusicState(conn)
+	}))
+
+	router.Get("/backdrop", websocket.New(func(conn *websocket.Conn) {
+		// c.Locals are added to the *websocket.Conn
+		// log.Println(conn.Locals("allowed"))  // true
+		// log.Println(conn.Params("id"))       // 123
+		// log.Println(conn.Query("v"))         // 1.0
+		// log.Println(conn.Cookies("session")) // ""
+
+		// websocket.Conn bindings https://pkg.go.dev/github.com/fasthttp/websocket?tab=doc#pkg-index
+		ServeBackdropState(conn)
 	}))
 }

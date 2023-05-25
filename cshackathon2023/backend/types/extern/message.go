@@ -12,5 +12,5 @@ const (
 	EchoEvent             OutboundEvent = "general/echo"
 	PingEvent             OutboundEvent = "general/ping"
 	ErrorEvent            OutboundEvent = "general/error"
-	StateUpdate           OutboundEvent = "state/update"
+	BackdropUpdateEvent   OutboundEvent = "backdrop/update"
 )

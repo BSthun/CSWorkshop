@@ -35,7 +35,7 @@ func Init() *fiber.App {
 	websocket.Register(websocketGroup)
 
 	// Init static files
-	app.Static("/", text.RelativePath("web"))
+	app.Static("/", text.RelativePath("resources/web"))
 
 	// Init not found handler
 	app.Use(NotFoundHandler)

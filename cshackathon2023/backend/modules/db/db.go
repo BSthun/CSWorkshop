@@ -62,8 +62,3 @@ func Init() (*sql.DB, *gorm.DB) {
 
 	return conn, db
 }
-
-func InitTest() (*sql.DB, *gorm.DB) {
-	Clear()
-	return Init()
-}

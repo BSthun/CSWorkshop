@@ -9,13 +9,12 @@ type Config struct {
 	Cors    []string `yaml:"cors" validate:"required"`
 
 	MysqlDsn string `yaml:"mysql_dsn" validate:"required"`
-	MysqlDb  string `yaml:"mysql_db" validate:"required"`
 
 	SentryDsn              string  `yaml:"sentry_dsn" validate:"url"`
 	SentryTracesSampleRate float64 `yaml:"sentry_traces_sample_rate" validate:"required"`
 
 	JwtSecret string `yaml:"jwt_secret" validate:"required"`
 
-	InfoDbHost string `yaml:"info_db_host" validate:"required"`
-	InfoDbPort string `yaml:"info_db_port" validate:"required"`
+	SpotifyAuthorization string `yaml:"spotify_authorization" validate:"required"`
+	SpotifyRefreshToken  string `yaml:"spotify_refresh_token" validate:"required"`
 }

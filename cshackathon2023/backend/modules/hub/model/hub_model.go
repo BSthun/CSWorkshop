@@ -6,7 +6,10 @@ import (
 )
 
 type Hub struct {
-	Connections              map[int64]*websocket.Conn `json:"connections"`
-	ConnectionIncrement      int64                     `json:"connection_increment"`
-	ConnectionIncrementMutex *sync.Mutex               `json:"-"`
+	MusicClientConnections                 map[int64]*websocket.Conn `json:"connections"`
+	MusicClientConnectionIncrement         int64                     `json:"musicClientConnectionIncrement"`
+	MusicClientConnectionIncrementMutex    *sync.Mutex               `json:"-"`
+	BackdropClientConnections              map[int64]*websocket.Conn `json:"backdropClientConnections"`
+	BackdropClientConnectionIncrement      int64                     `json:"backdropClientConnectionIncrement"`
+	BackdropClientConnectionIncrementMutex *sync.Mutex               `json:"-"`
 }
