@@ -1,6 +1,7 @@
 package account
 
 import (
+	"backend/utils/text"
 	"context"
 	"time"
 
@@ -18,6 +19,11 @@ func CallbackPostHandler(c *fiber.Ctx) error {
 	var body *payload.AuthCallbackBody
 	if err := c.BodyParser(&body); err != nil {
 		return response.Error(c, false, "Unable to parse body", err)
+	}
+
+	// * Validate body
+	if err := text.Validator.Struct(body); err != nil {
+		return response.Error(c, false, "Unable to validate body", err)
 	}
 
 	// * Verify token

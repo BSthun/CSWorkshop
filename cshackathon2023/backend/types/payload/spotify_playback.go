@@ -62,26 +62,26 @@ type SpotifyTrack struct {
 }
 
 type SpotifyAlbum struct {
-	AlbumType            string               `json:"album_type"`
+	AlbumType            *string              `json:"album_type"`
 	Artists              []*SpotifyArtist     `json:"artists"`
 	AvailableMarkets     []string             `json:"available_markets"`
 	ExternalUrls         *SpotifyExternalUrls `json:"external_urls"`
-	Href                 string               `json:"href"`
-	Id                   string               `json:"id"`
+	Href                 *string              `json:"href"`
+	Id                   *string              `json:"id"`
 	Images               []*SpotifyImage      `json:"images"`
-	Name                 string               `json:"name"`
-	ReleaseDate          string               `json:"release_date"`
-	ReleaseDatePrecision string               `json:"release_date_precision"`
-	TotalTracks          int                  `json:"total_tracks"`
-	Type                 string               `json:"type"`
-	Uri                  string               `json:"uri"`
+	Name                 *string              `json:"name"`
+	ReleaseDate          *string              `json:"release_date"`
+	ReleaseDatePrecision *string              `json:"release_date_precision"`
+	TotalTracks          *int                 `json:"total_tracks"`
+	Type                 *string              `json:"type"`
+	Uri                  *string              `json:"uri"`
 }
 
 type SpotifyArtist struct {
 	ExternalUrls *SpotifyExternalUrls `json:"external_urls"`
-	Href         string               `json:"href"`
-	Id           string               `json:"id"`
-	Name         string               `json:"name"`
-	Type         string               `json:"type"`
-	Uri          string               `json:"uri"`
+	Href         *string              `json:"href"`
+	Id           *string              `json:"id"`
+	Name         *string              `json:"name"`
+	Type         *string              `json:"type"`
+	Uri          *string              `json:"uri"`
 }

@@ -4,13 +4,12 @@ import (
 	"backend/modules"
 	"backend/types/payload"
 	"backend/types/response"
-	"github.com/gofiber/fiber/v2"
 	"net/http"
 	"net/url"
 	"strings"
 )
 
-func SpotifyRefreshToken(c *fiber.Ctx, id string) (*payload.SpotifyCredentials, *response.ErrorInstance) {
+func SpotifyRefreshToken() (*payload.SpotifyCredentials, *response.ErrorInstance) {
 	// * Construct form data values
 	values := url.Values{}
 	values.Set("grant_type", "refresh_token")
@@ -18,7 +17,7 @@ func SpotifyRefreshToken(c *fiber.Ctx, id string) (*payload.SpotifyCredentials, 
 
 	var data *payload.SpotifyCredentials
 	if err := DoRequest(
-		c,
+		nil,
 		"POST",
 		"https://accounts.spotify.com/api/token",
 		strings.NewReader(values.Encode()),

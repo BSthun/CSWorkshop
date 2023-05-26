@@ -21,4 +21,5 @@ func Init(router fiber.Router) {
 	music := router.Group("music/", middleware.Jwt())
 	music.Get("state", musicEndpoint.StateGetHandler)
 	music.Get("search", musicEndpoint.SearchGetHandler)
+	music.Post("queue", musicEndpoint.QueuePostHandler)
 }
