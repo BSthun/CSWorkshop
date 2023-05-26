@@ -1,0 +1,10 @@
+events:
+  - name: Hello Ri
+    start_time: 2023-05-26T12:39:00.000Z
+    end_time: 2023-05-26T12:50:00.000Z
+  - name: Prepare for hackathon event
+    start_time: 2023-05-26T12:50:00.000Z
+    end_time: 2023-05-26T13:00:00.000Z
+  - name: Hackathon event
+    start_time: 2023-05-26T13:00:00.000Z
+    end_time: 2023-05-26T14:00:00.000Z
