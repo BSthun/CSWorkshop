@@ -10,11 +10,11 @@ import (
 
 func ServeBackdropState(conn *websocket.Conn) {
 	// * Increment connection count
-	modules.Hub.BackdropClientConnectionIncrementMutex.Lock()
-	modules.Hub.BackdropClientConnectionIncrement++
-	modules.Hub.BackdropClientConnections[modules.Hub.BackdropClientConnectionIncrement] = conn
-	increment := modules.Hub.BackdropClientConnectionIncrement
-	modules.Hub.BackdropClientConnectionIncrementMutex.Unlock()
+	modules.Hub.BackdropClient.IncrementMutex.Lock()
+	modules.Hub.BackdropClient.Increment++
+	modules.Hub.BackdropClient.Connections[modules.Hub.BackdropClient.Increment] = conn
+	increment := modules.Hub.BackdropClient.Increment
+	modules.Hub.BackdropClient.IncrementMutex.Unlock()
 
 	// * Send initial state
 	_ = conn.WriteJSON(&extern.OutboundMessage{
@@ -44,7 +44,7 @@ func ServeBackdropState(conn *websocket.Conn) {
 	}
 
 	// * Delete connection
-	modules.Hub.BackdropClientConnectionIncrementMutex.Lock()
-	delete(modules.Hub.BackdropClientConnections, increment)
-	modules.Hub.BackdropClientConnectionIncrementMutex.Unlock()
+	modules.Hub.BackdropClient.WriteMutex.Lock()
+	delete(modules.Hub.MusicClient.Connections, increment)
+	modules.Hub.BackdropClient.WriteMutex.Unlock()
 }

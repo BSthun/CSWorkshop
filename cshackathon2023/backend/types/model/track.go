@@ -1,7 +1,7 @@
 package model
 
 type Track struct {
-	Id        *string `gorm:"primaryKey"`
+	Id        *uint   `gorm:"primaryKey"`
 	SpotifyId *string `gorm:"type:VARCHAR(255); index:idx_spotify_id,unique; not null"`
 	Name      *string `gorm:"type:VARCHAR(255); not null"`
 	Artist    *string `gorm:"type:VARCHAR(255); not null"`

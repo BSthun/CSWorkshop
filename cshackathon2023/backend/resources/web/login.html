@@ -24,8 +24,6 @@
 		const firebaseApp = initializeApp(firebaseConfig)
 		const firebaseAuth = getAuth(firebaseApp)
 		
-		connectAuthEmulator(firebaseAuth, "http://localhost:9099");
-		
 		window.login = () => {
 			const provider = new GoogleAuthProvider()
 			signInWithPopup(firebaseAuth, provider)

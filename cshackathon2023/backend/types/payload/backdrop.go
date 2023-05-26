@@ -1,33 +1,33 @@
 package payload
 
 type BackdropState struct {
-	Time         *string             `json:"time,omitempty"`
-	Date         *string             `json:"date,omitempty"`
-	Whether      *BackdropWeather    `json:"whether,omitempty"`
-	CurrentEvent *BackdropEvent      `json:"current_event,omitempty"`
-	NextEvent    *BackdropEvent      `json:"next_event,omitempty"`
-	NowPlaying   *BackdropNowPlaying `json:"now_playing,omitempty"`
+	Time         *string             `json:"time"`
+	Date         *string             `json:"date"`
+	Whether      *BackdropWeather    `json:"whether"`
+	CurrentEvent *BackdropEvent      `json:"current_event"`
+	NextEvent    *BackdropEvent      `json:"next_event"`
+	NowPlaying   *BackdropNowPlaying `json:"now_playing"`
 }
 
 type BackdropEvent struct {
-	Title *string `json:"title,omitempty"`
-	Time  *string `json:"time,omitempty"`
+	Title *string `json:"title"`
+	Time  *string `json:"time"`
 }
 
 type BackdropNowPlaying struct {
-	CoverURL *string `json:"cover_url,omitempty"`
-	Title    *string `json:"title,omitempty"`
-	Artist   *string `json:"artist,omitempty"`
-	Album    *string `json:"album,omitempty"`
-	QueueBy  *string `json:"queue_by,omitempty"`
+	CoverURL *string `json:"cover_url"`
+	Title    *string `json:"title"`
+	Artist   *string `json:"artist"`
+	Album    *string `json:"album"`
+	QueueBy  *string `json:"queue_by"`
 }
 
 type BackdropWeather struct {
-	Icon   *string  `json:"icon,omitempty"`
-	Status *string  `json:"status,omitempty"`
-	Temp   *float64 `json:"temp,omitempty"`
-	Aqi    *float64 `json:"aqi,omitempty"`
-	Uv     *float64 `json:"uv,omitempty"`
+	Icon   *string  `json:"icon"`
+	Status *string  `json:"status"`
+	Temp   *float64 `json:"temp"`
+	Aqi    *float64 `json:"aqi"`
+	Uv     *float64 `json:"uv"`
 }
 
 // KMUTT LAT, LONG - 13.652162312808013, 100.4963937840923

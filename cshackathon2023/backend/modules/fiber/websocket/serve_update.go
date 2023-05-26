@@ -10,11 +10,11 @@ import (
 
 func ServeMusicState(conn *websocket.Conn) {
 	// * Increment connection count
-	modules.Hub.MusicClientConnectionIncrementMutex.Lock()
-	modules.Hub.MusicClientConnectionIncrement++
-	modules.Hub.MusicClientConnections[modules.Hub.MusicClientConnectionIncrement] = conn
-	increment := modules.Hub.MusicClientConnectionIncrement
-	modules.Hub.MusicClientConnectionIncrementMutex.Unlock()
+	modules.Hub.MusicClient.IncrementMutex.Lock()
+	modules.Hub.MusicClient.Increment++
+	modules.Hub.MusicClient.Connections[modules.Hub.MusicClient.Increment] = conn
+	increment := modules.Hub.MusicClient.Increment
+	modules.Hub.MusicClient.IncrementMutex.Unlock()
 
 	for {
 		t, p, err := conn.ReadMessage()
@@ -37,7 +37,7 @@ func ServeMusicState(conn *websocket.Conn) {
 	}
 
 	// * Delete connection
-	modules.Hub.MusicClientConnectionIncrementMutex.Lock()
-	delete(modules.Hub.MusicClientConnections, increment)
-	modules.Hub.MusicClientConnectionIncrementMutex.Unlock()
+	modules.Hub.MusicClient.WriteMutex.Lock()
+	delete(modules.Hub.MusicClient.Connections, increment)
+	modules.Hub.MusicClient.WriteMutex.Unlock()
 }

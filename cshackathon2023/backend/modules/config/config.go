@@ -14,11 +14,8 @@ func Init() *Config {
 	// Initialize blank configuration struct
 	conf := new(Config)
 
-	// Check testing config
-	var file = "config.yml"
-
 	// Load configurations to struct
-	yml, err := os.ReadFile(file)
+	yml, err := os.ReadFile("config.yaml")
 	if err != nil {
 		logrus.Fatal("UNABLE TO READ YAML CONFIGURATION FILE")
 	}

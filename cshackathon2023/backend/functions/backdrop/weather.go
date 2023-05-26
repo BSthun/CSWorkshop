@@ -6,9 +6,21 @@ import (
 	"backend/utils/value"
 	"encoding/json"
 	"net/http"
+	"time"
 )
 
+var weatherData *payload.BackdropWeather
+var weatherLastUpdated *time.Time
+
 func GetWeather() *payload.BackdropWeather {
+	if weatherData == nil || time.Since(*weatherLastUpdated) > 2*time.Minute {
+		weatherData = FetchWeather()
+		weatherLastUpdated = value.Ptr(time.Now())
+	}
+	return weatherData
+}
+
+func FetchWeather() *payload.BackdropWeather {
 	client := &http.Client{}
 
 	// * Send request
