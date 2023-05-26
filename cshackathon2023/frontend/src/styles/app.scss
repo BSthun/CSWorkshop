@@ -1,0 +1,37 @@
+// @import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100;200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@100;200;300;400;500;700;900&display=swap');
+@import "normalise.scss";
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+* {
+  box-sizing: border-box !important;
+  font-family: 'Google Sans', sans-serif !important;
+}
+
+.text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+.animated-pop-in {
+  animation: pop-in .25s  cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes pop-in {
+  0%{
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  100%{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
