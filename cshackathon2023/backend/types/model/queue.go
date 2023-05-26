@@ -11,4 +11,5 @@ type Queue struct {
 	Played    *bool      `gorm:"not null; default:false"`
 	CreatedAt *time.Time `gorm:"not null"` // Embedded field
 	UpdatedAt *time.Time `gorm:"not null"` // Embedded field
+	DeletedAt *time.Time `gorm:"index"`    // Embedded field
 }

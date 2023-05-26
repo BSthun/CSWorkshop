@@ -11,24 +11,24 @@ type SpotifyCredentials struct {
 
 type SpotifyPlaybackState struct {
 	Device               *SpotifyDevice  `json:"device"`
-	ShuffleState         bool            `json:"shuffle_state"`
-	RepeatState          string          `json:"repeat_state"`
-	Timestamp            int64           `json:"timestamp"`
+	ShuffleState         *bool           `json:"shuffle_state"`
+	RepeatState          *string         `json:"repeat_state"`
+	Timestamp            *int64          `json:"timestamp"`
 	Context              *SpotifyContext `json:"context"`
-	ProgressMs           int64           `json:"progress_ms"`
+	ProgressMs           *int64          `json:"progress_ms"`
 	Item                 *SpotifyTrack   `json:"item"`
-	CurrentlyPlayingType string          `json:"currently_playing_type"`
-	IsPlaying            bool            `json:"is_playing"`
+	CurrentlyPlayingType *string         `json:"currently_playing_type"`
+	IsPlaying            *bool           `json:"is_playing"`
 }
 
 type SpotifyDevice struct {
-	Id               string `json:"id"`
-	IsActive         bool   `json:"is_active"`
-	IsPrivateSession bool   `json:"is_private_session"`
-	IsRestricted     bool   `json:"is_restricted"`
-	Name             string `json:"name"`
-	Type             string `json:"type"`
-	VolumePercent    int    `json:"volume_percent"`
+	Id               *string `json:"id"`
+	IsActive         *bool   `json:"is_active"`
+	IsPrivateSession *bool   `json:"is_private_session"`
+	IsRestricted     *bool   `json:"is_restricted"`
+	Name             *string `json:"name"`
+	Type             *string `json:"type"`
+	VolumePercent    *int    `json:"volume_percent"`
 }
 
 type SpotifyExternalIds struct {

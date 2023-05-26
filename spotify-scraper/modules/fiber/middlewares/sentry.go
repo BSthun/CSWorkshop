@@ -39,7 +39,6 @@ func Sentry() fiber.Handler {
 		scope := hub.Scope()
 		scope.SetRequest(transfer.ConvertRequest(c.Context()))
 		scope.SetRequestBody(c.Body())
-		scope.SetTransaction(c.Path())
 
 		// Configure scope
 		hub.ConfigureScope(func(scope *sentry.Scope) {
@@ -61,7 +60,7 @@ func Sentry() fiber.Handler {
 		sentryCtx = sentry.SetHubOnContext(sentryCtx, hub)
 
 		// Start a transaction
-		span := sentry.StartSpan(sentryCtx, "http.server", sentry.TransactionName(hub.Scope().Transaction()))
+		span := sentry.StartSpan(sentryCtx, "http.server", sentry.TransactionName(fmt.Sprintf("%s (%s)", c.Path(), c.Method())))
 		sentryCtx = context.WithValue(sentryCtx, "span", span)
 		c.Locals("sentry", sentryCtx)
 

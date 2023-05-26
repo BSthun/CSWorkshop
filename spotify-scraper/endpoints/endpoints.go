@@ -11,7 +11,7 @@ import (
 func Init(router fiber.Router) {
 	// * Login
 	login := router.Group("login/", middlewares.Sentry())
-	login.Post("redirect", loginEndpoint.RedirectHandler)
+	login.Get("redirect", loginEndpoint.RedirectHandler)
 	login.Post("callback", loginEndpoint.HandleCallback)
 
 	// * Account

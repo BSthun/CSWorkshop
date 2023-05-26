@@ -37,7 +37,7 @@ func RedirectHandler(c *fiber.Ctx) error {
 	values := url.Values{}
 	values.Set("response_type", "code")
 	values.Set("client_id", *state.Client.SpotifyClientId)
-	values.Set("scope", "user-read-playback-state")
+	values.Set("scope", "user-read-playback-state user-modify-playback-state")
 	values.Set("redirect_uri", functions.SpotifyRedirectUri())
 	values.Set("state", *st)
 

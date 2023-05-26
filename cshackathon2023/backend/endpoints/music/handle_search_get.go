@@ -2,16 +2,22 @@ package music
 
 import (
 	functions "backend/functions/music"
+	"backend/modules"
+	"backend/types/common"
+	"backend/types/model"
 	"backend/types/payload"
 	"backend/types/response"
 	"backend/utils/text"
 	"backend/utils/value"
+	"encoding/json"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
+	"net/url"
 )
 
 func SearchGetHandler(c *fiber.Ctx) error {
 	// * Parse user
-	// u := c.Locals("u").(*jwt.Token).Claims.(*common.UserClaims)
+	u := c.Locals("u").(*jwt.Token).Claims.(*common.UserClaims)
 
 	// * Parse query
 	query := new(payload.MusicSearchQuery)
@@ -25,15 +31,13 @@ func SearchGetHandler(c *fiber.Ctx) error {
 	}
 
 	// TODO: Search spotify track
-	// * Get Spotify search API by query
-	spotifySearchTrack, err := functions.SpotifySearchTrack(*query.Query)
+	spotifySearchTrack, err := functions.SpotifySearchTrack(url.QueryEscape(*query.Query))
 	if err != nil {
 		return err
 	}
-	//spew.Dump(spotifySearchTrack)
 
 	// * Map Spotify search API to response
-	searchList, _ := value.Iterate(spotifySearchTrack.Tracks.Items, func(track *payload.SpotifyTrack) (*payload.MusicSearchItem, *response.ErrorInstance) {
+	searchItems, _ := value.Iterate(spotifySearchTrack.Tracks.Items, func(track *payload.SpotifyTrack) (*payload.MusicSearchItem, *response.ErrorInstance) {
 		var artists []string
 		for _, s := range track.Artists {
 			artists = append(artists, *s.Name)
@@ -49,22 +53,25 @@ func SearchGetHandler(c *fiber.Ctx) error {
 			},
 			SpotifyId: track.Id,
 		}, nil
-
 	})
 
-	return c.JSON(response.Success(c, map[string]any{
-		"track": searchList,
+	// * Create logs
+	logPayload, _ := json.Marshal(map[string]any{
+		"query": *query.Query,
+	})
+	log := &model.Log{
+		UserId:    u.UserId,
+		User:      nil,
+		Type:      value.Ptr("search"),
+		Payload:   value.Ptr(string(logPayload)),
+		CreatedAt: nil,
+		UpdatedAt: nil,
+	}
+	if result := modules.DB.Create(log); result.Error != nil {
+		return response.Error(c, false, "Unable to create log", result.Error)
+	}
 
-		//"list": []*payload.MusicSearchItem{
-		//	{
-		//		MusicItem: payload.MusicItem{
-		//			ArtworkURL: value.Ptr("https://i.scdn.co/image/ab67616d0000b273c492874e96f19148018e759e"),
-		//			Title:      value.Ptr("Baby Steps"),
-		//			Album:      value.Ptr("'Twinkle' Mini Album"),
-		//			Artist:     value.Ptr("Girls' Generation-TTS"),
-		//		},
-		//		SpotifyId: value.Ptr("02wkrfy00sbUO5DxirKMeV"),
-		//	},
-		//},
+	return c.JSON(response.Success(c, map[string]any{
+		"items": searchItems,
 	}))
 }
