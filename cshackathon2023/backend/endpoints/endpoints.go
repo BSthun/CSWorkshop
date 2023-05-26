@@ -3,6 +3,7 @@ package endpoints
 import (
 	accountEndpoint "backend/endpoints/account"
 	backdropEndpoint "backend/endpoints/backdrop"
+	imageEndpoint "backend/endpoints/image"
 	musicEndpoint "backend/endpoints/music"
 	"backend/modules/fiber/middleware"
 	"github.com/gofiber/fiber/v2"
@@ -22,4 +23,8 @@ func Init(router fiber.Router) {
 	music.Get("state", musicEndpoint.StateGetHandler)
 	music.Get("search", musicEndpoint.SearchGetHandler)
 	music.Post("queue", musicEndpoint.QueuePostHandler)
+
+	// * Image
+	image := router.Group("image/")
+	image.Get("rand", imageEndpoint.RandGetHandler)
 }

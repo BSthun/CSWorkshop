@@ -28,6 +28,7 @@ func GetEvent() (*payload.BackdropEvent, *payload.BackdropEvent) {
 			nextEvent = events.Events[i+1]
 		}
 	}
+
 	//spew.Dump(events)
 	stc := currentEvent.StartTime.Local().Format("15:04 PM")
 	etc := currentEvent.EndTime.Local().Format("15:04 PM")

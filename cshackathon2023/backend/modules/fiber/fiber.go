@@ -37,6 +37,7 @@ func Init() *fiber.App {
 
 	// Init static files
 	app.Static("/", text.RelativePath("resources/web"))
+	app.Static("/image", text.RelativePath("resources/image"))
 
 	// Init not found handler
 	app.Use(NotFoundHandler)

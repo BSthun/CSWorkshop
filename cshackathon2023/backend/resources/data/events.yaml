@@ -7,7 +7,7 @@ events:
     end_time: 2023-05-26T13:00:00.000Z
   - name: Hackathon event
     start_time: 2023-05-26T13:00:00.000Z
-    end_time: 2023-05-26T14:00:00.000Z
+    end_time: 2024-05-26T14:00:00.000Z
   - name: Hackathon is ended
     start_time: 2023-05-27T23:50:00.000Z
     end_time: 2023-06-30T23:59:59.000Z
