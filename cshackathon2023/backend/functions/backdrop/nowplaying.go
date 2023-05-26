@@ -13,7 +13,18 @@ import (
 
 var lastQueued time.Time
 
+var nowPlayingData *payload.BackdropNowPlaying
+var nowPlayingLastUpdated time.Time
+
 func GetNowPlaying() *payload.BackdropNowPlaying {
+	if time.Now().Sub(nowPlayingLastUpdated) > 5*time.Second {
+		nowPlayingData = FetchNowPlaying()
+		nowPlayingLastUpdated = time.Now()
+	}
+	return nowPlayingData
+}
+
+func FetchNowPlaying() *payload.BackdropNowPlaying {
 	// * Get now playing state
 	nowPlaying, _ := functions.SpotifyNowPlaying()
 
@@ -28,6 +39,7 @@ func GetNowPlaying() *payload.BackdropNowPlaying {
 		}
 
 		return &payload.BackdropNowPlaying{
+			QueueId:  queue.Id,
 			CoverURL: queue.Track.CoverUrl,
 			Title:    queue.Track.Name,
 			Artist:   queue.Track.Artist,
@@ -46,6 +58,7 @@ func GetNowPlaying() *payload.BackdropNowPlaying {
 		}
 
 		return &payload.BackdropNowPlaying{
+			QueueId:  queue.Id,
 			CoverURL: queue.Track.CoverUrl,
 			Title:    queue.Track.Name,
 			Artist:   queue.Track.Artist,
@@ -84,6 +97,7 @@ func GetNowPlaying() *payload.BackdropNowPlaying {
 	// * Check if current track is same as now playing
 	if *nowPlaying.Item.Id == *currentQueue.Track.SpotifyId {
 		return &payload.BackdropNowPlaying{
+			QueueId:  currentQueue.Id,
 			CoverURL: currentQueue.Track.CoverUrl,
 			Title:    currentQueue.Track.Name,
 			Artist:   currentQueue.Track.Artist,
@@ -100,6 +114,7 @@ func GetNowPlaying() *payload.BackdropNowPlaying {
 	artistName := text.FormattedText(artists)
 
 	return &payload.BackdropNowPlaying{
+		QueueId:  nil,
 		CoverURL: nowPlaying.Item.Album.Images[0].Url,
 		Title:    nowPlaying.Item.Name,
 		Artist:   &artistName,

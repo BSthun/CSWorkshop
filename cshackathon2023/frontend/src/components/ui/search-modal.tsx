@@ -3,6 +3,7 @@ import React from "react";
 import MusicCard from "./music-card";
 import { MdClose } from "react-icons/md";
 import { SearchMusic } from "@/types/api";
+import axios from "axios";
 
 type SearchDrawerProps = {
   open: boolean;
@@ -19,6 +20,20 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({
   setSearchInput,
   songList,
 }) => {
+  const queue = (spotify_id: any) => {
+    axios
+      .post("/api/music/queue", {
+        trackId: spotify_id,
+      })
+      .then((response) => {
+        if (response.data.success) {
+          alert("Song queued!");
+          setOpenDrawer(false);
+        } else {
+          alert("Error: " + response.data.message);
+        }
+      });
+  };
   return (
     <SwipeableDrawer
       anchor="bottom"
@@ -70,7 +85,7 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({
 
         <Box mt={"80px"} zIndex={-1}>
           {songList.map((song) => (
-            <MusicCard search key={song.spotify_id} {...song} />
+            <MusicCard search key={song.spotify_id} {...song} queue={queue} />
           ))}
         </Box>
       </Box>

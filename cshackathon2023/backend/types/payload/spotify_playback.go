@@ -85,3 +85,11 @@ type SpotifyArtist struct {
 	Type         *string              `json:"type"`
 	Uri          *string              `json:"uri"`
 }
+
+type SpotifyTrackItem struct {
+	Items []*SpotifyTrack
+}
+
+type SpotifyTrackSearch struct {
+	Tracks *SpotifyTrackItem
+}

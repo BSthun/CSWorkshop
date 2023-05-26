@@ -1,5 +1,7 @@
 package payload
 
+import "time"
+
 type MusicQueueBody struct {
 	TrackId *string `json:"trackId"`
 }
@@ -22,17 +24,9 @@ type MusicSearchItem struct {
 
 type MusicQueueItem struct {
 	MusicItem
-	ID        *int64  `json:"id,omitempty"`
-	QueueBy   *string `json:"queue_by,omitempty"`
-	QueueAt   *string `json:"queue_at,omitempty"`
-	IsPlaying *bool   `json:"is_playing,omitempty"`
-	IsOwned   *bool   `json:"is_owned,omitempty"`
-}
-
-type TrackItem struct {
-	Items []*SpotifyTrack
-}
-
-type TrackSearch struct {
-	Tracks *TrackItem
+	ID        *uint64    `json:"id,omitempty"`
+	QueueBy   *string    `json:"queue_by,omitempty"`
+	QueueAt   *time.Time `json:"queue_at,omitempty"`
+	IsPlaying *bool      `json:"is_playing,omitempty"`
+	IsOwned   *bool      `json:"is_owned,omitempty"`
 }

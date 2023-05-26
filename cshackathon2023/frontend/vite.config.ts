@@ -11,4 +11,13 @@ export default defineConfig({
       "@component": path.resolve(__dirname, "./src/components"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

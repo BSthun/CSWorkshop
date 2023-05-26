@@ -20,18 +20,14 @@ export default function MainView() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [searchInput, setSearchInput] = React.useState("");
   const [searchList, setSearchList] = React.useState<SearchMusic[]>([]);
+  const [state, setState] = React.useState({});
 
   const searchSong = () => {
-    // .post(`https://api.cshack.site/api/music/search?query=${searchInput}`, {
-    //   withCredentials: true,
-    // })
     axios
-      .get<SearchMusicResponse>(
-        "https://wwwii.bsthun.com/mock/csworkshop/cshack-search.json"
-      )
+      .get<SearchMusicResponse>("/api/music/search?query=" + searchInput)
       .then((response) => {
-        if (response.data.success && response.data.data.list.length > 0) {
-          setSearchList(response.data.data.list);
+        if (response.data.success && response.data.data.items.length > 0) {
+          setSearchList(response.data.data.items);
         } else {
           alert(response.data.message);
           setSearchList([]);
@@ -43,12 +39,29 @@ export default function MainView() {
     if (searchInput.length > 0) {
       const getData = setTimeout(() => {
         searchSong();
-      }, 1000);
+      }, 500);
       return () => clearTimeout(getData);
     } else {
       setSearchList([]);
     }
   }, [searchInput]);
+
+  const fetchState = () => {
+    axios.get("/api/music/state").then((response) => {
+      if (response.data.success) {
+        setState(response.data.data);
+      } else {
+        alert(response.data.message);
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchState();
+    setInterval(() => {
+      fetchState();
+    }, 5000);
+  }, []);
 
   return (
     <Stack sx={{ height: "100vh", display: "flex" }}>
@@ -70,36 +83,31 @@ export default function MainView() {
         <Typography fontSize="24px" fontWeight="400" py={2} align="center">
           CS Hackathon 2023
         </Typography>
-        <MusicCard heading />
+        <MusicCard
+          title={state.nowPlaying?.title}
+          artwork_url={state.nowPlaying?.cover_url}
+          artist={state.nowPlaying?.artist}
+          queue_at={state.nowPlaying?.queue_at}
+          queue_by={state.nowPlaying?.queue_by}
+          heading={false}
+          id={state.nowPlaying?.id}
+        />
       </Stack>
       <Box flex={1} overflow="auto" pb="5.5rem" pt={"12rem"}>
         <Stack divider={<Divider />}>
-          <MusicCard is_playing />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard is_owned />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard is_owned />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard is_owned />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard is_owned />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard is_owned />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard is_owned />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard is_owned />
-          <MusicCard />
-          <MusicCard />
-          <MusicCard is_owned />
-          <MusicCard />
+          {state?.queues?.map((item: any) => (
+            <MusicCard
+              title={item.title}
+              artwork_url={item.artwork_url}
+              queue_at={item.queue_at}
+              queue_by={item.queue_by}
+              artist={item.artist}
+              heading={false}
+              is_owned={item.is_owned}
+              id={item.id}
+              is_playing={item.is_playing}
+            />
+          ))}
         </Stack>
       </Box>
       <Box
@@ -139,7 +147,7 @@ export default function MainView() {
         >
           <BiPlusCircle />
         </LoadingButton>
-        <LoadingButton
+        {/* <LoadingButton
           variant="contained"
           color="primary"
           sx={{
@@ -154,11 +162,11 @@ export default function MainView() {
           disableElevation
         >
           <FaPlay />
-        </LoadingButton>
-        <Stack flex={1} justifyContent="center">
+        </LoadingButton> */}
+        {/* <Stack flex={1} justifyContent="center">
           <Typography fontSize="14px">32/46 attendees voted play</Typography>
           <Typography fontSize="14px">You’re currently voted pause</Typography>
-        </Stack>
+        </Stack> */}
       </Box>
       <SearchDrawer
         open={openDrawer}

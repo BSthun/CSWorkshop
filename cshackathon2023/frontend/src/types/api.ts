@@ -6,7 +6,7 @@ export interface Response<TData = any> {
 
 export interface Data {
   now_playing: Music;
-  list: Music[];
+  items: Music[];
   control: Control;
 }
 
@@ -30,7 +30,7 @@ export interface Music {
 export type MusicStateResponse = Response<Data>;
 
 export interface SeachData {
-  list: SearchMusic[];
+  items: SearchMusic[];
 }
 
 export interface SearchMusic {

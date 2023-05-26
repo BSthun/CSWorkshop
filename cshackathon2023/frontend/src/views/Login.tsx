@@ -18,7 +18,7 @@ const Login = () => {
     // Get IdToken for verification with backend.
     result.user.getIdToken().then((token: any) => {
       axios
-        .post("https://api.cshack.site/api/account/callback", {
+        .post("/api/account/callback", {
           idToken: token,
         })
         .then((response) => {

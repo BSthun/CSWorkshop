@@ -7,8 +7,8 @@ import (
 	"net/http"
 )
 
-func SpotifySearchTrack(trackName string) (*payload.TrackSearch, *response.ErrorInstance) {
-	var data *payload.TrackSearch
+func SpotifySearchTrack(trackName string) (*payload.SpotifyTrackSearch, *response.ErrorInstance) {
+	var data *payload.SpotifyTrackSearch
 	if err := DoRequest(
 		nil,
 		"GET",

@@ -7,11 +7,14 @@ import { FaPlay } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 
 export interface MusicCardProps extends Partial<Music> {
+  spotify_id?: string;
   heading?: boolean;
   search?: boolean;
+  queue?: (a0: string) => void;
 }
 
 export default function MusicCard({
+  spotify_id = "aaa",
   heading = false,
   search = false,
   artist = "Taylor Swift",
@@ -21,6 +24,7 @@ export default function MusicCard({
   queue_at = new Date().toISOString(),
   queue_by = "Sirawit",
   title = "This is a long string that is OK to truncate please and thank youasdasdasdasd",
+  queue,
 }: MusicCardProps) {
   const [size, setSize] = React.useState(heading ? 70 : 56);
   const [loaded, setLoaded] = React.useState(false);
@@ -47,6 +51,7 @@ export default function MusicCard({
       pl={search ? 0 : 3}
       pr={search ? 0 : 5}
       position="relative"
+      onClick={() => queue(spotify_id)}
       // sx={{ background: is_playing ? "#F2F2F2" : "transparent" }}
     >
       <Box

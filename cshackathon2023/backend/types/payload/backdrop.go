@@ -15,6 +15,7 @@ type BackdropEvent struct {
 }
 
 type BackdropNowPlaying struct {
+	QueueId  *uint64 `json:"queueId"`
 	CoverURL *string `json:"cover_url"`
 	Title    *string `json:"title"`
 	Artist   *string `json:"artist"`
