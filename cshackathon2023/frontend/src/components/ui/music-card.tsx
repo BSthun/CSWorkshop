@@ -8,10 +8,12 @@ import { MdAccountCircle } from "react-icons/md";
 
 export interface MusicCardProps extends Partial<Music> {
   heading?: boolean;
+  search?: boolean;
 }
 
 export default function MusicCard({
   heading = false,
+  search = false,
   artist = "Taylor Swift",
   artwork_url = `https://source.unsplash.com/random/400×400/?music`,
   is_owned = false,
@@ -30,9 +32,9 @@ export default function MusicCard({
   React.useLayoutEffect(() => {
     if (sizeRef.current) {
       const size = sizeRef.current.clientHeight;
-      setSize(size + (heading ? 36 : 4));
+      setSize(size + (heading ? 36 : search ? 24 : 4));
     }
-  }, [sizeRef.current?.clientHeight, heading, is_playing]);
+  }, [sizeRef.current?.clientHeight, heading, search, is_playing]);
 
   const timeFromNow = dayjs(queue_at).toNow();
 
@@ -40,10 +42,10 @@ export default function MusicCard({
     <Box
       display="flex"
       alignItems="center"
-      gap={2}
-      py={heading ? 1.5 : 2}
-      pl={3}
-      pr={5}
+      gap={1}
+      py={heading ? 1.5 : search ? 0.5 : 2}
+      pl={search ? 0 : 3}
+      pr={search ? 0 : 5}
       position="relative"
       // sx={{ background: is_playing ? "#F2F2F2" : "transparent" }}
     >
@@ -98,9 +100,10 @@ export default function MusicCard({
         <Typography
           className="text-overflow"
           fontSize={heading ? "17px" : "16px"}
-          lineHeight={1}
+          lineHeight={1.2}
           color="#050505"
-          fontWeight="800"
+          fontWeight="500"
+          pr={1}
         >
           {title}
         </Typography>
@@ -109,18 +112,19 @@ export default function MusicCard({
           fontSize={heading ? "16px" : "14px"}
           lineHeight={1}
           color="#050505"
-          fontWeight="600"
+          fontWeight="400"
+          mt={0.25}
         >
           {artist}
         </Typography>
-        {!heading && (
+        {!heading && !search && (
           <Typography
             className="text-overflow"
             fontSize="14px"
             lineHeight={1}
             color="#919191"
-            fontWeight="600"
-            mt={0.25}
+            fontWeight="300"
+            mt={0.5}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -132,7 +136,7 @@ export default function MusicCard({
         )}
       </Stack>
       {is_owned && (
-        <IconButton size="small" sx={{ position: "absolute", right: 5 }}>
+        <IconButton size="small" sx={{ position: "absolute", right: 15 }}>
           <BiMinusCircle />
         </IconButton>
       )}

@@ -1,8 +1,12 @@
+import React, { useEffect } from "react";
 import MusicCard from "@/components/ui/music-card";
 import { LoadingButton } from "@mui/lab";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { BiPlusCircle } from "react-icons/bi";
 import { FaPlay } from "react-icons/fa";
+import SearchDrawer from "@/components/ui/search-modal";
+import axios from "axios";
+import { SearchMusic, SearchMusicResponse } from "@/types/api";
 
 const boxShadow = `
 0 1px 1px hsl(0deg 0% 0% / 0.025),
@@ -13,6 +17,39 @@ const boxShadow = `
 `;
 
 export default function MainView() {
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [searchInput, setSearchInput] = React.useState("");
+  const [searchList, setSearchList] = React.useState<SearchMusic[]>([]);
+
+  const searchSong = () => {
+    // .post(`https://api.cshack.site/api/music/search?query=${searchInput}`, {
+    //   withCredentials: true,
+    // })
+    axios
+      .get<SearchMusicResponse>(
+        "https://wwwii.bsthun.com/mock/csworkshop/cshack-search.json"
+      )
+      .then((response) => {
+        if (response.data.success && response.data.data.list.length > 0) {
+          setSearchList(response.data.data.list);
+        } else {
+          alert(response.data.message);
+          setSearchList([]);
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (searchInput.length > 0) {
+      const getData = setTimeout(() => {
+        searchSong();
+      }, 1000);
+      return () => clearTimeout(getData);
+    } else {
+      setSearchList([]);
+    }
+  }, [searchInput]);
+
   return (
     <Stack sx={{ height: "100vh", display: "flex" }}>
       <Stack
@@ -30,7 +67,7 @@ export default function MainView() {
           height: "12rem",
         }}
       >
-        <Typography fontSize="24px" fontWeight="500" py={2} align="center">
+        <Typography fontSize="24px" fontWeight="400" py={2} align="center">
           CS Hackathon 2023
         </Typography>
         <MusicCard heading />
@@ -98,6 +135,7 @@ export default function MainView() {
             justifyContent: "center",
           }}
           disableElevation
+          onClick={() => setOpenDrawer(true)}
         >
           <BiPlusCircle />
         </LoadingButton>
@@ -122,6 +160,13 @@ export default function MainView() {
           <Typography fontSize="14px">You’re currently voted pause</Typography>
         </Stack>
       </Box>
+      <SearchDrawer
+        open={openDrawer}
+        setOpenDrawer={setOpenDrawer}
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        songList={searchList}
+      />
     </Stack>
   );
 }

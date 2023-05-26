@@ -1,6 +1,7 @@
 export interface Response<TData = any> {
   success: boolean;
   data: TData;
+  message?: string;
 }
 
 export interface Data {
@@ -27,3 +28,17 @@ export interface Music {
 }
 
 export type MusicStateResponse = Response<Data>;
+
+export interface SeachData {
+  list: SearchMusic[];
+}
+
+export interface SearchMusic {
+  album: string;
+  artist: string;
+  artwork_url: string;
+  spotify_id: string;
+  title: string;
+}
+
+export type SearchMusicResponse = Response<SeachData>;
