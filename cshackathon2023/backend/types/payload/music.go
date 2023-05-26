@@ -28,3 +28,11 @@ type MusicQueueItem struct {
 	IsPlaying *bool   `json:"is_playing,omitempty"`
 	IsOwned   *bool   `json:"is_owned,omitempty"`
 }
+
+type TrackItem struct {
+	Items []*SpotifyTrack
+}
+
+type TrackSearch struct {
+	Tracks *TrackItem
+}

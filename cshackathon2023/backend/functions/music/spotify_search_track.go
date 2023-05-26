@@ -7,12 +7,12 @@ import (
 	"net/http"
 )
 
-func SpotifyNowPlaying() (*payload.SpotifyPlaybackState, *response.ErrorInstance) {
-	var data *payload.SpotifyPlaybackState
+func SpotifySearchTrack(trackName string) (*payload.TrackSearch, *response.ErrorInstance) {
+	var data *payload.TrackSearch
 	if err := DoRequest(
 		nil,
 		"GET",
-		fmt.Sprintf("https://api.spotify.com/v1/me/player/currently-playing"),
+		fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=track", trackName),
 		nil,
 		func(r *http.Request) {
 			r.Header.Set("Authorization", "Bearer "+GetSpotifyToken())
@@ -21,5 +21,6 @@ func SpotifyNowPlaying() (*payload.SpotifyPlaybackState, *response.ErrorInstance
 	); err != nil {
 		return nil, err
 	}
+
 	return data, nil
 }

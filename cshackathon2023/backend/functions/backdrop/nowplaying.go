@@ -1,16 +1,26 @@
 package backdrop
 
 import (
+	functions "backend/functions/music"
 	"backend/types/payload"
-	"backend/utils/value"
+	"backend/utils/text"
+	"github.com/davecgh/go-spew/spew"
 )
 
 func GetNowPlaying() *payload.BackdropNowPlaying {
+	np, _ := functions.SpotifyNowPlaying()
+	spew.Dump(np)
+	var artists []string
+	for _, s := range np.Item.Artists {
+		artists = append(artists, *s.Name)
+	}
+
+	artistName := text.FormattedText(artists)
 	return &payload.BackdropNowPlaying{
-		CoverURL: value.Ptr("https://lh3.googleusercontent.com/3ABWzObIuJPlSmQ5K9WWbn0UV4i2gyPphxACYCA0PE50BYCsPn4w8b90JjNYbsUiPqSi-o49oRxyp-aj=w544-h544-l90-rj"),
-		Title:    value.Ptr("Burn"),
-		Artist:   value.Ptr("Ellie Goulding"),
-		Album:    value.Ptr("Halcyon Days"),
-		QueueBy:  value.Ptr("APISIT MANEERAT"),
+		CoverURL: np.Item.Album.Images[0].Url,
+		Title:    np.Item.Name,
+		Artist:   &artistName,
+		Album:    np.Item.Album.Name,
+		//QueueBy:  value.Ptr("APISIT MANEERAT"),
 	}
 }

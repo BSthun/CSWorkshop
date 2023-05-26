@@ -6,5 +6,6 @@ import (
 )
 
 func StateGetHandler(c *fiber.Ctx) error {
+
 	return c.JSON(response.Success(c, 1))
 }
