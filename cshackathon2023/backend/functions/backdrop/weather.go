@@ -4,6 +4,7 @@ import (
 	"backend/modules"
 	"backend/types/payload"
 	"backend/utils/value"
+	"crypto/tls"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -21,6 +22,7 @@ func GetWeather() *payload.BackdropWeather {
 }
 
 func FetchWeather() *payload.BackdropWeather {
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	client := &http.Client{}
 
 	// * Send request

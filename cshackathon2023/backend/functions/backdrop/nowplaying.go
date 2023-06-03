@@ -15,6 +15,7 @@ var lastQueued time.Time
 
 var nowPlayingData *payload.BackdropNowPlaying
 var nowPlayingLastUpdated time.Time
+var lastQueueId string
 
 func GetNowPlaying() *payload.BackdropNowPlaying {
 	if time.Now().Sub(nowPlayingLastUpdated) > 5*time.Second {
@@ -27,6 +28,13 @@ func GetNowPlaying() *payload.BackdropNowPlaying {
 func FetchNowPlaying() *payload.BackdropNowPlaying {
 	// * Get now playing state
 	nowPlaying, _ := functions.SpotifyNowPlaying()
+
+	// * Format artist name
+	var artists []string
+	for _, s := range nowPlaying.Item.Artists {
+		artists = append(artists, *s.Name)
+	}
+	artistName := text.FormattedText(artists)
 
 	// * Empty now playing fallback
 	if nowPlaying == nil || nowPlaying.Item == nil {
@@ -54,16 +62,16 @@ func FetchNowPlaying() *payload.BackdropNowPlaying {
 		// * Get last played track
 		var queue *model.Queue
 		if result := modules.DB.Preload("User").Preload("Track").Order("created_at DESC").First(&queue, "played = 1"); result.Error != nil {
-			logrus.Fatal("UNABLE TO FETCH LAST PLAYED TRACK: " + result.Error.Error())
+			logrus.Warn("UNABLE TO FETCH LAST PLAYED TRACK 2: " + result.Error.Error())
 		}
 
 		return &payload.BackdropNowPlaying{
-			QueueId:  queue.Id,
-			CoverURL: queue.Track.CoverUrl,
-			Title:    queue.Track.Name,
-			Artist:   queue.Track.Artist,
-			Album:    queue.Track.Album,
-			QueueBy:  queue.User.Name,
+			QueueId:  nil,
+			CoverURL: nowPlaying.Item.Album.Images[0].Url,
+			Title:    nowPlaying.Item.Name,
+			Artist:   &artistName,
+			Album:    nowPlaying.Item.Album.Name,
+			QueueBy:  nil,
 		}
 	} else if result.Error != nil {
 		logrus.Fatal("UNABLE TO FETCH NEXT QUEUE TRACK: " + result.Error.Error())
@@ -80,18 +88,29 @@ func FetchNowPlaying() *payload.BackdropNowPlaying {
 	if *nowPlaying.ProgressMs > *nowPlaying.Item.DurationMs-15000 {
 		if time.Now().Sub(lastQueued) > 15*time.Second {
 			// * Add next track to queue
-			_, err := functions.SpotifyAddQueue(*nextQueue.Track.SpotifyId)
-			if err != nil {
-				logrus.Fatal("UNABLE TO ADD QUEUE: " + err.Error())
+			if lastQueueId != *nextQueue.Track.SpotifyId {
+				_, err := functions.SpotifyAddQueue(*nextQueue.Track.SpotifyId)
+				if err != nil {
+					logrus.Fatal("UNABLE TO ADD QUEUE: " + err.Error())
+				}
+				lastQueued = time.Now()
+				lastQueueId = *nextQueue.Track.SpotifyId
 			}
-			lastQueued = time.Now()
 		}
 	}
 
 	// * Get current track
 	var currentQueue *model.Queue
 	if result := modules.DB.Preload("User").Preload("Track").Order("created_at DESC").First(&currentQueue, "played = 1"); result.Error != nil {
-		logrus.Fatal("UNABLE TO FETCH CURRENT QUEUE TRACK: " + result.Error.Error())
+		logrus.Warn("UNABLE TO FETCH CURRENT QUEUE TRACK: " + result.Error.Error())
+		return &payload.BackdropNowPlaying{
+			QueueId:  nil,
+			CoverURL: nowPlaying.Item.Album.Images[0].Url,
+			Title:    nowPlaying.Item.Name,
+			Artist:   &artistName,
+			Album:    nowPlaying.Item.Album.Name,
+			QueueBy:  nil,
+		}
 	}
 
 	// * Check if current track is same as now playing
@@ -105,13 +124,6 @@ func FetchNowPlaying() *payload.BackdropNowPlaying {
 			QueueBy:  currentQueue.User.Name,
 		}
 	}
-
-	// * Format artist name
-	var artists []string
-	for _, s := range nowPlaying.Item.Artists {
-		artists = append(artists, *s.Name)
-	}
-	artistName := text.FormattedText(artists)
 
 	return &payload.BackdropNowPlaying{
 		QueueId:  nil,

@@ -6,8 +6,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"io/fs"
 	"io/ioutil"
-	"math/rand"
-	"sort"
 )
 
 func RandGetHandler(c *fiber.Ctx) error {
@@ -24,23 +22,23 @@ func RandGetHandler(c *fiber.Ctx) error {
 			files = append(files, content)
 		}
 	}
-
-	// * Sort the files by date modified
-	sort.Slice(files, func(i, j int) bool {
-		return files[i].ModTime().After(files[j].ModTime())
-	})
+	//
+	//// * Sort the files by date modified
+	//sort.Slice(files, func(i, j int) bool {
+	//	return files[i].ModTime().After(files[j].ModTime())
+	//})
 
 	// * Calculate skip index
-	last := 10
-	if len(files) < last {
-		last = len(files)
-	}
+	//last := 300
+	//if len(files) < last {
+	//	last = len(files)
+	//}
 
 	// * Get last 10 files
-	files = files[:last]
+	//files = files[:last]
 
 	// * Random file in the last 10 files
-	file := files[rand.Intn(len(files))]
+	file := files[text.Rand.Intn(len(files))]
 
 	// * Redirect to the file
 	return c.Redirect("/image/" + file.Name())
